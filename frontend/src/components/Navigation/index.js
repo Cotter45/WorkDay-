@@ -1,45 +1,82 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+
 import ProfileButton from './ProfileButton';
 import LoginFormModal from '../LoginFormModal';
+import { login } from '../../store/session';
 import './Navigation.css';
+import JobSearch from './search';
+import SignupFormModal from '../SignupFormModal';
+
 
 function Navigation({ isLoaded }){
+  const dispatch = useDispatch();
 
   const sessionUser = useSelector(state => state.session.user);
 
-  const [additional, setAdditional] = useState(false);
+  const [search, setSearch] = useState(false);
+  const [results, setResults] = useState([]);
+  const [param, setParams] = useState('');
+
+  const demo = () => {
+    let credentials = {
+      credential: 'demo@user.io',
+      password: 'password'
+    }
+
+    dispatch(login(credentials));
+  }
 
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <ProfileButton user={sessionUser} />
+      <>
+        <NavLink to="/"><i className="fas fa-home fa-2x" /></NavLink>
+        <NavLink to="/jobs"><i className="fas fa-briefcase fa-2x" /></NavLink>
+        <NavLink to="/messages"><i className="fas fa-comment-dots fa-2x" /></NavLink>
+        <ProfileButton user={sessionUser} />
+      </>
     );
   } else {
     sessionLinks = (
       <>
+        <button onClick={demo}>Demo</button>
         <LoginFormModal />
-        <NavLink to="/signup">Sign Up</NavLink>
+        <SignupFormModal />
       </>
     );
   }
 
   return (
     <> 
-      <nav className='nav' onMouseEnter={() => setAdditional(true)}>
+      <nav className='nav'>
+        <JobSearch setSearch={setSearch} param={param} setParams={setParams} setResults={setResults} />
         <div className='nav-links'>
-          <NavLink to="/"><i className="fas fa-home fa-2x" /></NavLink>
-          <NavLink to="/jobs"><i className="fas fa-briefcase fa-2x" /></NavLink>
-          <NavLink to="/messages"><i className="fas fa-comment-dots fa-2x" /></NavLink>
           {isLoaded && sessionLinks}
         </div>
       </nav>
-        {additional && (
-          <div  onMouseLeave={() => setAdditional(false)} className='additional-info'>
-            <h1>extra info</h1>
+      { search && (
+        <div  className='results'>
+          <div className='options'>
+            <button>filter1</button>
+            <button>filter1</button>
+            <button>filter1</button>
+          </div> 
+          <div>
+            <button onClick={() => {
+              setSearch(false);
+              setResults([]);
+              setParams('');
+            }}>Exit</button>
           </div>
-        )}
+          {results && results.map(result => (
+            <div id='search-results' key={result.id}>
+                <p>{result.title}</p>
+            </div>
+          ))}
+        </div>
+      )}
     </>
   );
 }

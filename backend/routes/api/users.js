@@ -1,9 +1,13 @@
 const express = require("express");
 const { check } = require("express-validator");
+const { Op } = require('sequelize');
+
 const asyncHandler = require("express-async-handler");
 
 const { handleValidationErrors } = require("../../utils/validation");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
+
+
 const { 
   User, 
   Application, 
@@ -89,6 +93,14 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
           { model: Job,
             include: { all: true }
           },
+          {
+            model: Save_for_Later,
+            include: { all: true }
+          },
+          {
+            model: Application,
+            include: { all: true }
+          },
           { model: Conversation,
             include: [ User, Message ],
           },
@@ -113,20 +125,41 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
         ]
       })
     }
-
-    // if (user.current_company) {
-    //   company = await Company.findOne({
-    //     where: {
-    //       id: +user.current_company
-    //     }, 
-    //     include: [Post, Team, Project, Employee_Approval, Job, Component, Image, Review]
-    //   })
-    //   return res.json({ company })
-    // }
     return res.json({ user })
+}))
+
+router.get('/job_search/:params', asyncHandler( async (req, res) => {
+  const params = req.params.params.toLowerCase().split(' ').concat(req.params.params.toUpperCase().split(' '));
+
+  const jobResults = await Job.findAll({
+    where: {
+      [Op.or]: [
+        {
+          title: {
+            [Op.or]: {
+                [Op.in]: params,
+                [Op.substring]: req.params.params,
+                [Op.iRegexp]: req.params.params
+
+            }
+          }
+        },
+        {
+          location: {
+            [Op.or]: {
+                [Op.in]: params,
+                [Op.substring]: req.params.params,
+                [Op.iRegexp]: req.params.params
+
+            }
+          }
+        },
+      ]
+    }
+  })
 
 
-
+  return res.json({ jobResults })
 }))
 
 module.exports = router;

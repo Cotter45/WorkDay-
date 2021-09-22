@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
-import SignupFormPage from './components/SignupFormPage';
+import SignupFormPage from './components/SignupFormModal/sign-up';
 // import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from './store/session';
 import { get_data } from './store/api';
 import Navigation from './components/Navigation';
+import HomePage from './components/Home/home';
 // import { Modal } from './context/Modal';
 
 
@@ -38,22 +39,18 @@ function App() {
       {!isLoaded && (
         <div className='loading'>Loading...</div>
       )}
-      <Navigation isLoaded={isLoaded} />
-      {/* <button onClick={() => setShowModal(true)}>Modal</button>
-      {showModal && (
-        <Modal onClose={() => setShowModal(false)}>
-          <h1>Hello I am a Modal</h1>
-        </Modal>
-      )} */}
       {isLoaded && (
-        <Switch>
-          {/* <Route path="/login" >
-            <LoginFormPage />
-          </Route> */}
-          <Route path='/signup'>
-            <SignupFormPage />
-          </Route>
-        </Switch>
+        <>
+          <Navigation isLoaded={isLoaded} />
+          <Switch>
+            <Route path='/'>
+              <HomePage />
+            </Route>
+            <Route path='/signup'>
+              <SignupFormPage />
+            </Route>
+          </Switch>
+        </>
       )}
     </>
   );
