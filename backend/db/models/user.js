@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
         background_image,
         team_id,
         current_company, 
-        email };
+        email 
+      };
     }
     validatePassword(password) {
       return bcrypt.compareSync(password, this.hashedPassword.toString());
@@ -74,7 +75,7 @@ module.exports = (sequelize, DataTypes) => {
 
       User.belongsTo(models.Team, { foreignKey: 'team_id'});
       User.belongsTo(models.Company, { foreignKey: 'current_company'});
-      User.hasOne(models.Employee_Approval, { foreignKey: 'user_id' });
+      User.belongsTo(models.Employee_Approval, { foreignKey: 'user_id' });
       User.hasMany(models.Follow, { foreignKey: 'user_id' });
       User.hasMany(models.Follow, { foreignKey: 'other_user' });
       User.belongsTo(models.Role, { foreignKey: 'user_id' });
