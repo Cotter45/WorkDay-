@@ -8,10 +8,11 @@ module.exports = (sequelize, DataTypes) => {
 
     const conversationUser = {
       through: 'Conversation_User',
-      foreignKey: 'user_id',
-      otherKey: 'conversation_id'
+      foreignKey: 'conversation_id',
+      otherKey: 'user_id'
     }
 
+    // Conversation.hasMany(models.Conversation_User, { foreignKey: 'conversation_id' });
     Conversation.belongsToMany(models.User, conversationUser);
     Conversation.hasMany(models.Message, { foreignKey: 'conversation_id' });
   };

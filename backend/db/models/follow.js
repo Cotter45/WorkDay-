@@ -7,6 +7,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Follow.associate = function(models) {
     // associations can be defined here
+
     Follow.belongsTo(models.User, { foreignKey: 'user_id' });
     Follow.belongsTo(models.User, { foreignKey: 'other_user' });
     Follow.belongsTo(models.Company, { foreignKey: 'company_id' });

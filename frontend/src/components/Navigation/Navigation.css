@@ -1,3 +1,26 @@
+.nav {
+  width: 100vw;
+  height: 10vh;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav-links {
+  display: flex;
+  gap: 25px;
+  padding-right: 50px;
+}
+
+.additional-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10vh;
+  width: 100vw;
+}
+
+
 .profile-dropdown {
   position: absolute;
 }

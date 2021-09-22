@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import * as sessionActions from "../../store/session";
@@ -8,18 +8,35 @@ function SignupFormPage() {
   const dispatch = useDispatch();
   const sessionUser = useSelector((state) => state.session.user);
   const [email, setEmail] = useState("");
-  const [username, setUsername] = useState("");
+  const [first_name, set_first_name] = useState("");
+  const [last_name, set_last_name] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
+  useEffect(() => {
+
+    const newErrors = [];
+
+    if (!email.includes('@') || email.includes(" ")) newErrors.push('Please enter a valid email.');
+    if (first_name && first_name[0] !== first_name[0].toUpperCase()) newErrors.push('Please capitalize your first name.');
+    if (last_name && last_name[0] !== last_name[0].toUpperCase()) newErrors.push('Please capitalize your last name.');
+    if (password !== confirmPassword) newErrors.push('Your passwords do not match.');
+    if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])/, 'g')) newErrors.push('Password must contain at least 1 lowercase letter, uppercase letter, number and special character (i.e. "!@#$%^&*")')
+
+    if (newErrors.length) setErrors(newErrors)
+    else setErrors([])
+
+  }, [confirmPassword, email, first_name, last_name, password])
+
   if (sessionUser) return <Redirect to="/" />;
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password === confirmPassword) {
       setErrors([]);
-      return dispatch(sessionActions.signup({ email, username, password }))
+      return dispatch(sessionActions.signup({ email, first_name, last_name, password }))
         .catch(async (res) => {
           const data = await res.json();
           if (data && data.errors) setErrors(data.errors);
@@ -45,11 +62,20 @@ function SignupFormPage() {
           />
         </label>
         <label>
-          Username
+          First Name
           <input
             type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={first_name}
+            onChange={(e) => set_first_name(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Last Name
+          <input
+            type="text"
+            value={last_name}
+            onChange={(e) => set_last_name(e.target.value)}
             required
           />
         </label>
@@ -71,7 +97,7 @@ function SignupFormPage() {
             required
           />
         </label>
-        <button type="submit">Sign Up</button>
+        <button disabled={errors.length ? true : false} type="submit">Sign Up</button>
       </form>
     </>
   );

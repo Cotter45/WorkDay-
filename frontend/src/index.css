@@ -1,1 +1,37 @@
 /* TODO Add site wide styles */
+
+html, body, #root {
+    height: 100vh !important;
+    min-height: 100% !important;
+    width: 100vw !important;
+    min-width: 100% !important;
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.loading {
+    position: absolute;
+    left: 40vw;
+    top: 40vh;
+    height: 300px;
+    width: 300px;
+    border-radius: 50%;
+    border: 5px dotted transparent;
+    border-top-color: rgb(22, 77, 22);
+    border-bottom-color: rgb(161, 161, 247);
+    animation: spin 1s linear infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

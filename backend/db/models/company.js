@@ -25,11 +25,18 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: 'company_id'
     }
 
+    const userFollower = {
+      through: 'Follow',
+      foreignKey: 'user_id',
+      otherKey: 'company_id'
+    }
+
+    // Company.belongsToMany(models.User, userFollower)
+    Company.hasMany(models.Follow, { foreignKey: 'company_id' });
     Company.belongsToMany(models.Industry, industryMap);
     Company.belongsToMany(models.Perk, perkMap);
     Company.hasMany(models.User, { foreignKey: 'current_company' });
     Company.hasMany(models.Employee_Approval, { foreignKey: 'company_id' });
-    Company.hasMany(models.Follow, { foreignKey: 'company_id' });
     Company.hasMany(models.Team, { foreignKey: 'company_id' });
     Company.hasMany(models.Role, { foreignKey: 'company_id' });
     Company.hasMany(models.Review, { foreignKey: 'company_id' });
@@ -37,8 +44,8 @@ module.exports = (sequelize, DataTypes) => {
     Company.hasMany(models.Post, { foreignKey: 'company_id' });
     Company.hasMany(models.Like, { foreignKey: 'company_id' });
     Company.hasMany(models.Project, { foreignKey: 'company_id' });
-    Company.hasMany(models.Company, { foreignKey: 'company_id' });
-    Company.hasMany(models.Company, { foreignKey: 'company_id' });
+    Company.hasMany(models.Component, { foreignKey: 'company_id' });
+    Company.hasMany(models.Image, { foreignKey: 'company_id' });
 
 
   };

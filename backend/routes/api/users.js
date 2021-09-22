@@ -4,7 +4,34 @@ const asyncHandler = require("express-async-handler");
 
 const { handleValidationErrors } = require("../../utils/validation");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
-const { User } = require("../../db/models");
+const { 
+  User, 
+  Application, 
+  Comment, 
+  Company_Industry,
+  Company_Perk,
+  Company,
+  Component,
+  Conversation_User,
+  Conversation,
+  Employee_Approval,
+  Follow,
+  Image,
+  Industry,
+  Job,
+  Like,
+  Message,
+  Perk,
+  Post,
+  Project,
+  Requirement,
+  Review,
+  Role,
+  Save_for_Later,
+  Team
+ } = require("../../db/models");
+
+
 
 const router = express.Router();
 
@@ -28,59 +55,10 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
-
-// const validateSignup = [
-//   check("email")
-//     .isEmail()
-//     .withMessage("Please provide a valid email.")
-//     .custom((value, { req }) => {
-//       return new Promise((resolve, reject) => {
-//         User.findOne({ where: { email: req.body.email } })
-//           .then((res) => {
-//             console.log("res.....", res);
-//             if (res) {
-//               reject("Email already taken");
-//             } else {
-//               resolve();
-//             }
-//           })
-//           .catch((err) => {
-//             rej("Database error: ", err.message);
-//           });
-//       });
-//     }),
-//   check("username")
-//     .isLength({ min: 4 })
-//     .withMessage("Please provide a username with at least 4 characters.")
-//     .custom((value, { req }) => {
-//       return new Promise((resolve, reject) => {
-//         User.findOne({ where: { username: req.body.username } })
-//           .then((res) => {
-//             if (res) {
-//               reject("Username already taken");
-//             } else {
-//               resolve();
-//             }
-//           })
-//           .catch((err) => {
-//             rej("Database error: ", err.message);
-//           });
-//       });
-//     }),
-//   check("username").not().isEmail().withMessage("Username cannot be an email."),
-//   check("password")
-//     .isLength({ min: 6 })
-//     .withMessage("Password must be 6 characters or more."),
-//   handleValidationErrors,
-// ];
-
 // Sign up
-router.post(
-  '',
-  validateSignup,
-  asyncHandler(async (req, res) => {
-    const { email, password, username } = req.body;
-    const user = await User.signup({ email, username, password });
+router.post('', validateSignup, asyncHandler(async (req, res) => {
+    const { email, password, first_name, last_name } = req.body;
+    const user = await User.signup({ email, first_name, last_name, password });
 
     await setTokenCookie(res, user);
 
@@ -89,5 +67,66 @@ router.post(
     });
   }),
 );
+
+// Initial data haul or route for every refresh
+router.get('/:user_id', asyncHandler( async (req, res) => {
+    const { user_id } = req.params;
+    let company;
+    let user;
+
+    if (user_id) {
+      user = await User.findOne({
+        where: {
+          id: +user_id
+        },
+        include: [
+          { model: Follow,
+            include: { all: true }
+          },
+          { model: Company,
+          include: { all: true }
+          },
+          { model: Job,
+            include: { all: true }
+          },
+          { model: Conversation,
+            include: [ User, Message ],
+          },
+          { model: Post,
+            include: [
+              { model: User },
+              { model: Company },
+              {
+                model: Comment,
+                include: [ User, Like, Image ]
+              },
+              { 
+                model: Like,
+                include: [ User ]
+              },
+              { model: Image }
+            ],
+            limit: 25
+          },
+          { model: Image },
+          { model: Component }
+        ]
+      })
+    }
+
+    // if (user.current_company) {
+    //   company = await Company.findOne({
+    //     where: {
+    //       id: +user.current_company
+    //     }, 
+    //     include: [Post, Team, Project, Employee_Approval, Job, Component, Image, Review]
+    //   })
+    //   return res.json({ company })
+    // }
+    return res.json({ user })
+
+
+
+}))
 
 module.exports = router;

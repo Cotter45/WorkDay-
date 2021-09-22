@@ -69,22 +69,43 @@ module.exports = (sequelize, DataTypes) => {
 
       const conversations = {
         through: 'Conversation_User',
-        foreignKey: 'conversation_id',
-        otherKey: 'user_id'
+        foreignKey: 'user_id',
+        otherKey: 'conversation_id'
       }
 
+      const followsOtherUser = {
+        through: 'Follow',
+        foreignKey: 'other_user',
+        otherKey: 'user_id',
+      }
+
+      const otherUserFollows = {
+        through: 'Follow',
+        foreignKey: 'user_id',
+        otherKey: 'other_user',
+      }
+
+      const companyFollow = {
+        through: 'Follow',
+        foreignKey: 'company_id',
+        otherKey: 'user_id'
+      }
+      
+      // User.hasMany(models.Conversation_User, { foreignKey: 'user_id' });;
+      User.belongsToMany(models.Conversation, conversations);
+      // User.belongsToMany(models.Company, companyFollow);
+      User.hasMany(models.Follow, { foreignKey: 'user_id' });
+      // User.belongsTo(models.Follow, { foreignKey: 'other_user' });
+      // User.belongsToMany(models.Follow, otherUserFollows)
       User.belongsTo(models.Team, { foreignKey: 'team_id'});
       User.belongsTo(models.Company, { foreignKey: 'current_company'});
       User.hasOne(models.Employee_Approval, { foreignKey: 'user_id' });
-      User.hasMany(models.Follow, { foreignKey: 'user_id' });
-      User.hasMany(models.Follow, { foreignKey: 'other_user' });
       User.hasOne(models.Role, { foreignKey: 'user_id' });
       User.hasMany(models.Review, { foreignKey: 'reviewer_id' });
       User.hasMany(models.Review, { foreignKey: 'user_id' });
       User.hasMany(models.Job, { foreignKey: 'poster_id' });
       User.hasMany(models.Save_for_Later, { foreignKey: 'user_id' });
       User.hasMany(models.Application, { foreignKey: 'user_id' });
-      User.belongsToMany(models.Conversation_User, conversations);
       User.hasMany(models.Message, { foreignKey: 'sender_id' });
       User.hasMany(models.Post, { foreignKey: 'poster_id' });
       User.hasMany(models.Comment, { foreignKey: 'user_id' });

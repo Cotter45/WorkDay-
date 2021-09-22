@@ -1,28 +1,50 @@
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import SignupFormPage from './components/SignupFormPage';
 // import LoginFormPage from "./components/LoginFormPage";
 import * as sessionActions from './store/session';
+import { get_data } from './store/api';
 import Navigation from './components/Navigation';
-import { Modal } from './context/Modal';
+// import { Modal } from './context/Modal';
+
+
+
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
+
+  const user = useSelector(state => state.session.user);
+  // const data = useSelector(state => state.session.data);
+
+  let user_id;
+  if (user) {
+    user_id = user.id;
+  }
+
   useEffect(() => {
-    dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
-  }, [dispatch]);
+    dispatch(sessionActions.restoreUser());
+    
+    if (user_id) {
+      dispatch(get_data(user_id)).then(() => setIsLoaded(true));
+    } else {
+      setIsLoaded(true);
+    }
+  }, [dispatch, user_id]);
 
   return (
     <>
+      {!isLoaded && (
+        <div className='loading'>Loading...</div>
+      )}
       <Navigation isLoaded={isLoaded} />
-      <button onClick={() => setShowModal(true)}>Modal</button>
+      {/* <button onClick={() => setShowModal(true)}>Modal</button>
       {showModal && (
         <Modal onClose={() => setShowModal(false)}>
           <h1>Hello I am a Modal</h1>
         </Modal>
-      )}
+      )} */}
       {isLoaded && (
         <Switch>
           {/* <Route path="/login" >
