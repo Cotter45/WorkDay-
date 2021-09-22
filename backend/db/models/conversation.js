@@ -1,6 +1,7 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Conversation = sequelize.define('Conversation', {
+    conversation: DataTypes.INTEGER,
   }, {});
   Conversation.associate = function(models) {
     // associations can be defined here

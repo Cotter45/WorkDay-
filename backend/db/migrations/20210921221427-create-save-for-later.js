@@ -11,7 +11,7 @@ module.exports = {
       job_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { mdoel: 'Jobs' } 
+        references: { model: 'Jobs' } 
       },
       user_id: {
         type: Sequelize.INTEGER,
@@ -20,11 +20,13 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('now'),
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('now'),
       }
     });
   },

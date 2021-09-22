@@ -21,7 +21,7 @@ module.exports = {
         allowNull: false 
       },
       pay: {
-        type: Sequelize.NUMBER
+        type: Sequelize.INTEGER
       },
       company_id: {
         type: Sequelize.INTEGER,
@@ -34,11 +34,13 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('now'),
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
+        defaultValue: Sequelize.fn('now'),
       }
     });
   },

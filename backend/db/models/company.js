@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     profile_picture: DataTypes.STRING,
     background_image: DataTypes.STRING,
     description: DataTypes.STRING,
-    num_employees: DataTypes.NUMBER,
+    num_employees: DataTypes.INTEGER,
     founded: DataTypes.DATE,
     location: DataTypes.STRING
   }, {});
