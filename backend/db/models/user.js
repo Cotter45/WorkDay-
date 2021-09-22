@@ -75,11 +75,11 @@ module.exports = (sequelize, DataTypes) => {
 
       User.belongsTo(models.Team, { foreignKey: 'team_id'});
       User.belongsTo(models.Company, { foreignKey: 'current_company'});
-      User.belongsTo(models.Employee_Approval, { foreignKey: 'user_id' });
+      User.hasOne(models.Employee_Approval, { foreignKey: 'user_id' });
       User.hasMany(models.Follow, { foreignKey: 'user_id' });
       User.hasMany(models.Follow, { foreignKey: 'other_user' });
-      User.belongsTo(models.Role, { foreignKey: 'user_id' });
-      User.hasMany(models.Review, { foreignKey: 'Review' });
+      User.hasOne(models.Role, { foreignKey: 'user_id' });
+      User.hasMany(models.Review, { foreignKey: 'reviewer_id' });
       User.hasMany(models.Review, { foreignKey: 'user_id' });
       User.hasMany(models.Job, { foreignKey: 'poster_id' });
       User.hasMany(models.Save_for_Later, { foreignKey: 'user_id' });

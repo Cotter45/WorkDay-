@@ -11,7 +11,6 @@ module.exports = {
         first_name: 'Demo',
         last_name: 'User',
         birthday: new Date(1990, 2, 1),
-        email: 'sd.cotter45@gmail.com',
         hashedPassword: bcrypt.hashSync('password'),
         description: 'I am a full stack software engineering student at App Academy.',
         location: 'Philadelphia, PA',
