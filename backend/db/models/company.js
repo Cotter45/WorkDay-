@@ -25,8 +25,8 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: 'company_id'
     }
 
-    Company.hasMany(models.Industry, industryMap);
-    Company.hasMany(models.Perk, perkMap);
+    Company.belongsToMany(models.Industry, industryMap);
+    Company.belongsToMany(models.Perk, perkMap);
     Company.hasMany(models.User, { foreignKey: 'current_company' });
     Company.hasMany(models.Employee_Approval, { foreignKey: 'company_id' });
     Company.hasMany(models.Follow, { foreignKey: 'company_id' });

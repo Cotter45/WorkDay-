@@ -66,18 +66,24 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
 
+      const conversations = {
+        through: 'Conversation_User',
+        foreignKey: 'conversation_id',
+        otherKey: 'user_id'
+      }
+
       User.belongsTo(models.Team, { foreignKey: 'team_id'});
       User.belongsTo(models.Company, { foreignKey: 'current_company'});
       User.hasOne(models.Employee_Approval, { foreignKey: 'user_id' });
       User.hasMany(models.Follow, { foreignKey: 'user_id' });
       User.hasMany(models.Follow, { foreignKey: 'other_user' });
-      User.hasOne(models.Role, { foreignKey: 'user_id' });
+      User.belongsTo(models.Role, { foreignKey: 'user_id' });
       User.hasMany(models.Review, { foreignKey: 'Review' });
       User.hasMany(models.Review, { foreignKey: 'user_id' });
       User.hasMany(models.Job, { foreignKey: 'poster_id' });
       User.hasMany(models.Save_for_Later, { foreignKey: 'user_id' });
       User.hasMany(models.Application, { foreignKey: 'user_id' });
-      User.hasMany(models.Conversation_User, { foreignKey: 'user_id' });
+      User.belongsToMany(models.Conversation_User, conversations);
       User.hasMany(models.Message, { foreignKey: 'sender_id' });
       User.hasMany(models.Post, { foreignKey: 'poster_id' });
       User.hasMany(models.Comment, { foreignKey: 'user_id' });

@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       otherKey: 'perk_id'
     }
 
-    Perk.hasMany(models.Company, companyMap);
+    Perk.belongsToMany(models.Company, companyMap);
   };
   return Perk;
 };
