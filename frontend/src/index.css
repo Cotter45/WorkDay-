@@ -17,6 +17,12 @@ html, body, #root {
     display: none;
 }
 
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+}
+
 .loading {
     position: absolute;
     left: 40vw;

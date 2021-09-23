@@ -32,16 +32,16 @@ function Navigation({ isLoaded }){
   if (sessionUser) {
     sessionLinks = (
       <>
-        <NavLink to="/"><i className="fas fa-home fa-2x" /></NavLink>
-        <NavLink to="/jobs"><i className="fas fa-briefcase fa-2x" /></NavLink>
-        <NavLink to="/messages"><i className="fas fa-comment-dots fa-2x" /></NavLink>
+        <NavLink activeClassName='active' className='nav-link' exact to="/"><i className="fas fa-home fa-2x" /></NavLink>
+        <NavLink activeClassName='active' className='nav-link' exact to="/jobs"><i className="fas fa-briefcase fa-2x" /></NavLink>
+        <NavLink activeClassName='active' className='nav-link' exact to="/messages"><i className="fas fa-comment-dots fa-2x" /></NavLink>
         <ProfileButton user={sessionUser} />
       </>
     );
   } else {
     sessionLinks = (
       <>
-        <button onClick={demo}>Demo</button>
+        <button className='nav-button' onClick={demo}>Demo</button>
         <LoginFormModal />
         <SignupFormModal />
       </>

@@ -28,6 +28,7 @@ function JobSearch({ param, setParams, setResults, setSearch }) {
     return (
         <div>
             <input
+                className='search'
                 placeholder='Search'
                 onChange={(e) => setParams(e.target.value)}
                 value={param}
