@@ -32,7 +32,7 @@ function Navigation({ isLoaded }){
   if (sessionUser) {
     sessionLinks = (
       <>
-        <NavLink activeClassName='active' className='nav-link' exact to="/"><i className="fas fa-home fa-2x" /></NavLink>
+        <NavLink activeClassName='active' className='nav-link' exact to="/feed"><i className="fas fa-home fa-2x" /></NavLink>
         <NavLink activeClassName='active' className='nav-link' exact to="/jobs"><i className="fas fa-briefcase fa-2x" /></NavLink>
         <NavLink activeClassName='active' className='nav-link' exact to="/messages"><i className="fas fa-comment-dots fa-2x" /></NavLink>
         <ProfileButton user={sessionUser} />
@@ -51,6 +51,7 @@ function Navigation({ isLoaded }){
   return (
     <> 
       <nav className='nav'>
+        <NavLink activeClassName='' className='logo' exact to="/"><img src={process.env.PUBLIC_URL + '/images/logo.png'} alt='logo'></img></NavLink>
         <JobSearch setSearch={setSearch} param={param} setParams={setParams} setResults={setResults} />
         <div className='nav-links'>
           {isLoaded && sessionLinks}

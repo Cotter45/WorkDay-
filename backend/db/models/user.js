@@ -10,6 +10,8 @@ module.exports = (sequelize, DataTypes) => {
         first_name, 
         last_name, 
         birthday, 
+        email,
+        hashedPassword,
         description, 
         location, 
         current_job,
@@ -17,12 +19,13 @@ module.exports = (sequelize, DataTypes) => {
         background_image,
         team_id,
         current_company, 
-        email } = this; // context will be the User instance
+       } = this; // context will be the User instance
       return { 
         id, 
         first_name, 
         last_name, 
         birthday, 
+        email,
         description, 
         location, 
         current_job,
@@ -30,7 +33,6 @@ module.exports = (sequelize, DataTypes) => {
         background_image,
         team_id,
         current_company, 
-        email 
       };
     }
     validatePassword(password) {
@@ -73,23 +75,23 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: 'conversation_id'
       }
 
-      const followsOtherUser = {
-        through: 'Follow',
-        foreignKey: 'other_user',
-        otherKey: 'user_id',
-      }
+      // const followsOtherUser = {
+      //   through: 'Follow',
+      //   foreignKey: 'other_user',
+      //   otherKey: 'user_id',
+      // }
 
-      const otherUserFollows = {
-        through: 'Follow',
-        foreignKey: 'user_id',
-        otherKey: 'other_user',
-      }
+      // const otherUserFollows = {
+      //   through: 'Follow',
+      //   foreignKey: 'user_id',
+      //   otherKey: 'other_user',
+      // }
 
-      const companyFollow = {
-        through: 'Follow',
-        foreignKey: 'company_id',
-        otherKey: 'user_id'
-      }
+      // const companyFollow = {
+      //   through: 'Follow',
+      //   foreignKey: 'company_id',
+      //   otherKey: 'user_id'
+      // }
       
       // User.hasMany(models.Conversation_User, { foreignKey: 'user_id' });;
       User.belongsToMany(models.Conversation, conversations);
@@ -165,7 +167,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       scopes: {
         currentUser: {
-          attributes: { exclude: ["hashedPassword"] },
+          attributes: { exclude: ["hashedPassword"], include: ['profile_picture', 'background_image', 'birthday', 'description', 'current_job', 'location'] },
         },
         loginUser: {
           attributes: {},

@@ -1,0 +1,187 @@
+#feed-main {
+    height: 100%;
+    width: 100vw;
+    /* max-width: 1200px; */
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    align-items: center;
+    position: relative;
+    top: 10vh;
+    background-color: rgb(215, 212, 212);
+}
+
+.card-container {
+    position: relative;
+    top: 2vh;
+    height: fit-content;
+    width: 100%;
+    max-width: 1200px;
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.right-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-card {
+    background-color: white;
+    border-radius: 5px;
+    position: relative;
+    left: 0;
+    height: 40vh;
+    width: 250px;
+    overflow-y: scroll;
+}
+
+.profile-images {
+    height: 100px;
+    width: 100%;
+}
+
+.background-image-container {
+    height: 75px;
+    width: 100%;
+}
+
+.background-image-container > img {
+    height: 75px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.profile-image {
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    position: relative;
+    left: 35%;
+    bottom: 40px;
+    border: 1px solid white;
+}
+
+.profile-image-container > img {
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    gap: 5px;
+    width: 80%;
+    position: relative;
+    left: 10%;
+}
+
+.profile-info > * {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.profile-extra-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    gap: 5px;
+}
+
+.profile-extra-info > * {
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+
+.messages {
+    background-color: blue;
+    position: relative;
+    right: 0;
+    /* top: 15px; */
+    height: 75vh;
+    width: 250px;
+}
+
+.team-card {
+    background-color: green;
+    position: relative;
+    left: 0;
+    height: 40vh;
+    width: 250px;
+}
+
+.post {
+    position: relative;
+    top: 2vh;
+    z-index: 5;
+    background-color: white;
+    border-radius: 5px;
+    max-width: 650px;
+    height: 125px;
+    width: 50vw;
+}
+
+.post-form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.post-input {
+    width: 100%;
+    display: flex;
+    gap: 10px;
+    height: 75px;
+    justify-content: center;
+    align-items: center;
+}
+
+.post-input > input {
+    width: 75%;
+    height: 50px;
+    border: 1px solid gray;
+    border-radius: 25px;
+    padding-left: 10px;
+}
+
+.post-image {
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+    border: 1px solid white;
+}
+
+.feed {
+    background-color: aquamarine;
+    position: relative;
+    top: 2vh;
+    max-width: 650px;
+    height: fit-content;
+    max-height: 1200px;
+    width: 50vw;
+    overflow: scroll;
+}
+
+.options-toggle {
+    background-color: purple;
+    height: 5vh;
+}

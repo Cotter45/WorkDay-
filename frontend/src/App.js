@@ -7,6 +7,7 @@ import * as sessionActions from './store/session';
 import { get_data } from './store/api';
 import Navigation from './components/Navigation';
 import HomePage from './components/Home/home';
+import Feed from './components/Feed/feed';
 // import { Modal } from './context/Modal';
 
 
@@ -45,6 +46,9 @@ function App() {
           <Switch>
             <Route exact only path='/'>
               <HomePage />
+            </Route>
+            <Route exact only path='/feed'>
+              <Feed />
             </Route>
             <Route path='/signup'>
               <SignupFormPage />

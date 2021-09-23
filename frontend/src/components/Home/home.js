@@ -8,10 +8,12 @@ function HomePage() {
 
     useEffect(() => {
         if (slide === 4) setSlide(1);
-        if (slide === 0) setSlide(3);
-        setTimeout(() => {
+     
+        let timeout = setTimeout(() => {
             setSlide(slide + 1)
         }, 3000)
+
+        return () => clearTimeout(timeout)
     }, [slide])
 
 

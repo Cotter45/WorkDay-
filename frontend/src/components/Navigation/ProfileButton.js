@@ -30,17 +30,23 @@ function ProfileButton({ user }) {
 
   return (
     <>
-      <button className='nav-button' onClick={openMenu}>
+      <button className='menu-button' onClick={openMenu}>
         <i className="fas fa-bars fa-2x" />
       </button>
       {showMenu && (
-        <ul className="profile-dropdown">
-          <li>{user.username}</li>
-          <li>{user.email}</li>
-          <li>
-            <button onClick={logout}>Log Out</button>
-          </li>
-        </ul>
+        <div className="profile-dropdown">
+          <div className='dropdown-card'>
+            <div>
+              <img className='dropdown-img' src={user.profile_picture} alt='me'></img>
+            </div>
+            <div>
+              <li>{user.first_name}</li>
+              <li>{user.last_name}</li>
+              <li>{user.email}</li>
+            </div>
+          </div>
+          <button className='logout-button' onClick={logout}>Log Out</button>
+        </div>
       )}
     </>
   );

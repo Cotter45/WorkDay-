@@ -34,7 +34,7 @@
 }
 
 .welcome-header {
-    
+    color: rgb(58, 58, 77);
 }
 
 .welcome-links {
@@ -51,12 +51,14 @@
     background-color: rgba(251, 216, 216, 0.517);
     cursor: pointer;
     padding: 15px;
+    margin-right: 50px;
 } 
 
 .welcome-links > button > * {
     text-decoration: none;
     color: rgb(226, 76, 43);
     font-weight: bold;
+    padding-right: 15px;
 }
 
 .button:hover {
@@ -86,6 +88,7 @@
     font-size: 1.5rem;
     text-align: center;
     padding-left: 50px;
+    overflow-y: scroll;
 }
 
 .about-carousel {

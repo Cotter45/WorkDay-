@@ -34,6 +34,7 @@ router.post('/', validateLogin, asyncHandler(async (req, res, next) => {
     }
 
     await setTokenCookie(res, user);
+    console.log(user.dataValues)
 
     return res.json({
       user,
@@ -53,7 +54,7 @@ router.get('/', restoreUser, (req, res) => {
     const { user } = req;
     if (user) {
       return res.json({
-        user: user.toSafeObject()
+        user: user
     });
     } else return res.json({});
   }
