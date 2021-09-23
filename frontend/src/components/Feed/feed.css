@@ -1,5 +1,5 @@
 #feed-main {
-    height: 100%;
+    height: fit-content;
     width: 100vw;
     /* max-width: 1200px; */
     display: flex;
@@ -8,7 +8,8 @@
     align-items: center;
     position: relative;
     top: 10vh;
-    background-color: rgb(215, 212, 212);
+    background-color: rgb(237, 237, 230);
+    padding-bottom: 500px;
 }
 
 .card-container {
@@ -37,16 +38,23 @@
 .profile-card {
     background-color: white;
     border-radius: 5px;
-    position: relative;
+    position: fixed;
     left: 0;
     height: 40vh;
     width: 250px;
     overflow-y: scroll;
 }
 
+.profile-card:hover {
+    cursor: pointer;
+    box-shadow: 0px 5px 5px gray;
+}
+
 .profile-images {
     height: 100px;
     width: 100%;
+    position: relative;
+    top: 0;
 }
 
 .background-image-container {
@@ -57,7 +65,7 @@
 .background-image-container > img {
     height: 75px;
     width: 100%;
-    object-fit: cover;
+    object-fit: contain;
 }
 
 .profile-image {
@@ -110,30 +118,99 @@
 }
 
 .messages {
-    background-color: blue;
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-top: 5px;
+    background-color: white;
+    border-radius: 5px;
+    overflow-y: scroll;
+    position: fixed;
     right: 0;
-    /* top: 15px; */
-    height: 75vh;
+    height: fit-content;
+    padding-bottom: 50px;
+    max-height: 500px;
+    overflow-y: scroll;
     width: 250px;
+}
+
+.message-header {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    gap: 10px;
+    padding-left: 5px;
+    justify-content: space-between;
+    border-bottom: 1px solid gray;
+}
+
+.message-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 5px;
+    justify-content: space-between;
+}
+
+.conversation {
+    display: flex;
+    border-bottom: 1px solid black;
+    gap: 5px;
+    padding-left: 5px;
+    /* justify-content: space-between; */
+}
+
+.trash-message {
+    border: none;
+    background-color: white;
+}
+
+.trash-message:hover {
+    box-shadow: 0px 5px 5px gray;
+    cursor: pointer;
+}
+
+.conversation-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    gap: 5px;
+}
+
+.message-user-pic {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
 }
 
 .team-card {
-    background-color: green;
-    position: relative;
+    position: fixed;
     left: 0;
+    bottom: 50px;
     height: 40vh;
     width: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 5px;
+    padding-top: 5px;
+    background-color: white;
+    border-radius: 5px;
+    overflow-y: scroll;
+}
+
+.team-card > * {
+    padding: 0;
+    margin: 0;
 }
 
 .post {
-    position: relative;
-    top: 2vh;
-    z-index: 5;
     background-color: white;
     border-radius: 5px;
     max-width: 650px;
-    height: 125px;
+    min-height: 125px;
     width: 50vw;
 }
 
@@ -144,6 +221,7 @@
     gap: 5px;
     align-items: center;
     justify-content: space-around;
+    padding-top: 5px;
 }
 
 .post-input {
@@ -171,17 +249,50 @@
 }
 
 .feed {
-    background-color: aquamarine;
     position: relative;
     top: 2vh;
     max-width: 650px;
     height: fit-content;
     max-height: 1200px;
     width: 50vw;
-    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    border-radius: 5px;
 }
 
-.options-toggle {
-    background-color: purple;
-    height: 5vh;
+.feed-post {
+    background-color: white;
+    padding: 5px;
+    border-radius: 5px;
 }
+
+.post-user-container {
+     width: 100%;
+     display: flex;
+     gap: 10px;
+     height: 75px;
+     align-items: center;
+}
+
+.post-user-info > * {
+    padding: 0;
+    margin: 0;
+}
+
+.feed-image {
+    height: 250px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.likes-comments {
+    border-bottom: 1px solid lightgray;
+}
+
+.feed-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+

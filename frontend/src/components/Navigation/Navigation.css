@@ -1,8 +1,19 @@
+.nav-container {
+  width: 100vw;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  top: 0;
+}
+
 .nav {
   width: 100vw;
+  max-width: 1200px;
   height: 10vh;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   position: fixed;
   top: 0;
@@ -84,6 +95,10 @@
   padding: 5px;
   gap: 5px;
   text-align: center;
+}
+
+.profile-dropdown:hover {
+  cursor: pointer;
 }
 
 .dropdown-card {

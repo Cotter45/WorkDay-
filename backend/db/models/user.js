@@ -163,6 +163,7 @@ module.exports = (sequelize, DataTypes) => {
       defaultScope: {
         attributes: {
           exclude: ["hashedPassword", "createdAt", "updatedAt"],
+          include: ['profile_picture', 'background_image', 'birthday', 'description', 'current_job', 'location']
         },
       },
       scopes: {

@@ -2,30 +2,43 @@ import { csrfFetch } from "./csrf";
 
 const GET_DATA = 'api/get_data';
 const JOB_SEARCH_DATA = 'api/search_data';
+const USER_PAGE = 'api/get_user';
+
+const store_user_data = (data) => ({
+    type: USER_PAGE,
+    payload: data
+})
+
+export const get_user_data = (userId) => async dispatch => {
+    const response = await csrfFetch(`/api/users/profile/${userId}`);
+    const data = await response.json();
+    dispatch(store_user_data(data));
+    return response;
+}
 
 const job_search_action = (data) => ({
     type: JOB_SEARCH_DATA,
     payload: data
 })
 
+export const job_search = (params) => async dispatch => {
+    const response = await csrfFetch(`/api/users/job_search/${params}`);
+    const data = await response.json();
+    // console.log(data);
+    dispatch(job_search_action(data));
+    return response;
+}
+
 const data_action = (data) => ({
     type: GET_DATA,
     payload: data
 })
 
-export const job_search = (params) => async dispatch => {
-    const response = await csrfFetch(`/api/users/job_search/${params}`);
-    const data = await response.json();
-    console.log(data);
-    dispatch(job_search_action(data));
-    return response;
-}
-
 export const get_data = (user_id) => async dispatch => {
     const response = await csrfFetch(`/api/users/${user_id}`);
     const data = await response.json();
     dispatch(data_action(data));
-    console.log(data)
+    // console.log(data)
     return response;
 }
 
@@ -36,10 +49,13 @@ const initialState = {
     saved_jobs: null,
     applications: null,
     conversations: null,
+    my_posts: null,
     posts: null,
     components: null,
     images: null,
-    job_search: null
+    job_search: null,
+    team: null,
+    users: []
 }
 
 function data_reducer(state = initialState, action) {
@@ -52,12 +68,23 @@ function data_reducer(state = initialState, action) {
             newState.saved_jobs = action.payload.user.Save_for_Laters;
             newState.applications = action.payload.user.Applications;
             newState.conversations = action.payload.user.Conversations;
-            newState.posts = action.payload.user.Posts;
+            newState.my_posts = action.payload.user.Posts;
             newState.components = action.payload.user.Components;
             newState.images = action.payload.user.Images;
+            newState.posts = action.payload.posts;
+            newState.team = action.payload.user.Team;
             return newState;
         case JOB_SEARCH_DATA:
             newState.job_search = action.payload.jobResults;
+            return newState;
+        case USER_PAGE:
+            const user = newState.users.find(user => user.id === action.payload.user.id);
+            if (!user) {
+                newState.users.push(action.payload.user);
+            } else {
+                newState.users.splice(newState.users.indexOf(user), 1);
+                newState.users.push(action.payload.user);
+            }
             return newState;
         default: 
             return state;

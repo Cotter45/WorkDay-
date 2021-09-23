@@ -1,0 +1,117 @@
+.profile-page {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-y: scroll;
+    background-color: rgb(237, 237, 230);
+}
+
+.profile-page > .feed-post {
+    position: relative;
+    top: 20vh;
+    width: 60vw;
+}
+
+.profile-main {
+    position: relative;
+    top: 15vh;
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.profile-header {
+    max-width: 1200px;
+    width: 80vw;
+    height: 25vh;
+    min-height: 400px;
+    border-bottom: 1px solid gray;
+    border-radius: 15px;
+    background-color: white;
+}
+
+.background-image {
+    width: 100%;
+    height: 20%;
+    max-height: 200px;
+    border-radius: 15px;
+}
+
+.background-image > img {
+    border-radius: 15px;
+    object-fit: cover;
+    width: 100%;
+    height: 20%;
+    min-height: 100px;
+}
+
+.profile-pic {
+    border-radius: 50%;
+    position: relative;
+    left: 10%;
+    top: -10%;
+    height: 150px;
+    width: 150px;
+}
+
+.profile-page-info {
+    position: relative;
+    left: 40%;
+    top: -30%;
+    width: 500px;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align:start;
+}
+
+.light-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    text-align: left;
+    font-size: 1.1rem;
+}
+
+.light-info > * {
+    margin: 0;
+    padding: 0;
+}
+
+.profile-description {
+    position: relative;
+    top: -20%;
+    text-align: center;
+}
+
+.router {
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+}
+
+.router-links {
+    background-color: white;
+    width: 80vw;
+    height: 75px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.router-links > * {
+    text-decoration: none;
+    background-color: transparent;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0px 5px 5px gray;
+}

@@ -8,6 +8,7 @@ import { get_data } from './store/api';
 import Navigation from './components/Navigation';
 import HomePage from './components/Home/home';
 import Feed from './components/Feed/feed';
+import UserProfile from './components/UserProfile/user_profile';
 // import { Modal } from './context/Modal';
 
 
@@ -49,6 +50,9 @@ function App() {
             </Route>
             <Route exact only path='/feed'>
               <Feed />
+            </Route>
+            <Route path='/profile/:id'>
+              <UserProfile />
             </Route>
             <Route path='/signup'>
               <SignupFormPage />

@@ -72,60 +72,108 @@ router.post('', validateSignup, asyncHandler(async (req, res) => {
   }),
 );
 
+// Route to get other user information
+router.get('/profile/:user_id', asyncHandler( async (req, res) => {
+  const { user_id } = req.params;
+
+  const user = await User.findOne({
+    where: {
+      id: +user_id
+    },
+    include: [
+      { 
+        model: Job,
+        include: { all: true }
+      },
+      {
+        model: Company,
+        include: { all: true }
+      },
+      {
+        model: Post,
+        include: { all: true }
+      }
+    ]
+  })
+  console.log(user);
+  return res.json({ user })
+}))
+
 // Initial data haul or route for every refresh
 router.get('/:user_id', asyncHandler( async (req, res) => {
     const { user_id } = req.params;
-    let company;
-    let user;
 
-    if (user_id) {
-      user = await User.findOne({
-        where: {
-          id: +user_id
-        },
-        include: [
-          { model: Follow,
-            include: { all: true }
-          },
-          { model: Company,
+    const user = await User.findOne({
+      where: {
+        id: +user_id
+      },
+      include: [
+        { model: Follow,
           include: { all: true }
-          },
-          { model: Job,
-            include: { all: true }
-          },
-          {
-            model: Save_for_Later,
-            include: { all: true }
-          },
-          {
-            model: Application,
-            include: { all: true }
-          },
-          { model: Conversation,
-            include: [ User, Message ],
-          },
-          { model: Post,
-            include: [
-              { model: User },
-              { model: Company },
-              {
-                model: Comment,
-                include: [ User, Like, Image ]
-              },
-              { 
-                model: Like,
-                include: [ User ]
-              },
-              { model: Image }
-            ],
-            limit: 25
-          },
-          { model: Image },
-          { model: Component }
-        ]
-      })
-    }
-    return res.json({ user })
+        },
+        { model: Company,
+        include: { all: true }
+        },
+        { model: Job,
+          include: { all: true }
+        },
+        {
+          model: Save_for_Later,
+          include: { all: true }
+        },
+        {
+          model: Application,
+          include: { all: true }
+        },
+        { model: Conversation,
+          include: [ User, Message ],
+        },
+        { model: Post,
+          include: [
+            { model: User },
+            { model: Company },
+            {
+              model: Comment,
+              include: [ User, Like, Image ]
+            },
+            { 
+              model: Like,
+              include: [ User ]
+            },
+            { model: Image }
+          ],
+          limit: 25
+        },
+        { model: Image },
+        { model: Component },
+        { 
+          model: Team,
+          include: { all: true }
+        }
+      ]
+    })
+
+    const posts = await Post.findAll({
+      include: [
+            { model: User },
+            { model: Company },
+            {
+              model: Comment,
+              include: [ User, Like, Image ]
+            },
+            { 
+              model: Like,
+              include: [ User ]
+            },
+            { model: Image }
+          ],
+          limit: 25
+    })
+
+    // user.Posts = posts;
+    // console.log(user)
+
+    return res.json({ user, posts })
 }))
 
 router.get('/job_search/:params', asyncHandler( async (req, res) => {

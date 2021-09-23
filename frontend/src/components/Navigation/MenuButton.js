@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
 
-function ProfileButton({ user }) {
+function MenuButton({ user }) {
+  const history = useHistory();
   const dispatch = useDispatch();
+
   const [showMenu, setShowMenu] = useState(false);
   
   const openMenu = () => {
@@ -26,6 +29,7 @@ function ProfileButton({ user }) {
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.logout());
+    history.push('/');
   };
 
   return (
@@ -34,7 +38,7 @@ function ProfileButton({ user }) {
         <i className="fas fa-bars fa-2x" />
       </button>
       {showMenu && (
-        <div className="profile-dropdown">
+        <div onClick={() => history.push(`/profile/${user.id}/posts`)} className="profile-dropdown">
           <div className='dropdown-card'>
             <div>
               <img className='dropdown-img' src={user.profile_picture} alt='me'></img>
@@ -52,4 +56,4 @@ function ProfileButton({ user }) {
   );
 }
 
-export default ProfileButton;
+export default MenuButton;
