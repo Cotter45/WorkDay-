@@ -8,7 +8,7 @@
     align-items: center;
     position: relative;
     top: 10vh;
-    background-color: rgb(237, 237, 230);
+    background-color: rgb(239, 239, 237);
     padding-bottom: 500px;
 }
 
@@ -273,6 +273,14 @@
      gap: 10px;
      height: 75px;
      align-items: center;
+     justify-content: space-between;
+}
+
+#post-user {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
 }
 
 .post-user-info > * {
@@ -294,5 +302,21 @@
     display: flex;
     justify-content: center;
     gap: 25px;
+}
+
+.edit-post {
+    border: none;
+    height: 40px;
+    width: 40px;
+    padding-right: 10px;
+    background-color: transparent;
+    color: gray;
+}
+
+.edit-post:hover {
+    cursor: pointer;
+    color: black;
+    border-radius: 5px;
+    box-shadow: 0px 5px 5px gray;
 }
 
