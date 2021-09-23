@@ -1,13 +1,17 @@
-.home-main {
+#home-main {
     height: fit-content;
     width: 100vw;
-    background-color: rgba(184, 184, 184, 0.338);
+    /* background-color: rgba(184, 184, 184, 0.338); */
     display: flex;
     flex-direction: column;
+    gap: 100px;
     align-items: center;
+    position: relative;
+    top: 100px;
 }
 
-.home-welcome {
+#home-welcome {
+    margin-top: 100px;
     height: 600px;
     width: 100vw;
     max-width: 1200px;
@@ -47,6 +51,12 @@
     background-color: rgba(251, 216, 216, 0.517);
     cursor: pointer;
     padding: 15px;
+} 
+
+.welcome-links > button > * {
+    text-decoration: none;
+    color: rgb(226, 76, 43);
+    font-weight: bold;
 }
 
 .button:hover {
@@ -63,19 +73,70 @@
     height: 600px;
     width: 100vw;
     max-width: 1200px;
-    background-color: yellow;
+    display: flex;
+    background-color: rgb(247, 240, 240);
 }
 
-.job-seekers {
-    height: 400px;
+#about {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    height: 100%;
+    font-size: 1.5rem;
+    text-align: center;
+    padding-left: 50px;
+}
+
+.about-carousel {
+    height: 600px;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.carousel {
+    height: 50%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.carousel > img {
+    height: 250px;
+    width: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.hide {
+    display: none;
+}
+
+#companies {
+    height: 600px;
+    width: 100vw;
+    max-width: 1200px;
+    background-color: red;
+}
+
+#job-seekers {
+    height: 600px;
     width: 100vw;
     max-width: 1200px;
     background-color: green;
 }
 
-.companies {
+#home-info {
     height: 400px;
     width: 100vw;
-    max-width: 1200px;
-    background-color: red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: blue;
 }

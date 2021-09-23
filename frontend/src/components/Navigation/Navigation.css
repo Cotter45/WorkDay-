@@ -4,6 +4,10 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  position: fixed;
+  top: 0;
+  z-index: 5;
+  background-color: white;
 }
 
 .nav-links {
@@ -17,6 +21,8 @@
   padding: 50px;
   display: flex;
   flex-direction: column;
+  position: relative;
+  top: 10vh;
   background-color: orange;
 }
 
