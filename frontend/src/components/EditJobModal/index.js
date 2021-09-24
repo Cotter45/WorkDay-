@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Modal } from '../../context/Modal';
 import EditJob from './edit-job';
 
-function EditJobModal({ job, setUpdate, update }) {
-  const [showModal, setShowModal] = useState(false);
+function EditJobModal({ job, setUpdate, update, showModal, setShowModal, createPost }) {
+  // const [showModal, setShowModal] = useState(false);
 
   return (
     <>
-    {!showModal && (
+    {!showModal && !createPost && (
       <button className='edit-job' onClick={() => setShowModal(true)}><i className="fas fa-ellipsis-h fa-2x" /></button>
     )}
       {showModal && (

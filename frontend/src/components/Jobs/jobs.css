@@ -53,7 +53,7 @@
     padding-right: 10px;
     background-color: transparent;
     color: gray;
-    z-index: 5;
+    z-index: 1;
 }
 
 .edit-job:hover {
@@ -126,5 +126,19 @@
 }
 
 .remove-requirement:hover {
+    box-shadow: 0px 5px 5px gray;
+}
+
+.inside-job-container {
+    height: fit-content;
+    width: 50%;
+    max-width: 1200px;
+    /* background-color: purple; */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 15px;
     box-shadow: 0px 5px 5px gray;
 }

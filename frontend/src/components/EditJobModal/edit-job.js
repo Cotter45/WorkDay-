@@ -5,36 +5,68 @@ import { update_job } from '../../store/api';
 import Jobs from "../Jobs/jobs";
 
 
-function EditJob({ job, setShowModal, setUpdate, update }) {
+function EditJob({ job, setShowModal, setUpdate, update, createPost }) {
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.session.user);
+    const me = useSelector(state => state.data.users.find(dude => dude.id === user.id));
 
-    const [title, setTitle] = useState(job.title);
-    const [location,setLocation] = useState(job.location);
-    const [pay, setPay] = useState(job.pay);
-    const [description, setDescription] = useState(job.description);
-    const [requirements, setRequirements] = useState(job.Requirements.map(req => req.requirement));
+    const [title, setTitle] = useState(job?.title ? job.title : '');
+    const [location,setLocation] = useState(job?.location ? job.location : '');
+    const [pay, setPay] = useState(job?.pay ? job.pay : '');
+    const [description, setDescription] = useState(job?.description ? job.description : '');
+    const [requirements, setRequirements] = useState(job ? job.Requirements.map(req => req.requirement) : []);
     const [temp, setTemp] = useState('');
     const [errors, setErrors] = useState([]);
+    const [freelance, setFreelance] = useState(false);
+    const [corporate, setCorporate] = useState(false);
+    const [company, setCompany] = useState(me.Company);
+
+    useEffect(() => {
+        let newErrors = [];
+
+        if (createPost) {
+            if (!freelance && !corporate) {
+                newErrors.push('You should let people know if this is a freelance gig or corporate job.')
+            }
+        }
+
+        if (newErrors.length) setErrors(newErrors)
+        else setErrors([])
+    }, [corporate, createPost, freelance])
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        let edit;
 
-        const edit = {
-            title,
-            description,
-            location,
-            pay,
-            company_id: job.Company.id,
-            poster_id: user.id,
-            requirements
+        if (!createPost) {
+            edit = {
+                title,
+                description,
+                location,
+                pay: +pay,
+                company_id: job.Company.id,
+                poster_id: user.id,
+                requirements
+            }
+        } else {
+            edit = {
+                title,
+                description,
+                location,
+                pay: +pay,
+                company_id: company ? company.id : null,
+                poster_id: me.id,
+                requirements
+            }
         }
         
-        await dispatch(update_job(edit, job.id));
-        setUpdate(true);
-        setShowModal(false);
+        if (!createPost) {
+            await dispatch(update_job(edit, job.id));
+            setUpdate(!update);
+            setShowModal(false);
+        }
     }
 
     return (
@@ -85,7 +117,7 @@ function EditJob({ job, setShowModal, setUpdate, update }) {
                         ><i className="fas fa-plus"></i></button>
                     </div>
                     <div className='job-requirements'>
-                        {requirements.map((requirement, index) => (
+                        {requirements?.map((requirement, index) => (
                             <div className='edit-requirements' key={index}>
                                 <li>{requirement}</li>
                                 <button 
@@ -99,46 +131,100 @@ function EditJob({ job, setShowModal, setUpdate, update }) {
                         ))}
                     </div>
                 </form>
-                {job.Company && (
-                    <div className='job-column'>
-                        <div className='job-company-info'>
-                            <div className='profile-images'>
-                                <div className='background-image-container'>
-                                    <img alt='company' className='company-background' src={job.Company.background_image}></img>
+                <div className='inside-job-container'>
+                <div>
+                    {errors.map((error, index) => (
+                        <li key={index}>{error}</li>
+                    ))}
+                </div>
+                    {createPost && (
+                        <>
+                        <div className='post-buttons'>
+                            <button className='post-button' onClick={() => {
+                                setCorporate(false)
+                                setFreelance(!freelance)
+                            }}>Freelance</button>
+                            <button className='post-button' onClick={() => {
+                                setFreelance(false)
+                                setCorporate(!corporate)
+                            }}>Corporate</button>
+                        </div>
+                        {!freelance && corporate && (
+                            <div className='job-column'>
+                                <div className='job-company-info'>
+                                    <div className='profile-images'>
+                                        <div className='background-image-container'>
+                                            <img alt='company' className='company-background' src={company.background_image}></img>
+                                        </div>
+                                        <img className='profile-image' src={company.profile_picture} alt='profile'></img>
+                                    </div>
                                 </div>
-                                <img className='profile-image' src={job.Company.profile_picture} alt='profile'></img>
+                                <div>
+                                    <p>Email: {company.email}</p>
+                                    <p>Phone: {company.phone}</p>
+                                    <p>Founded: {new Date(company.founded).toDateString()}</p>
+                                </div>
+                            </div>
+                        )}
+                        {!corporate && freelance && (
+                            <div className='job-column'>
+                                <div className='job-company-info'>
+                                    <div className='profile-images'>
+                                        <div className='background-image-container'>
+                                            <img alt='company' className='company-background' src={user.background_image}></img>
+                                        </div>
+                                        <img className='profile-image' src={user.profile_picture} alt='profile'></img>
+                                    </div>
+                                </div>
+                                <div>
+                                    {/* <p className='applicants'>{applications?.length} applicants</p> */}
+                                    <p>Email: {user.email}</p>
+                                </div>
+                            </div>
+                        )}
+                        </>
+                    )}
+                    {!createPost && job && job.Company && (
+                        <div className='job-column'>
+                            <div className='job-company-info'>
+                                <div className='profile-images'>
+                                    <div className='background-image-container'>
+                                        <img alt='company' className='company-background' src={job.Company.background_image}></img>
+                                    </div>
+                                    <img className='profile-image' src={job.Company.profile_picture} alt='profile'></img>
+                                </div>
+                            </div>
+                            <div>
+                                <p className='applicants'>{job.Applications.length} applicants</p>
+                                <p>Email: {job.Company.email}</p>
+                                <p>Phone: {job.Company.phone}</p>
+                                <p>Founded: {new Date(job.Company.founded).toDateString()}</p>
                             </div>
                         </div>
-                        <div>
-                            <p className='applicants'>{job.Applications.length} applicants</p>
-                            <p>Email: {job.Company.email}</p>
-                            <p>Phone: {job.Company.phone}</p>
-                            <p>Founded: {new Date(job.Company.founded).toDateString()}</p>
-                        </div>
-                    </div>
-                )}
-                {!job.Company && (
-                    <div className='job-column'>
-                        <div className='job-company-info'>
-                            <div className='profile-images'>
-                                <div className='background-image-container'>
-                                    <img alt='company' className='company-background' src={job.User.background_image}></img>
+                    )}
+                    {!createPost && (!job || !job.Company) && (
+                        <div className='job-column'>
+                            <div className='job-company-info'>
+                                <div className='profile-images'>
+                                    <div className='background-image-container'>
+                                        <img alt='company' className='company-background' src={user.background_image}></img>
+                                    </div>
+                                    <img className='profile-image' src={user.profile_picture} alt='profile'></img>
                                 </div>
-                                <img className='profile-image' src={job.User.profile_picture} alt='profile'></img>
+                            </div>
+                            <div>
+                                <p className='applicants'>{job.Applications?.length} applicants</p>
+                                <p>Email: {user.email}</p>
                             </div>
                         </div>
-                        <div>
-                            <p className='applicants'>{job.Applications.length} applicants</p>
-                            <p>Email: {job.User.email}</p>
-                            <p>Phone: {job.User.phone}</p>
-                        </div>
-                    </div>
-                    
-                )}
+                    )}
+                </div>
             </div>
             <div className='edit-post-buttons'>
                 <button onClick={handleSubmit} className='submit' disabled={errors.length ? true : false}>Submit</button>
-                <button className='delete'>Delete</button>
+                {!createPost && (
+                    <button className='delete'>Delete</button>
+                )}
             </div>
         </div>
     )
