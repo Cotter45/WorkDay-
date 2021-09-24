@@ -1,18 +1,42 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+
 import Posts from '../Posts/posts';
 
 import './feed.css';
+import { get_data } from '../../store/api';
+import NewPost from '../NewPostModal/newpost';
+import NewPostModal from '../NewPostModal';
 
 function Feed() {
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const user = useSelector(state => state.session.user);
     const following = useSelector(state => state.data.following);
     const company = useSelector(state => state.data.company);
     const conversations = useSelector(state => state.data.conversations);
-    const posts = useSelector(state => state.data.posts);
+    const statePosts = useSelector(state => state.data.posts);
     const team = useSelector(state => state.data.team);
+
+    const [update, setUpdate] = useState(false);
+    const [posts, setPosts] = useState(statePosts);
+    // const [addPhoto, setAddPhoto] = useState(false);
+    // const [addImage, setAddImage] = useState(false);
+    // const [photo, setPhoto] = useState('');
+
+    useEffect(() => {
+        if (posts) return;
+
+        setPosts(statePosts);
+    }, [posts, statePosts])
+
+    useEffect(() => {
+        if(!update) return;
+
+        setPosts(statePosts);
+    }, [statePosts, update])
 
     const visitProfile = () => {
         history.push(`/profile/${user.id}/posts`)
@@ -23,6 +47,10 @@ function Feed() {
     }
 
     return (
+        <>
+        {!posts && (
+                <div className='loading'>Loading...</div>
+            )}
         <div id='feed-main'>
             <div className='card-container'>
                 <div className='left-cards'>
@@ -49,7 +77,7 @@ function Feed() {
                         </div>
                     </div>
                     {company && (
-                        <div className='team-card'>
+                        <div onClick={visitCompany} className='team-card'>
                             <div className='profile-images'>
                                 <div className='background-image-container'>
                                     <img className='company-background' src={company?.background_image} alt='background'></img>
@@ -94,26 +122,14 @@ function Feed() {
                 </div>
             </div>
             <div className='feed'>
-                <div className='post'>
-                <form className='post-form'>
-                    <div className='post-input'>
-                        {user && (<img className='post-image' src={user.profile_picture} alt='me'></img>)}
-                        <input
-                            placeholder='Start a post'
-                        ></input>
-                    </div>
-                    <div className='post-buttons'>
-                        <button>Photo</button>
-                        <button>Video</button>
-                    </div>
-                </form>
-            </div>
+                <NewPostModal setUpdate={setUpdate} update={update} user={user} />
                 {posts && (
-                    <Posts posts={posts} />
+                    <Posts update={update} setUpdate={setUpdate} posts={posts} />
                 )}
                 <p>That's all for now folks...</p>
             </div>
         </div>
+        </>
     )
 }
 

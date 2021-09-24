@@ -201,6 +201,10 @@
     overflow-y: scroll;
 }
 
+.team-card:hover {
+    cursor: pointer;
+}
+
 .team-card > * {
     padding: 0;
     margin: 0;
@@ -211,13 +215,40 @@
     border-radius: 5px;
     max-width: 650px;
     min-height: 125px;
+    height: fit-content;
     width: 50vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* gap: 15px; */
+    /* padding: 10px; */
+}
+
+.new-post {
+    background-color: white;
+    border-radius: 5px;
+    max-width: 650px;
+    min-height: 125px;
+    height: fit-content;
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    padding-top: 50px;
+    overflow: scroll;
+}
+
+.post:hover {
+    cursor: pointer;
 }
 
 .post-form {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    height: fit-content;
+    width: 100%;
     gap: 5px;
     align-items: center;
     justify-content: space-around;
@@ -239,6 +270,78 @@
     border: 1px solid gray;
     border-radius: 25px;
     padding-left: 10px;
+}
+
+.post-buttons {
+    display: flex;
+    gap: 15px;
+    max-height: 25px;
+    height: fit-content
+}
+
+.post-button {
+    border: none;
+    box-shadow: 0px 5px 5px gray;
+    border-radius: 15px;
+    padding: 5px;
+    font-size: 1rem;
+}
+
+.post-button:hover {
+    box-shadow: 0px 5px 10px gray;
+}
+
+.submit-post {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+/* .post-button-selected {
+    border: none;
+    box-shadow: 0px 5px 5px lightcoral;
+    border-radius: 15px;
+    padding: 5px;
+    font-size: 1rem;
+} */
+
+.icons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.photo {
+    color: rgb(134, 187, 205);
+}
+
+.icons:hover {
+    cursor: pointer;
+}
+
+.post-image-input {
+    width: 80%;
+    height: 15px;
+    padding: 10px;
+    border: none;
+    box-shadow: 0px 5px 5px gray;
+    border-radius: 10px;
+}
+
+#upload-photo {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+    position: relative;
+}
+
+label {
+    text-align: center;
+}
+
+button:hover {
+    cursor: pointer;
 }
 
 .post-image {
@@ -281,6 +384,10 @@
     justify-content: center;
     align-items: center;
     gap: 5px;
+}
+
+#post-user:hover {
+    cursor: pointer;
 }
 
 .post-user-info > * {

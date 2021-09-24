@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from '../../context/Modal';
 import EditPostForm from './editpost';
 
-function EditPostModal({ post }) {
+function EditPostModal({ post, setUpdate, update }) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -10,7 +10,7 @@ function EditPostModal({ post }) {
       <button className='edit-post' onClick={() => setShowModal(true)}><i className="fas fa-ellipsis-h fa-2x" /></button>
       {showModal && (
         <Modal onClose={() => setShowModal(false)}>
-          <EditPostForm setShowModal={setShowModal} post={post} />
+          <EditPostForm update={update} setUpdate={setUpdate} setShowModal={setShowModal} post={post} />
         </Modal>
       )}
     </>

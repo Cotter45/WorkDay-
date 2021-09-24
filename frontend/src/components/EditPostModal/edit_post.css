@@ -1,11 +1,12 @@
 .edit-post-form {
-    height: 500px;
+    height: fit-content;
     width: 500px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 10px;
+    padding: 50px;
 }
 
 .close-modal {
@@ -22,4 +23,83 @@
     cursor: pointer;
     border-radius: 5px;
     box-shadow: 0px 5px 5px gray;
+}
+
+.edit-post-form > textarea {
+    width: 80%;
+    height: 50px;
+    padding: 10px;
+    border: none;
+    box-shadow: 0px 5px 5px gray;
+    border-radius: 10px;
+}
+
+.edit-post-form > input {
+    width: 80%;
+    height: 15px;
+    padding: 10px;
+    border: none;
+    box-shadow: 0px 5px 5px gray;
+    border-radius: 10px;
+}
+
+.upload-button {
+    display: none;
+}
+
+.upload {
+    width: 25%;
+    height: 15px;
+    padding: 10px;
+    border: none;
+    box-shadow: 0px 5px 5px gray;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.upload:hover {
+    cursor: pointer;
+    box-shadow: 0px 5px 10px gray;
+}
+
+.post-edit {
+    border-radius: 10px;
+    box-shadow: 0px 5px 5px gray;
+}
+
+.edit-post-buttons {
+    display: flex;
+    gap: 25px;
+    justify-content: center;
+    padding-bottom: 15px;
+}
+
+.submit {
+    margin-top: 25px;
+    border: none;
+    background-color: transparent;
+    box-shadow: 0px 5px 5px gray;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    padding: 5px;
+}
+
+.submit:hover {
+    box-shadow: 0px 5px 10px green;
+}
+
+.delete {
+    margin-top: 25px;
+    border: none;
+    background-color: transparent;
+    box-shadow: 0px 5px 5px gray;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    padding: 5px;
+}
+
+.delete:hover {
+    box-shadow: 0px 5px 10px red;
 }

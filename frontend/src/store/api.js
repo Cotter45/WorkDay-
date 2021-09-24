@@ -3,6 +3,58 @@ import { csrfFetch } from "./csrf";
 const GET_DATA = 'api/get_data';
 const JOB_SEARCH_DATA = 'api/search_data';
 const USER_PAGE = 'api/get_user';
+const EDIT_POST = 'api/edit_post';
+const CREATE_POST = 'api/create-post';
+const DELETE_POST = 'api/delete-post';
+
+const delete_post_action = (postId) => ({
+    type: DELETE_POST,
+    payload: postId 
+})
+
+export const delete_post = (postId) => async dispatch => {
+    const response = await csrfFetch(`/api/posts/${postId}`, {
+        method: 'DELETE'
+    })
+    const data = await response.json();
+    if (data.error) {
+        alert(data.error)
+    } else {
+        dispatch(delete_post_action(postId));
+    }
+    return response;
+}
+
+const create_post_action = (data) => ({
+    type: CREATE_POST,
+    payload: data 
+})
+
+export const create_post = (post) => async dispatch => {
+    const response = await csrfFetch(`/api/posts/`, {
+        method: 'POST',
+        body: JSON.stringify(post)
+    })
+    const data = await response.json();
+    console.log(data.returnPost, 'STORE')
+    dispatch(create_post_action(data.returnPost));
+    return response;
+}
+
+const edit_post_action = (data) => ({
+    type: EDIT_POST,
+    payload: data
+})
+
+export const edit_post = (post, postId) => async dispatch => {
+    const response = await csrfFetch(`/api/posts/${postId}`, {
+        method: 'PUT',
+        body: JSON.stringify(post)
+    })
+    const data = await response.json();
+    dispatch(edit_post_action(data));
+    return response;
+}
 
 const store_user_data = (data) => ({
     type: USER_PAGE,
@@ -85,6 +137,18 @@ function data_reducer(state = initialState, action) {
                 newState.users.splice(newState.users.indexOf(user), 1);
                 newState.users.push(action.payload.user);
             }
+            return newState;
+        case CREATE_POST:
+            newState.posts.push(action.payload);
+            return newState;
+        case EDIT_POST:
+            const post = newState.posts.find(post => post.id === action.payload.newPost.id);
+            newState.posts.splice(newState.posts.indexOf(post), 1);
+            newState.posts.push(action.payload.newPost);
+            return newState;
+        case DELETE_POST:
+            const deleteMe = newState.posts.find(post => post.id === action.payload);
+            newState.posts.splice(newState.posts.indexOf(deleteMe), 1, {message: 'This post has been removed'});
             return newState;
         default: 
             return state;

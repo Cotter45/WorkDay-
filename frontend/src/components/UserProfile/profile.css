@@ -7,7 +7,7 @@
     background-color: rgb(239, 239, 237);
 }
 
-.profile-page > .feed-post {
+.profile-page > .profile-feed-post {
     position: relative;
     top: 20vh;
     width: 60vw;
