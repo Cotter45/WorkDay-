@@ -7,6 +7,22 @@ const EDIT_POST = 'api/edit_post';
 const CREATE_POST = 'api/create-post';
 const DELETE_POST = 'api/delete-post';
 const UPDATE_JOB = 'api/update-job';
+const CREATE_JOB = 'api/create-job';
+
+const create_job_action = (job) => ({
+    type: CREATE_JOB,
+    payload: job 
+})
+
+export const create_job = (job) => async dispatch => {
+    const response = await csrfFetch('/api/jobs/', {
+        method: 'POST',
+        body: JSON.stringify(job) 
+    })
+    const data = await response.json();
+    dispatch(create_job_action(data));
+    return response;
+}
 
 const update_job_action = (job) => ({
     type: UPDATE_JOB,
@@ -163,6 +179,11 @@ function data_reducer(state = initialState, action) {
         case DELETE_POST:
             const deleteMe = newState.posts.find(post => post.id === action.payload);
             newState.posts.splice(newState.posts.indexOf(deleteMe), 1, {message: 'This post has been removed'});
+            return newState;
+        case CREATE_JOB:
+            newState.jobs.push(action.payload.newJob);
+            const person = newState.users.find(person => person.id === action.payload.newJob.poster_id);
+            person.Jobs.push(action.payload.newJob);
             return newState;
         case UPDATE_JOB:
             const update_job = newState.jobs.find(job => job.id === action.payload.updated_job.id);

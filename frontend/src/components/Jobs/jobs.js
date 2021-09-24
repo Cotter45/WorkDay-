@@ -20,9 +20,9 @@ function Jobs({ jobs }) {
         <div className='jobs-main-container'>
             <>
             <div className='new-post-button'>
-                <CreateJobModal showModal={showModal1} setShowModal={setShowModal1} />
+                <CreateJobModal update={update} setUpdate={setUpdate} showModal={showModal1} setShowModal={setShowModal1} />
             </div>
-            {jobs && jobs.map(job => (
+            {jobs && jobs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(job => (
                 <div key={job.id} className='job-container'>
                     {job.poster_id === user.id && (
                         <EditJobModal createPost={showModal1} showModal={showModal2} setShowModal={setShowModal2} update={update} setUpdate={setUpdate} job={job} />
@@ -69,6 +69,22 @@ function Jobs({ jobs }) {
                             </div>
                         )}
                         </>
+                    )}
+                    {!job.Company && (
+                    <div className='job-column'>
+                            <div className='job-company-info'>
+                                <div className='profile-images'>
+                                    <div className='background-image-container'>
+                                        <img alt='company' className='company-background' src={user.background_image}></img>
+                                    </div>
+                                    <img className='profile-image' src={user.profile_picture} alt='profile'></img>
+                                </div>
+                            </div>
+                            <div>
+                                {/* <p className='applicants'>{applications?.length} applicants</p> */}
+                                <p>Email: {user.email}</p>
+                            </div>
+                        </div>
                     )}
                         <div>
                             <button className='post-button' onClick={() => setAdditionalInfo(!additionalInfo)}>{additionalInfo ? 'Less Info' : 'More Info'}</button>

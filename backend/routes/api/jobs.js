@@ -34,9 +34,40 @@ Role,
 Save_for_Later,
 Team
 } = require("../../db/models");
+const job = require("../../db/models/job");
 
 const router = express.Router();
 
+
+// route to create a new job posting
+router.post('/', asyncHandler( async (req, res) => {
+    const { title, description, pay, company_id, location, poster_id, requirements } = req.body;
+
+    const job = await Job.create({
+        title, 
+        description,
+        location,
+        pay,
+        company_id,
+        poster_id
+    })
+
+    requirements.forEach( async req => {
+        await Requirement.create({
+            requirement: req,
+            job_id: job.id
+        })
+    })
+
+    const newJob = await Job.findOne({
+        where: {
+            id: +job.id
+        },
+        include: { all: true }
+    })
+
+    return res.json({ newJob })
+}))
 
 // route to update job postings
 router.put('/:job_id', asyncHandler( async (req, res) => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { update_job } from '../../store/api';
+import { create_job, update_job } from '../../store/api';
 
 import Jobs from "../Jobs/jobs";
 
@@ -56,7 +56,7 @@ function EditJob({ job, setShowModal, setUpdate, update, createPost }) {
                 description,
                 location,
                 pay: +pay,
-                company_id: company ? company.id : null,
+                company_id: corporate ? company.id : null,
                 poster_id: me.id,
                 requirements
             }
@@ -64,6 +64,10 @@ function EditJob({ job, setShowModal, setUpdate, update, createPost }) {
         
         if (!createPost) {
             await dispatch(update_job(edit, job.id));
+            setUpdate(!update);
+            setShowModal(false);
+        } else {
+            await dispatch(create_job(edit));
             setUpdate(!update);
             setShowModal(false);
         }
