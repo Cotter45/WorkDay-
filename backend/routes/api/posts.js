@@ -40,7 +40,7 @@ const {
 const router = express.Router();
 
 
-
+// route to delete a post
 router.delete('/:postId', asyncHandler( async (req, res) => {
     const { postId } = req.params;
 
@@ -80,6 +80,7 @@ router.delete('/:postId', asyncHandler( async (req, res) => {
     return res.json({ postId })
 }))
 
+// route for creating a new post
 router.post('/', asyncHandler( async (req, res) => {
     const { description, image_url, poster_id, company_id } = req.body;
 
@@ -108,10 +109,9 @@ router.post('/', asyncHandler( async (req, res) => {
 
     return res.json({ returnPost })
 
-
 }))
 
-
+// route for updating an existing post
 router.put('/:post_id', asyncHandler( async (req, res) => {
     const { post_id } = req.params;
     const { description, imageUrl } = req.body;

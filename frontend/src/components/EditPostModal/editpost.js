@@ -40,7 +40,7 @@ function EditPostForm({ post, setShowModal, setUpdate, update }) {
         e.preventDefault();
         await dispatch(delete_post(post.id));
         setUpdate(!update);
-        setSuccess(true);
+        // setSuccess(true);
     }
 
     return (
@@ -83,7 +83,7 @@ function EditPostForm({ post, setShowModal, setUpdate, update }) {
         )}
         <div className='edit-post-buttons'>
             <button onClick={handleSubmit} className='submit' disabled={errors.length ? true : false}>Submit</button>
-            <button onClick={deletePost} className='delete' disabled={errors.length ? true : false}>Delete</button>
+            <button onClick={deletePost} className='delete'>Delete</button>
         </div>
         </>
     )

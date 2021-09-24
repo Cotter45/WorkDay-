@@ -6,6 +6,22 @@ const USER_PAGE = 'api/get_user';
 const EDIT_POST = 'api/edit_post';
 const CREATE_POST = 'api/create-post';
 const DELETE_POST = 'api/delete-post';
+const UPDATE_JOB = 'api/update-job';
+
+const update_job_action = (job) => ({
+    type: UPDATE_JOB,
+    payload: job 
+})
+
+export const update_job = (job, job_id) => async dispatch => {
+    const response = await csrfFetch(`/api/jobs/${job_id}`, {
+        method: 'PUT',
+        body: JSON.stringify(job)
+    })
+    const data = await response.json();
+    dispatch(update_job_action(data));
+    return response;
+}
 
 const delete_post_action = (postId) => ({
     type: DELETE_POST,
@@ -134,8 +150,7 @@ function data_reducer(state = initialState, action) {
             if (!user) {
                 newState.users.push(action.payload.user);
             } else {
-                newState.users.splice(newState.users.indexOf(user), 1);
-                newState.users.push(action.payload.user);
+                newState.users.splice(newState.users.indexOf(user), 1, action.payload.user);
             }
             return newState;
         case CREATE_POST:
@@ -143,12 +158,21 @@ function data_reducer(state = initialState, action) {
             return newState;
         case EDIT_POST:
             const post = newState.posts.find(post => post.id === action.payload.newPost.id);
-            newState.posts.splice(newState.posts.indexOf(post), 1);
-            newState.posts.push(action.payload.newPost);
+            newState.posts.splice(newState.posts.indexOf(post), 1, action.payload.newPost);
             return newState;
         case DELETE_POST:
             const deleteMe = newState.posts.find(post => post.id === action.payload);
             newState.posts.splice(newState.posts.indexOf(deleteMe), 1, {message: 'This post has been removed'});
+            return newState;
+        case UPDATE_JOB:
+            const update_job = newState.jobs.find(job => job.id === action.payload.updated_job.id);
+            if (update_job) {
+                newState.jobs.splice(newState.jobs.indexOf(update_job), 1, action.payload.updated_job);
+            } 
+            const replace_user = newState.users.find(user => user.id === action.payload.user.id);
+            if (replace_user) {
+                newState.users.splice(newState.users.indexOf(replace_user), 1, action.payload.user);
+            }
             return newState;
         default: 
             return state;

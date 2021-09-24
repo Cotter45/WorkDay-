@@ -60,6 +60,7 @@
 .background-image-container {
     height: 75px;
     width: 100%;
+    /* object-fit: cover; */
 }
 
 .background-image-container > img {

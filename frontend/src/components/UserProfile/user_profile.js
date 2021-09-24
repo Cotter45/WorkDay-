@@ -6,6 +6,7 @@ import { get_user_data } from '../../store/api';
 
 import './profile.css';
 import Posts from '../Posts/posts';
+import Jobs from '../Jobs/jobs';
 
 function UserProfile() {
     const dispatch = useDispatch();
@@ -67,7 +68,7 @@ function UserProfile() {
                 <Posts posts={user?.Posts} />
             </Route>
             <Route exact only path='/profile/:userId/job_posts'>
-
+                <Jobs jobs={user?.Jobs} />
             </Route>
         </Switch>
         </div>
