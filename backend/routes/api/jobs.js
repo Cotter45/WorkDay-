@@ -39,6 +39,59 @@ const job = require("../../db/models/job");
 const router = express.Router();
 
 
+// route to delete a job posting
+router.delete('/:job_id', asyncHandler( async (req, res) => {
+    const { job_id } = req.params;
+
+    const job = await Job.findOne({
+        where: {
+            id: +job_id 
+        }
+    })
+
+    const userId = job.poster_id;
+
+    const applications = await Application.findAll({
+        where: {
+            job_id: +job_id 
+        }
+    })
+
+    const saves = await Save_for_Later.findAll({
+        where: {
+            job_id: +job_id 
+        }
+    })
+
+    const requirements = await Requirement.findAll({
+        where: {
+            job_id: +job_id
+        }
+    })
+
+    if (saves.length) {
+        saves.forEach(async save => {
+            await save.destroy()
+        })
+    }
+
+    if (applications.length) {
+        applications.forEach(async app => {
+            await app.destroy()
+        })
+    }
+
+    if (requirements.length) {
+        requirements.forEach(async req => {
+            await req.destroy()
+        })
+    }
+
+    await job.destroy()
+    return res.json({ job_id, userId })
+
+}))
+
 // route to create a new job posting
 router.post('/', asyncHandler( async (req, res) => {
     const { title, description, pay, company_id, location, poster_id, requirements } = req.body;
