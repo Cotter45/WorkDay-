@@ -34,10 +34,58 @@ const {
   Save_for_Later,
   Team
  } = require("../../db/models");
+const e = require("express");
 
 
 
 const router = express.Router();
+
+
+// route to like or unlike a post
+router.post('/like/:postId', asyncHandler( async (req, res) => {
+    const { postId } = req.params;
+    const { userId } = req.body;
+
+    console.log(postId, userId)
+
+    const exists = await Like.findOne({
+        where: {
+            post_id: +postId,
+            user_id: +userId
+        }
+    })
+
+    if (!exists) {
+        const like = await Like.create({
+            user_id: +userId,
+            post_id: +postId
+        })
+    } else {
+        await exists.destroy();
+    }
+
+
+    const post = await Post.findOne({
+        where: {
+            id: +postId
+        },
+        include: [
+            { model: User },
+            { model: Company },
+            {
+              model: Comment,
+              include: [ User, Like, Image ]
+            },
+            { 
+              model: Like,
+              include: [ User ]
+            },
+            { model: Image }
+          ],
+    })
+
+    return res.json({ post })
+}))
 
 
 // route to delete a post

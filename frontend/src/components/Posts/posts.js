@@ -1,13 +1,25 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
+import { like_post } from '../../store/api';
 
 import EditPostModal from '../EditPostModal';
 
 function Posts({ posts, modal, setUpdate, update }) {
     const history = useHistory();
+    const dispatch = useDispatch();
 
     const user = useSelector(state => state.session.user);
+
+    const likePost = async (postId) => {
+        const data = {
+            postId,
+            userId: user.id
+        }
+
+        await dispatch(like_post(data));
+        setUpdate(!update);
+    }
 
 
     return (
@@ -44,7 +56,7 @@ function Posts({ posts, modal, setUpdate, update }) {
                             <p>{post.Likes.length} <i className="far fa-thumbs-up" /> - {post.Comments.length} comments</p>
                         </div>
                         <div className='feed-buttons'>
-                            <button>Like</button>
+                            <button onClick={() => likePost(post.id)}>Like</button>
                             <button>Comment</button>
                         </div>
                         </>

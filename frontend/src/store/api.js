@@ -9,6 +9,22 @@ const DELETE_POST = 'api/delete-post';
 const UPDATE_JOB = 'api/update-job';
 const CREATE_JOB = 'api/create-job';
 const DELETE_JOB = 'api/delete-job';
+const LIKE_POST = 'api/like-post';
+
+const like_post_action = (data) => ({
+    type: LIKE_POST,
+    payload: data
+})
+
+export const like_post = ({postId, userId}) => async dispatch => {
+    const response = await csrfFetch(`/api/posts/like/${postId}`, {
+        method: 'POST',
+        body: JSON.stringify({userId})
+    })
+    const data = await response.json();
+    dispatch(like_post_action(data));
+    return response;
+}
 
 const delete_job_action = (data) => ({
     type: DELETE_JOB,
@@ -152,7 +168,7 @@ const initialState = {
     saved_jobs: null,
     applications: null,
     conversations: null,
-    my_posts: null,
+    // my_posts: null,
     posts: null,
     components: null,
     images: null,
@@ -171,7 +187,7 @@ function data_reducer(state = initialState, action) {
             newState.saved_jobs = action.payload.user.Save_for_Laters;
             newState.applications = action.payload.user.Applications;
             newState.conversations = action.payload.user.Conversations;
-            newState.my_posts = action.payload.user.Posts;
+            // newState.my_posts = action.payload.user.Posts;
             newState.components = action.payload.user.Components;
             newState.images = action.payload.user.Images;
             newState.posts = action.payload.posts;
@@ -218,12 +234,14 @@ function data_reducer(state = initialState, action) {
             const delete_job = newState.jobs.find(job => job.id === +action.payload.job_id);
             newState.jobs.splice(newState.jobs.indexOf(delete_job), 1, {message: 'This post has been removed'});
             const user_with_job = newState.users.find(user => user.id === +action.payload.userId);
-            console.log(user_with_job, 'USERJOB', action.payload)
             if (user_with_job) {
                 const remove_job = user_with_job.Jobs.find(job => job.id === +action.payload.job_id);
                 user_with_job.Jobs.splice(user_with_job.Jobs.indexOf(remove_job), 1, {message: 'This post has been removed'});
-                console.log(remove_job, 'REMOVE JOB')
             }
+            return newState;
+        case LIKE_POST:
+            const liked = newState.posts.find(post => post.id === +action.payload.post.id);
+            newState.posts.splice(newState.posts.indexOf(liked), 1, action.payload.post)
             return newState;
         default: 
             return state;
