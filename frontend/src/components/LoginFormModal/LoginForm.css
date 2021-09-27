@@ -1,0 +1,40 @@
+.sign-up-container {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    align-items: center;
+    width: 80%;
+    align-self: center;
+}
+
+.sign-up-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    width: 60vw;
+    gap: 10px;
+    padding-bottom: 25px;
+}
+
+.sign-up-form>ul>li {
+    color: rgb(128, 37, 37);
+}
+
+.sign-up-form>input {
+    width: 50%;
+    padding: 10px;
+    border: none;
+    box-shadow: 0px 5px 5px lightgray;
+}
+
+.sign-up-button {
+    margin-top: 50px;
+    border: none;
+    font-size: 1.2rem;
+}
+
+.sign-up-button:hover {
+    box-shadow: 0px 5px 5px gray;
+    border-radius: 10px;
+}

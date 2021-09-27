@@ -9,6 +9,8 @@ import './edit_post.css';
 function EditPostForm({ post, setShowModal, setUpdate, update }) {
     const dispatch = useDispatch();
 
+    const [addPhoto, setAddPhoto] = useState(false);
+    const [addImage, setAddImage] = useState(false);
     const [errors, setErrors] = useState([]);
     const [description, setDescription] = useState(post.description);
     const [imageUrl, setImageUrl] = useState(post.image_url ? post.image_url : '');
@@ -31,7 +33,8 @@ function EditPostForm({ post, setShowModal, setUpdate, update }) {
             description,
             imageUrl
         }
-        await dispatch(edit_post(newPost, post.id))
+        console.log(imageUrl)
+        // await dispatch(edit_post(newPost, post.id))
         setUpdate(!update);
         setSuccess(true);
     }
@@ -60,7 +63,40 @@ function EditPostForm({ post, setShowModal, setUpdate, update }) {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
             ></textarea>
-            <label>Image Url</label>
+            <div className='post-buttons'>
+                {!addImage && (
+                    <div onClick={() => setAddPhoto(!addPhoto)} className='icons'>
+                        <i className="far fa-image fa-2x photo"></i>
+                        <p>URL</p>
+                    </div>
+                    )}
+                {addPhoto && (
+                    <div>
+                        <input
+                            value={imageUrl}
+                            onChange={(e) => setImageUrl(e.target.value)}
+                            className='post-image-input'
+                            ></input>
+                    </div>
+                )}
+                {addImage && (
+                    <label className='upload'>
+                            <input
+                                type='file'
+                                className='upload-button'
+                                onChange={(e) => setImageUrl(e.target.files[0])}
+                                ></input>
+                            Choose File
+                        </label>
+                )}
+                {!addPhoto && (
+                    <div onClick={() => setAddImage(!addImage)} className='icons'>
+                        <i className="far fa-image fa-2x photo"></i>
+                        <p>UPLOAD</p>
+                    </div>
+                    )}
+            </div>
+            {/* <label>Image Url</label>
             <input
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
@@ -74,7 +110,7 @@ function EditPostForm({ post, setShowModal, setUpdate, update }) {
                     onChange={(e) => setImageUrl(e.target.files[0])}
                 >
                 </input>
-                </label>
+                </label> */}
         </form>
         {success && (
             <div className='edit-post-buttons'>

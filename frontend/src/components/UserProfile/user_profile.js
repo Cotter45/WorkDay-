@@ -61,10 +61,10 @@ function UserProfile() {
 
 
     
-    let myAccount;
-    if (user) {
-        myAccount = me.id === +userId;
-    }
+    // let myAccount;
+    // if (user && me) {
+    //     myAccount = me.id === +userId;
+    // }
 
 
     return (

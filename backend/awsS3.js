@@ -1,6 +1,6 @@
 const AWS = require("aws-sdk");
 // name of your bucket here
-const NAME_OF_BUCKET = "change-this";
+const NAME_OF_BUCKET = "SeansBucket";
 
 const multer = require("multer");
 

@@ -28,8 +28,8 @@ function MenuButton({ user }) {
 
   const logout = (e) => {
     e.preventDefault();
-    dispatch(sessionActions.logout());
     history.push('/');
+    dispatch(sessionActions.logout());
   };
 
   return (
@@ -38,8 +38,8 @@ function MenuButton({ user }) {
         <i className="fas fa-bars fa-2x" />
       </button>
       {showMenu && (
-        <div onClick={() => history.push(`/profile/${user.id}/posts`)} className="profile-dropdown">
-          <div className='dropdown-card'>
+        <div className="profile-dropdown">
+          <div onClick={() => history.push(`/profile/${user.id}/posts`)} className='dropdown-card'>
             <div>
               <img className='dropdown-img' src={user.profile_picture} alt='me'></img>
             </div>

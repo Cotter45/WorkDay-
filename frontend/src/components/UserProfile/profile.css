@@ -5,7 +5,8 @@
     align-items: center;
     /* overflow-y: scroll; */
     background-color: rgb(239, 239, 237);
-    padding-bottom: 250px;
+    padding-bottom: 500px;
+    /* margin-bottom: 100px; */
 }
 
 .router > .profile-feed-post {

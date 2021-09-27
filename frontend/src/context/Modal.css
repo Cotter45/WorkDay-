@@ -4,6 +4,7 @@
   right: 0;
   left: 0;
   bottom: 0;
+  z-index: 5;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,4 +22,7 @@
 #modal-content {
   position: absolute;
   background-color:white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
