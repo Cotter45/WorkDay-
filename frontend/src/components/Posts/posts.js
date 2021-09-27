@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router';
+import { v4 as uuidv4 } from 'uuid';
 
 import EditPostModal from '../EditPostModal';
 
@@ -12,7 +13,7 @@ function Posts({ posts, modal, setUpdate, update }) {
     return (
         <>
         {posts && posts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((post, index) => (
-            <div className='profile-feed-post' key={post.message ? index : post.id}>
+            <div className='profile-feed-post' key={post.message ? uuidv4() : post.id}>
             {!post.message && (
                 <div key={post.id} className='feed-post'>
                     <div className='post-user-container'>
@@ -51,7 +52,7 @@ function Posts({ posts, modal, setUpdate, update }) {
                 </div>
             )}
             {post.message && (
-                <p key={index}>{post.message}</p>
+                <p key={uuidv4()}>{post.message}</p>
             )}
             </div>
         ))}

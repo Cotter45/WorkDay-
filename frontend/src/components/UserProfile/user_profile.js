@@ -13,18 +13,53 @@ function UserProfile() {
     const userId = useParams().id;
 
     const user = useSelector(state => state.data.users.find(user => user.id === +userId));
+    const statePosts = useSelector(state => state.data.posts)?.filter(post => post?.poster_id === user?.id);
     const me = useSelector(state => state.session.user);
 
+    // const [jobs, setJobs] = useState(user?.Jobs);
+    const [posts, setPosts] = useState(user?.id === me?.id ? statePosts : user?.Posts);
+    // const [jobUpdate, setJobUpdate] = useState(false);
+    const [update, setUpdate] = useState(false);
+    const [userUpdate, setUserUpdate] = useState(false);
+    const [showJob, setShowJob] = useState(false);
+    const [showPost, setShowPost] = useState(true);
 
 
-    
     useEffect(() => {
-        if (user) return;
+        if (userUpdate) return;
 
         (async function sendIt() {
             await dispatch(get_user_data(userId));
         })()
-    }, [dispatch, user, userId])
+
+        setUserUpdate(!userUpdate);
+    }, [dispatch, user, userId, userUpdate])
+
+    // useEffect(() => {
+    //     if (jobs) return;
+    //     setJobs(user?.Jobs);
+    // }, [jobs, user])
+
+    useEffect(() => {
+        if (posts) return;
+        setPosts(user?.id === me?.id ? statePosts : user?.Posts);
+    }, [me?.id, posts, statePosts, user])
+
+    // useEffect(() => {
+    //     if (!jobUpdate) return;
+    //     setJobs(user?.Jobs)
+    // }, [jobUpdate, user?.Jobs])
+
+    useEffect(() => {
+        if (!update) return;
+        (async function sendIt() {
+            await dispatch(get_user_data(userId));
+        })()
+        setPosts(user?.id === me?.id ? statePosts : user?.Posts);
+        setUpdate(!update);
+    }, [user?.Posts, update, dispatch, userId, user?.id, me?.id, statePosts])
+
+
     
     let myAccount;
     if (user) {
@@ -34,6 +69,9 @@ function UserProfile() {
 
     return (
         <div className='profile-page'>
+            {!user && (
+                <div className='loading'>Loading...</div>
+            )}
             {user && (
                 <div className='profile-main'>
                     <div className='profile-header'>
@@ -56,21 +94,34 @@ function UserProfile() {
                     </div>
                     <div className='router'>
                         <div className='router-links'>
-                            <Link to={`/profile/${userId}/posts`}>Posts</Link>
-                            <Link to={`/profile/${userId}/job_posts`}>Job Posts</Link>
+                            <button onClick={() => {
+                                setShowJob(false)
+                                setShowPost(!showPost)
+                            }} className='post-button'>Posts</button>
+                            <button onClick={() => {
+                                setShowPost(false)
+                                setShowJob(!showJob)
+                            }} className='post-button'>Job Posts</button>
+                            {/* <Link to={`/profile/${userId}/posts`}>Posts</Link> */}
+                            {/* <Link to={`/profile/${userId}/job_posts`}>Job Posts</Link> */}
                         </div>
 
+                    {showPost && (
+                        <Posts update={update} setUpdate={setUpdate} posts={posts} />
+                    )}
+                    {showJob && (
+                        <Jobs user={user} />
+                    )}
                     </div>
                 </div>
             )}
-        <Switch>
+        {/* <Switch>
             <Route exact only path='/profile/:userId/posts'>
-                <Posts posts={user?.Posts} />
+                <Posts update={postUpdate} setUpdate={setPostUpdate} posts={posts} />
             </Route>
             <Route exact only path='/profile/:userId/job_posts'>
-                <Jobs jobs={user?.Jobs} />
             </Route>
-        </Switch>
+        </Switch> */}
         </div>
     )
 }

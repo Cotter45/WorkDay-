@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { create_job, update_job } from '../../store/api';
-
-import Jobs from "../Jobs/jobs";
+import { create_job, delete_job, update_job } from '../../store/api';
 
 
-function EditJob({ job, setShowModal, setUpdate, update, createPost }) {
+
+function EditJob({ job, setShowModal, setJobUpdate, jobUpdate, createPost }) {
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.session.user);
@@ -46,7 +45,7 @@ function EditJob({ job, setShowModal, setUpdate, update, createPost }) {
                 description,
                 location,
                 pay: +pay,
-                company_id: job.Company.id,
+                company_id: job.Company?.id,
                 poster_id: user.id,
                 requirements
             }
@@ -64,13 +63,20 @@ function EditJob({ job, setShowModal, setUpdate, update, createPost }) {
         
         if (!createPost) {
             await dispatch(update_job(edit, job.id));
-            setUpdate(!update);
+            setJobUpdate(!jobUpdate);
             setShowModal(false);
         } else {
             await dispatch(create_job(edit));
-            setUpdate(!update);
+            setJobUpdate(!jobUpdate);
             setShowModal(false);
         }
+    }
+
+    const handleDelete = async (e) => {
+        e.preventDefault()
+
+        await dispatch(delete_job(job.id));
+        setJobUpdate(!jobUpdate);
     }
 
     return (
@@ -227,7 +233,7 @@ function EditJob({ job, setShowModal, setUpdate, update, createPost }) {
             <div className='edit-post-buttons'>
                 <button onClick={handleSubmit} className='submit' disabled={errors.length ? true : false}>Submit</button>
                 {!createPost && (
-                    <button className='delete'>Delete</button>
+                    <button onClick={handleDelete} className='delete'>Delete</button>
                 )}
             </div>
         </div>

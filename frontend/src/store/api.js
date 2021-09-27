@@ -8,6 +8,25 @@ const CREATE_POST = 'api/create-post';
 const DELETE_POST = 'api/delete-post';
 const UPDATE_JOB = 'api/update-job';
 const CREATE_JOB = 'api/create-job';
+const DELETE_JOB = 'api/delete-job';
+
+const delete_job_action = (data) => ({
+    type: DELETE_JOB,
+    payload: data 
+})
+
+export const delete_job = (job_id) => async dispatch => {
+    const response = await csrfFetch(`/api/jobs/${job_id}`, {
+        method: 'DELETE'
+    })
+    const data = await response.json();
+    if (!data.message) {
+        dispatch(delete_job_action(data))
+    } else if (data.message) {
+        alert(data.message);
+    }
+    return response;
+}
 
 const create_job_action = (job) => ({
     type: CREATE_JOB,
@@ -177,7 +196,7 @@ function data_reducer(state = initialState, action) {
             newState.posts.splice(newState.posts.indexOf(post), 1, action.payload.newPost);
             return newState;
         case DELETE_POST:
-            const deleteMe = newState.posts.find(post => post.id === action.payload);
+            const deleteMe = newState.posts.find(post => post.id === +action.payload);
             newState.posts.splice(newState.posts.indexOf(deleteMe), 1, {message: 'This post has been removed'});
             return newState;
         case CREATE_JOB:
@@ -193,6 +212,17 @@ function data_reducer(state = initialState, action) {
             const replace_user = newState.users.find(user => user.id === action.payload.user.id);
             if (replace_user) {
                 newState.users.splice(newState.users.indexOf(replace_user), 1, action.payload.user);
+            }
+            return newState;
+        case DELETE_JOB:
+            const delete_job = newState.jobs.find(job => job.id === +action.payload.job_id);
+            newState.jobs.splice(newState.jobs.indexOf(delete_job), 1, {message: 'This post has been removed'});
+            const user_with_job = newState.users.find(user => user.id === +action.payload.userId);
+            console.log(user_with_job, 'USERJOB', action.payload)
+            if (user_with_job) {
+                const remove_job = user_with_job.Jobs.find(job => job.id === +action.payload.job_id);
+                user_with_job.Jobs.splice(user_with_job.Jobs.indexOf(remove_job), 1, {message: 'This post has been removed'});
+                console.log(remove_job, 'REMOVE JOB')
             }
             return newState;
         default: 

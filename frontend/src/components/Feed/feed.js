@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
+
 import Posts from '../Posts/posts';
 
 import './feed.css';
@@ -36,6 +37,7 @@ function Feed() {
         if(!update) return;
 
         setPosts(statePosts);
+        setUpdate(false);
     }, [statePosts, update])
 
     const visitProfile = () => {

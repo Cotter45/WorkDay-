@@ -1,32 +1,49 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Link, useParams, Switch, Route } from 'react-router-dom';
+import { v4 as uuidv4 } from 'uuid';
+
 import CreateJobModal from '../CreateJobModal';
 
 import EditJobModal from '../EditJobModal';
 
 import './jobs.css';
 
-function Jobs({ jobs }) {
+function Jobs() {
+    const userId = useParams().id;
 
-    const user = useSelector(state => state.session.user);
+
+    // const user = useSelector(state => state.session.user);
+    const user = useSelector(state => state.data.users.find(user => user.id === +userId));
 
     const [additionalInfo, setAdditionalInfo] = useState(false);
-    const [update, setUpdate] = useState(false);
-    const [showModal1, setShowModal1] = useState(false);
-    const [showModal2, setShowModal2] = useState(false);
+    const [jobUpdate, setJobUpdate] = useState(false);
+    const [jobs, setJobs] = useState(user?.Jobs);
+
+    useEffect(() => {
+        if (jobs) return;
+        setJobs(user?.Jobs);
+    }, [jobs, user])
+
+    useEffect(() => {
+        if (!jobUpdate) return;
+        setJobs(user?.Jobs)
+    }, [jobUpdate, user?.Jobs])
 
 
     return (
         <div className='jobs-main-container'>
             <>
             <div className='new-post-button'>
-                <CreateJobModal update={update} setUpdate={setUpdate} showModal={showModal1} setShowModal={setShowModal1} />
+                <CreateJobModal jobUpdate={jobUpdate} setJobUpdate={setJobUpdate} />
             </div>
-            {jobs && jobs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(job => (
-                <div key={job.id} className='job-container'>
-                    {job.poster_id === user.id && (
-                        <EditJobModal createPost={showModal1} showModal={showModal2} setShowModal={setShowModal2} update={update} setUpdate={setUpdate} job={job} />
+            {jobs && jobs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((job, index) => (
+                <div key={job.message ? index : uuidv4()} className='job-container'>
+                    {!job.message && job.poster_id === user.id && (
+                        <EditJobModal jobUpdate={jobUpdate} setJobUpdate={setJobUpdate} job={job} />
                     )}
+                    {!job.message && (
+                    <>
                     <div className='job-info'>
                         <p>{job.title} for {job.Company ? job.Company.name : 'Contract'}</p>
                         <p>Location: {job.location}</p>
@@ -49,6 +66,8 @@ function Jobs({ jobs }) {
                             </div>
                         )}
                     </div>
+
+                    
                     <div className='job-column'>
                     {job.Company && (
                         <>
@@ -90,6 +109,11 @@ function Jobs({ jobs }) {
                             <button className='post-button' onClick={() => setAdditionalInfo(!additionalInfo)}>{additionalInfo ? 'Less Info' : 'More Info'}</button>
                         </div>
                     </div>
+                </>
+                )}
+                {job.message && (
+                    <p key={uuidv4()}>{job.message}</p>
+                )}
                 </div>
             ))}
             </>
