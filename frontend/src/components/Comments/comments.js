@@ -6,6 +6,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 import './comments.css';
 import { add_comment, delete_comment, edit_comment } from '../../store/api';
+import NewComment from './newcomment';
+import EditComment from './editcomment';
 
 function Comments({ post, update, setUpdate }) {
     const history = useHistory();
@@ -29,8 +31,8 @@ function Comments({ post, update, setUpdate }) {
         console.log('what')
 
         const newComment = {
-            comment: comment ? comment : null,
-            image_url: photo ? photo : null,
+            comment: comment ? comment : '',
+            image_url: photo ? photo : '',
             user_id: user.id
         }
         console.log(newComment)
@@ -42,13 +44,14 @@ function Comments({ post, update, setUpdate }) {
 
     const handleEditComment = async (e, comment_id) => {
         e.preventDefault();
-        console.log(comment_id)
         const comment = {
             comment: newComment,
             image_url: photo,
             user_id: user.id,
             post_id: post.id
         }
+        
+        console.log(comment)
         await dispatch(edit_comment(comment, comment_id));
         setUpdate(!update);
         setNewComment('');
@@ -71,49 +74,21 @@ function Comments({ post, update, setUpdate }) {
 
     return (
         <div className='comments-container'>
-            <form onSubmit={handleSubmit} className='post-comment-form'>
-                <div className='post-comment'>
-                    <img className='post-comment-image' src={user.profile_picture} alt='user'></img>
-                    <input 
-                        value={comment ? comment : ''}
-                        onChange={(e) => setComment(e.target.value)}
-                    ></input>
-                </div>
-            <div className='post-buttons'>
-                    {!edit && !addImage && (
-                        <div onClick={() => setAddPhoto(!addPhoto)} className='icons'>
-                            <i className="far fa-image fa-2x photo"></i>
-                            <p>URL</p>
-                        </div>
-                        )}
-                    {!edit && addPhoto && (
-                        <div>
-                            <input
-                                value={photo ? photo : ''}
-                                onChange={(e) => setPhoto(e.target.value)}
-                                className='post-image-input'
-                                ></input>
-                        </div>
-                    )}
-                    {!edit && addImage && (
-                        <label className='upload'>
-                                <input
-                                    type='file'
-                                    className='upload-button'
-                                    onChange={(e) => setPhoto(e.target.files[0])}
-                                    ></input>
-                                Choose File
-                            </label>
-                    )}
-                    {!edit && !addPhoto && (
-                        <div onClick={() => setAddImage(!addImage)} className='icons'>
-                            <i className="far fa-image fa-2x photo"></i>
-                            <p>UPLOAD</p>
-                        </div>
-                        )}
-                    <button onClick={handleSubmit} className='post-button'>Submit</button>
-                </div>
-            </form>
+            <NewComment 
+                handleSubmit={handleSubmit}
+                comment={comment}
+                setComment={setComment}
+                edit={edit}
+                addImage={addImage}
+                setAddImage={setAddImage}
+                setAddPhoto={setAddPhoto}
+                addPhoto={addPhoto}
+                user={user}
+                setPhoto={setPhoto}
+                photo={photo} />
+            {/* {!edit && photo && (
+            <img className='post-comment-image' alt='post' src={photo.name ? URL.createObjectURL(photo) : photo}></img>
+            )} */}
             {length && comments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(comment => (
                 <div key={!comment.message ? comment.id : uuidv4()} className='comment-container'>
                 {comment.message && (
@@ -134,7 +109,7 @@ function Comments({ post, update, setUpdate }) {
                             <button onClick={() => {
                                 if (editComment === comment.id) {
                                     setNewComment(comment.comment)
-                                    setPhoto(comment.image_url)
+                                    setPhoto('')
                                     setEditComment(comment.id)
                                     setEdit(!edit)
                                 } else {
@@ -165,46 +140,19 @@ function Comments({ post, update, setUpdate }) {
                             <img className='comment-image' src={comment.image_url} alt='comment'></img>
                         )}
                         {editComment === comment.id && edit && (
-                        <form onSubmit={(e) => handleEditComment(e, comment.id)} className='edit-form'>
-                            <input 
-                                value={newComment ? newComment : ''}
-                                onChange={(e) => setNewComment(e.target.value)}
-                            ></input>
-                            <div className='post-buttons'>
-                                {editComment === comment.id && edit && !addImage && (
-                                    <div onClick={() => setAddPhoto(!addPhoto)} className='icons'>
-                                        <i className="far fa-image fa-2x photo"></i>
-                                        <p>URL</p>
-                                    </div>
-                                    )}
-                                {editComment === comment.id && edit && addPhoto && (
-                                    <div>
-                                        <input
-                                            value={photo ? photo : ''}
-                                            onChange={(e) => setPhoto(e.target.value)}
-                                            className='post-image-input'
-                                            ></input>
-                                    </div>
-                                )}
-                                {editComment === comment.id && edit && addImage && (
-                                    <label className='upload'>
-                                            <input
-                                                type='file'
-                                                className='upload-button'
-                                                onChange={(e) => setPhoto(e.target.files[0])}
-                                                ></input>
-                                            Choose File
-                                        </label>
-                                )}
-                                {editComment === comment.id && edit && !addPhoto && (
-                                    <div onClick={() => setAddImage(!addImage)} className='icons'>
-                                        <i className="far fa-image fa-2x photo"></i>
-                                        <p>UPLOAD</p>
-                                    </div>
-                                    )}
-                                <button onClick={(e) => handleEditComment(e, comment.id)} className='post-button'>Submit</button>
-                            </div>
-                        </form>
+                            <EditComment 
+                                handleEditComment={handleEditComment}
+                                comment={comment}
+                                newComment={newComment}
+                                setNewComment={setNewComment}
+                                edit={edit}
+                                photo={photo}
+                                editComment={editComment}
+                                addImage={addImage}
+                                setAddPhoto={setAddPhoto}
+                                addPhoto={addPhoto}
+                                setPhoto={setPhoto}
+                                setAddImage={setAddImage} />
                         )}
                     </div>
                     <div className='comment-buttons'>

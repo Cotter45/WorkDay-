@@ -33,8 +33,7 @@ function EditPostForm({ post, setShowModal, setUpdate, update }) {
             description,
             imageUrl
         }
-        console.log(imageUrl)
-        // await dispatch(edit_post(newPost, post.id))
+        await dispatch(edit_post(newPost, post.id))
         setUpdate(!update);
         setSuccess(true);
     }
@@ -63,6 +62,9 @@ function EditPostForm({ post, setShowModal, setUpdate, update }) {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
             ></textarea>
+            {imageUrl && (
+                <img className='feed-image' alt='post' src={imageUrl.name ? URL.createObjectURL(imageUrl) : imageUrl}></img>
+            )}
             <div className='post-buttons'>
                 {!addImage && (
                     <div onClick={() => setAddPhoto(!addPhoto)} className='icons'>

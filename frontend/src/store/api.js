@@ -33,14 +33,35 @@ const edit_comment_action = (data) => ({
     payload: data
 })
 
-export const edit_comment = (comment, comment_id) => async dispatch => {
-    const response = await csrfFetch(`/api/posts/comments/${comment_id}`, {
-        method: 'PUT', 
-        body: JSON.stringify(comment) 
-    })
-    const data = await response.json();
-    dispatch(edit_comment_action(data));
-    return response;
+export const edit_comment = (newComment, comment_id) => async dispatch => {
+    const { comment, image_url, user_id, post_id } = newComment;
+    let formData = new FormData();
+
+    if (image_url.name) {
+        formData.append('comment', comment);
+        formData.append('image', image_url);
+        formData.append('user_id', user_id);
+        formData.append('post_id', post_id);
+
+        const response = await csrfFetch(`/api/posts/comments/${comment_id}`, {
+            method: 'PUT', 
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: formData 
+        })
+        const data = await response.json();
+        dispatch(edit_comment_action(data));
+        return response;
+    } else {
+        const response = await csrfFetch(`/api/posts/comments/${comment_id}`, {
+            method: 'PUT', 
+            body: JSON.stringify(newComment) 
+        })
+        const data = await response.json();
+        dispatch(edit_comment_action(data));
+        return response;
+    }
 }
 
 const add_comment_action = (post) => ({
@@ -48,14 +69,34 @@ const add_comment_action = (post) => ({
     payload: post 
 })
 
-export const add_comment = (comment, postId) => async dispatch => {
-    const response = await csrfFetch(`/api/posts/${postId}/comment`, {
-        method: 'POST',
-        body: JSON.stringify(comment) 
-    })
-    const data = await response.json();
-    dispatch(add_comment_action(data));
-    return response;
+export const add_comment = (newComment, postId) => async dispatch => {
+    const { comment, image_url, user_id } = newComment;
+    let formData = new FormData();
+
+    if (image_url.name) {
+        formData.append('comment', comment);
+        formData.append('image', image_url);
+        formData.append('user_id', user_id);
+
+        const response = await csrfFetch(`/api/posts/${postId}/comment`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: formData 
+        })
+        const data = await response.json();
+        dispatch(add_comment_action(data));
+        return response;
+    } else {
+        const response = await csrfFetch(`/api/posts/${postId}/comment`, {
+            method: 'POST',
+            body: JSON.stringify(newComment) 
+        })
+        const data = await response.json();
+        dispatch(add_comment_action(data));
+        return response;
+    }
 }
 
 const like_post_action = (data) => ({
@@ -145,14 +186,36 @@ const create_post_action = (data) => ({
 })
 
 export const create_post = (post) => async dispatch => {
-    const response = await csrfFetch(`/api/posts/`, {
-        method: 'POST',
-        body: JSON.stringify(post)
-    })
-    const data = await response.json();
-    console.log(data.returnPost, 'STORE')
-    dispatch(create_post_action(data.returnPost));
-    return response;
+    const { description, image_url, poster_id, company_id } = post;
+    let formData = new FormData();
+
+    if (post.image_url.name) {
+        formData.append('description', description);
+        formData.append('image', image_url);
+        formData.append('poster_id', poster_id);
+        formData.append('company_id', company_id);
+
+        const response = await csrfFetch(`/api/posts/`, {
+            method: 'POST',
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: formData
+        })
+        const data = await response.json();
+        console.log(data.returnPost, 'STORE')
+        dispatch(create_post_action(data.returnPost));
+        return response;
+    } else {
+        const response = await csrfFetch(`/api/posts/`, {
+            method: 'POST',
+            body: JSON.stringify(post)
+        })
+        const data = await response.json();
+        console.log(data.returnPost, 'STORE')
+        dispatch(create_post_action(data.returnPost));
+        return response;
+    }
 }
 
 const edit_post_action = (data) => ({
@@ -161,13 +224,32 @@ const edit_post_action = (data) => ({
 })
 
 export const edit_post = (post, postId) => async dispatch => {
-    const response = await csrfFetch(`/api/posts/${postId}`, {
-        method: 'PUT',
-        body: JSON.stringify(post)
-    })
-    const data = await response.json();
-    dispatch(edit_post_action(data));
-    return response;
+    const { description, imageUrl } = post;
+    let formData = new FormData();
+
+    if (post.imageUrl.name) {
+        console.log('FORM', imageUrl)
+        formData.append('description', description);
+        formData.append('image', imageUrl);
+        const response = await csrfFetch(`/api/posts/${postId}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: formData
+        })
+        const data = await response.json();
+        dispatch(edit_post_action(data));
+        return response;
+    } else {
+        const response = await csrfFetch(`/api/posts/${postId}`, {
+            method: 'PUT',
+            body: JSON.stringify(post)
+        })
+        const data = await response.json();
+        dispatch(edit_post_action(data));
+        return response;
+    }
 }
 
 const store_user_data = (data) => ({

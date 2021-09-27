@@ -46,3 +46,7 @@ select:focus {
         transform: rotate(360deg);
     }
 }
+
+button {
+    background-color: transparent;
+}

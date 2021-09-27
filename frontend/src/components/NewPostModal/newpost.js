@@ -86,7 +86,7 @@ function NewPost({ user, disabled, setShowModal, update, setUpdate, showModal })
                 </div>
                 <div className='post-images'>
                     {photo && (
-                        <img className='feed-image' alt='post' src={photo}></img>
+                        <img className='feed-image' alt='post' src={photo.name ? URL.createObjectURL(photo) : photo}></img>
                     )}
                 </div>
             </div>

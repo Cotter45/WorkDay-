@@ -6,6 +6,7 @@ const asyncHandler = require("express-async-handler");
 
 const { handleValidationErrors } = require("../../utils/validation");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
+const { singleMulterUpload, singlePublicFileUpload } = require("../../awsS3");
 
 
 const { 
@@ -59,7 +60,7 @@ router.delete('/comments/:comment_id', asyncHandler( async (req, res) => {
 
 
 // router for editing a posts comment
-router.put('/comments/:comment_id', asyncHandler( async (req, res) => {
+router.put('/comments/:comment_id', singleMulterUpload('image'), asyncHandler( async (req, res) => {
     const { comment_id } = req.params;
     const { comment, image_url, user_id, post_id } = req.body;
 
@@ -68,13 +69,24 @@ router.put('/comments/:comment_id', asyncHandler( async (req, res) => {
             id: +comment_id 
         }
     })
+    
+    if (image_url) {
+        await findComment.update({
+            comment,
+            image_url,
+            user_id: +user_id,
+            post_id: +post_id 
+        })
+    } else {
+        const newImage = await singlePublicFileUpload(req.file);
+        await findComment.update({
+            comment,
+            image_url: newImage,
+            user_id: +user_id,
+            post_id: +post_id 
+        })
 
-    await findComment.update({
-        comment,
-        image_url,
-        user_id: +user_id,
-        post_id: +post_id 
-    })
+    }
 
     const newPost = await Post.findOne({
         where: {
@@ -100,16 +112,29 @@ router.put('/comments/:comment_id', asyncHandler( async (req, res) => {
 
 
 // route for commenting on a post
-router.post('/:postId/comment', asyncHandler( async (req, res) => {
+router.post('/:postId/comment', singleMulterUpload('image'), asyncHandler( async (req, res) => {
     const { postId } = req.params;
     const { comment, image_url, user_id } = req.body;
 
-    const newComment = await Comment.create({
-        comment,
-        image_url,
-        post_id: +postId,
-        user_id: +user_id
-    })
+    let newComment;
+
+    if (image_url) {
+        console.log('HERE')
+        newComment = await Comment.create({
+            comment,
+            image_url,
+            post_id: +postId,
+            user_id: +user_id
+        })
+    } else {
+        const newImage = await singlePublicFileUpload(req.file);
+        newComment = await Comment.create({
+            comment,
+            image_url: newImage,
+            post_id: +postId,
+            user_id: +user_id 
+        })
+    }
 
     const newPost = await Post.findOne({
         where: {
@@ -219,12 +244,21 @@ router.delete('/:postId', asyncHandler( async (req, res) => {
 }))
 
 // route for creating a new post
-router.post('/', asyncHandler( async (req, res) => {
+router.post('/', singleMulterUpload('image'), asyncHandler( async (req, res) => {
     const { description, image_url, poster_id, company_id } = req.body;
 
-    const post = await Post.create({
-        description, image_url, poster_id, company_id
-    })
+    let post;
+
+    if (image_url) {
+        post = await Post.create({
+            description, image_url, poster_id, company_id
+        })
+    } else {
+        const image_url = await singlePublicFileUpload(req.file);
+        post = await Post.create({
+            description, image_url, poster_id, company_id
+        })
+    }
 
     const returnPost = await Post.findOne({
         where: {
@@ -250,7 +284,7 @@ router.post('/', asyncHandler( async (req, res) => {
 }))
 
 // route for updating an existing post
-router.put('/:post_id', asyncHandler( async (req, res) => {
+router.put('/:post_id', singleMulterUpload('image'), asyncHandler( async (req, res) => {
     const { post_id } = req.params;
     const { description, imageUrl } = req.body;
 
@@ -260,10 +294,18 @@ router.put('/:post_id', asyncHandler( async (req, res) => {
         }
     })
 
-    await post.update({
-        description,
-        image_url: imageUrl
-    })
+    if (imageUrl) {
+        await post.update({
+            description,
+            image_url: imageUrl
+        })
+    } else {
+        const image_url = await singlePublicFileUpload(req.file);
+        await post.update({
+            description,
+            image_url
+        })
+    }
 
     const newPost = await Post.findOne({
         where: {
