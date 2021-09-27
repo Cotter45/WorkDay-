@@ -10,6 +10,53 @@ const UPDATE_JOB = 'api/update-job';
 const CREATE_JOB = 'api/create-job';
 const DELETE_JOB = 'api/delete-job';
 const LIKE_POST = 'api/like-post';
+const ADD_COMMENT = 'api/add-comment';
+const EDIT_COMMENT = 'api/edit-comment';
+const DELETE_COMMENT = 'api/delete-comment';
+
+const delete_comment_action = (data) => ({
+    type: DELETE_COMMENT,
+    payload: data
+})
+
+export const delete_comment = (comment_id) => async dispatch => {
+    const response = await csrfFetch(`/api/posts/comments/${comment_id}`, {
+        method: 'DELETE'
+    })
+    const data = await response.json();
+    dispatch(delete_comment_action(data));
+    return response;
+}
+
+const edit_comment_action = (data) => ({
+    type: EDIT_COMMENT,
+    payload: data
+})
+
+export const edit_comment = (comment, comment_id) => async dispatch => {
+    const response = await csrfFetch(`/api/posts/comments/${comment_id}`, {
+        method: 'PUT', 
+        body: JSON.stringify(comment) 
+    })
+    const data = await response.json();
+    dispatch(edit_comment_action(data));
+    return response;
+}
+
+const add_comment_action = (post) => ({
+    type: ADD_COMMENT,
+    payload: post 
+})
+
+export const add_comment = (comment, postId) => async dispatch => {
+    const response = await csrfFetch(`/api/posts/${postId}/comment`, {
+        method: 'POST',
+        body: JSON.stringify(comment) 
+    })
+    const data = await response.json();
+    dispatch(add_comment_action(data));
+    return response;
+}
 
 const like_post_action = (data) => ({
     type: LIKE_POST,
@@ -242,6 +289,19 @@ function data_reducer(state = initialState, action) {
         case LIKE_POST:
             const liked = newState.posts.find(post => post.id === +action.payload.post.id);
             newState.posts.splice(newState.posts.indexOf(liked), 1, action.payload.post)
+            return newState;
+        case ADD_COMMENT:
+            const commentPost = newState.posts.find(post => post.id === action.payload.newPost.id);
+            newState.posts.splice(newState.posts.indexOf(commentPost), 1, action.payload.newPost);
+            return newState;
+        case EDIT_COMMENT:
+            const findPost = newState.posts.find(post => post.id === action.payload.newPost.id);
+            newState.posts.splice(newState.posts.indexOf(findPost), 1, action.payload.newPost);
+            return newState;
+        case DELETE_COMMENT:
+            const post_with_comment = newState.posts.find(post => post.id === +action.payload.post_id);
+            const delete_comment = post_with_comment.Comments.find(comment => comment.id === +action.payload.comment_id);
+            post_with_comment.Comments.splice(post_with_comment.Comments.indexOf(delete_comment), 1, { message: 'This comment has been removed'})
             return newState;
         default: 
             return state;

@@ -68,6 +68,7 @@ function NewPost({ user, disabled, setShowModal, update, setUpdate, showModal })
                                 <input
                                     type='file'
                                     className='upload-button'
+                                    onChange={(e) => setPhoto(e.target.files[0])}
                                     ></input>
                                 Choose File
                             </label>

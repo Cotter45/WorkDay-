@@ -1,15 +1,20 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { like_post } from '../../store/api';
 
 import EditPostModal from '../EditPostModal';
+import Comments from '../Comments/comments';
 
 function Posts({ posts, modal, setUpdate, update }) {
     const history = useHistory();
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.session.user);
+
+    const [comments, setComments] = useState(false);
+    const [whatPost, setWhatPost] = useState('');
 
     const likePost = async (postId) => {
         const data = {
@@ -56,10 +61,21 @@ function Posts({ posts, modal, setUpdate, update }) {
                             <p>{post.Likes.length} <i className="far fa-thumbs-up" /> - {post.Comments.length} comments</p>
                         </div>
                         <div className='feed-buttons'>
-                            <button onClick={() => likePost(post.id)}>Like</button>
-                            <button>Comment</button>
+                            <button className='post-button' onClick={() => likePost(post.id)}><i className="far fa-thumbs-up" /> Like</button>
+                            <button className='post-button' onClick={() => {
+                                if (whatPost === post.id) {
+                                    setWhatPost(post.id)
+                                    setComments(!comments)
+                                } else {
+                                    setWhatPost(post.id)
+                                    setComments(true)
+                                }
+                            }}><i className="far fa-comment-dots" /> Comment</button>
                         </div>
                         </>
+                    )}
+                    {comments && whatPost === post.id && (
+                        <Comments update={update} setUpdate={setUpdate} post={post} />
                     )}
                 </div>
             )}

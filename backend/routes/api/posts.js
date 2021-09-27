@@ -40,13 +40,103 @@ const e = require("express");
 
 const router = express.Router();
 
+// router for deleting a comment
+router.delete('/comments/:comment_id', asyncHandler( async (req, res) => {
+    const { comment_id } = req.params;
+    let post_id;
+
+    const comment = await Comment.findOne({
+        where: {
+            id: +comment_id
+        }
+    })
+    post_id = comment.post_id;
+
+    await comment.destroy()
+
+    return res.json({ comment_id, post_id })
+}))
+
+
+// router for editing a posts comment
+router.put('/comments/:comment_id', asyncHandler( async (req, res) => {
+    const { comment_id } = req.params;
+    const { comment, image_url, user_id, post_id } = req.body;
+
+    const findComment = await Comment.findOne({
+        where: {
+            id: +comment_id 
+        }
+    })
+
+    await findComment.update({
+        comment,
+        image_url,
+        user_id: +user_id,
+        post_id: +post_id 
+    })
+
+    const newPost = await Post.findOne({
+        where: {
+            id: +post_id 
+        },
+        include: [
+            { model: User },
+            { model: Company },
+            {
+              model: Comment,
+              include: [ User, Like, Image ]
+            },
+            { 
+              model: Like,
+              include: [ User ]
+            },
+            { model: Image }
+          ],
+    })
+
+    return res.json({ newPost })
+}))
+
+
+// route for commenting on a post
+router.post('/:postId/comment', asyncHandler( async (req, res) => {
+    const { postId } = req.params;
+    const { comment, image_url, user_id } = req.body;
+
+    const newComment = await Comment.create({
+        comment,
+        image_url,
+        post_id: +postId,
+        user_id: +user_id
+    })
+
+    const newPost = await Post.findOne({
+        where: {
+            id: +postId 
+        },
+        include: [
+            { model: User },
+            { model: Company },
+            {
+              model: Comment,
+              include: [ User, Like, Image ]
+            },
+            { 
+              model: Like,
+              include: [ User ]
+            },
+            { model: Image }
+          ],
+    })
+    return res.json({ newPost })
+}))
 
 // route to like or unlike a post
 router.post('/like/:postId', asyncHandler( async (req, res) => {
     const { postId } = req.params;
     const { userId } = req.body;
 
-    console.log(postId, userId)
 
     const exists = await Like.findOne({
         where: {
