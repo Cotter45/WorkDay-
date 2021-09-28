@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal } from '../../context/Modal';
-import { job_search } from '../../store/api';
+import { Modal } from '../../../context/Modal';
+import { search } from '../../../store/api';
 
-import './Navigation.css';
+import '../Navigation.css';
 
-function JobSearch({ param, setParams, setResults, setSearch }) {
+function Search({ param, setParams, setResults, setSearch }) {
     const dispatch = useDispatch();
 
-    const search_results = useSelector(state => state.data.job_search);
-
-    
+    const search_results = useSelector(state => state.data.search);
 
     useEffect(() => {
         if (param.length <= 1) {
@@ -19,9 +17,10 @@ function JobSearch({ param, setParams, setResults, setSearch }) {
             return;
         }
 
-        dispatch(job_search(param));
+        dispatch(search(param));
         setSearch(true);
         setResults(search_results);
+        
     }, [dispatch, param])
 
 
@@ -30,6 +29,7 @@ function JobSearch({ param, setParams, setResults, setSearch }) {
             <input
                 className='search'
                 placeholder='Search'
+                onFocus={() => setSearch(true)}
                 onChange={(e) => setParams(e.target.value)}
                 value={param}
             ></input>
@@ -37,4 +37,4 @@ function JobSearch({ param, setParams, setResults, setSearch }) {
     )
 }
 
-export default JobSearch;
+export default Search;

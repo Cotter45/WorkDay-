@@ -176,7 +176,7 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
     return res.json({ user, posts })
 }))
 
-router.get('/job_search/:params', asyncHandler( async (req, res) => {
+router.get('/search/:params', asyncHandler( async (req, res) => {
   const params = req.params.params.toLowerCase().split(' ').concat(req.params.params.toUpperCase().split(' '));
 
   const jobResults = await Job.findAll({
@@ -204,11 +204,68 @@ router.get('/job_search/:params', asyncHandler( async (req, res) => {
         },
       ]
     }, 
-    include: { all: true }
+    include: { all: true },
+    limit: 25
   })
+  
+  const userResults = await User.findAll({
+    where: {
+      [Op.or]: [
+        {
+          first_name: {
+            [Op.or]: {
+                [Op.in]: params,
+                [Op.substring]: req.params.params,
+                [Op.iRegexp]: req.params.params
 
+            }
+          }
+        },
+        {
+          last_name: {
+            [Op.or]: {
+                [Op.in]: params,
+                [Op.substring]: req.params.params,
+                [Op.iRegexp]: req.params.params
 
-  return res.json({ jobResults })
+            }
+          }
+        },
+      ]
+    }, 
+    include: { all: true },
+    limit: 25
+  })
+  
+  const companyResults = await Company.findAll({
+    where: {
+      [Op.or]: [
+        {
+          name: {
+            [Op.or]: {
+                [Op.in]: params,
+                [Op.substring]: req.params.params,
+                [Op.iRegexp]: req.params.params
+
+            }
+          }
+        },
+        {
+          location: {
+            [Op.or]: {
+                [Op.in]: params,
+                [Op.substring]: req.params.params,
+                [Op.iRegexp]: req.params.params
+
+            }
+          }
+        },
+      ]
+    }, 
+    include: { all: true },
+    limit: 25
+  })
+  return res.json({ jobResults, userResults, companyResults })
 }))
 
 module.exports = router;

@@ -1,7 +1,7 @@
 import { csrfFetch } from "./csrf";
 
 const GET_DATA = 'api/get_data';
-const JOB_SEARCH_DATA = 'api/search_data';
+const SEARCH_DATA = 'api/search_data';
 const USER_PAGE = 'api/get_user';
 const EDIT_POST = 'api/edit_post';
 const CREATE_POST = 'api/create-post';
@@ -264,16 +264,16 @@ export const get_user_data = (userId) => async dispatch => {
     return response;
 }
 
-const job_search_action = (data) => ({
-    type: JOB_SEARCH_DATA,
+const search_action = (data) => ({
+    type: SEARCH_DATA,
     payload: data
 })
 
-export const job_search = (params) => async dispatch => {
-    const response = await csrfFetch(`/api/users/job_search/${params}`);
+export const search = (params) => async dispatch => {
+    const response = await csrfFetch(`/api/users/search/${params}`);
     const data = await response.json();
     // console.log(data);
-    dispatch(job_search_action(data));
+    dispatch(search_action(data));
     return response;
 }
 
@@ -301,7 +301,7 @@ const initialState = {
     posts: null,
     components: null,
     images: null,
-    job_search: null,
+    search: null,
     team: null,
     users: []
 }
@@ -322,8 +322,8 @@ function data_reducer(state = initialState, action) {
             newState.posts = action.payload.posts;
             newState.team = action.payload.user.Team;
             return newState;
-        case JOB_SEARCH_DATA:
-            newState.job_search = action.payload.jobResults;
+        case SEARCH_DATA:
+            newState.search = [...action.payload.jobResults, ...action.payload.userResults, ...action.payload.companyResults];
             return newState;
         case USER_PAGE:
             const user = newState.users.find(user => user.id === action.payload.user.id);

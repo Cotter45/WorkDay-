@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+
 
 import MenuButton from './MenuButton';
 import LoginFormModal from '../LoginFormModal';
 import { login } from '../../store/session';
 import './Navigation.css';
-import JobSearch from './search';
+import Search from './Search/search';
 import SignupFormModal from '../SignupFormModal';
+import Results from './Search/searchresults';
 
 
 function Navigation({ isLoaded }){
@@ -18,7 +21,10 @@ function Navigation({ isLoaded }){
   const [search, setSearch] = useState(false);
   const [results, setResults] = useState([]);
   const [param, setParams] = useState('');
-  console.log(results)
+
+  const [jobs, setJobs] = useState(false);
+  const [companies, setCompanies] = useState(false);
+  const [users, setUsers] = useState(false);
 
   const demo = () => {
     let credentials = {
@@ -53,30 +59,45 @@ function Navigation({ isLoaded }){
     <div className='nav-container'> 
       <nav className='nav'>
         <NavLink activeClassName='' className='logo' exact to="/"><img src={process.env.PUBLIC_URL + '/images/logo.png'} alt='logo'></img></NavLink>
-        <JobSearch setSearch={setSearch} param={param} setParams={setParams} setResults={setResults} />
+        <Search setSearch={setSearch} param={param} setParams={setParams} setResults={setResults} />
         <div className='nav-links'>
           {isLoaded && sessionLinks}
         </div>
       </nav>
       { search && (
         <div  className='results'>
-          <div className='options'>
-            <button>filter1</button>
-            <button>filter1</button>
-            <button>filter1</button>
+          <div className='post-buttons'>
+            <button
+              className={ jobs ? 'selected' : 'post-button'}
+              onClick={() => {
+                setJobs(!jobs)
+                setCompanies(false)
+                setUsers(false)
+              }}
+              >Jobs</button>
+            <button
+              className={ companies ? 'selected' : 'post-button'}
+              onClick={() => {
+                setJobs(false)
+                setCompanies(!companies)
+                setUsers(false)
+              }}
+              >Companies</button>
+            <button
+              className={ users ? 'selected' : 'post-button'}
+              onClick={() => {
+                setJobs(false)
+                setCompanies(false)
+                setUsers(!users)
+              }}
+              >Users</button>
           </div> 
-          <div>
-            <button onClick={() => {
-              setSearch(false);
-              setResults([]);
-              setParams('');
-            }}>Exit</button>
-          </div>
-          {results && results.map(result => (
-            <div id='search-results' key={result.id}>
-                <p>{result.title}</p>
-            </div>
-          ))}
+          <button className='close-search' onClick={() => {
+            setSearch(false);
+            setResults([]);
+            setParams('');
+          }}><i className="fas fa-times" /></button>
+          <Results jobs={jobs} companies={companies} users={users} results={results} uuidv4={uuidv4} />
         </div>
       )}
     </div>

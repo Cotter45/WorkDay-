@@ -67,8 +67,6 @@ function Jobs() {
                             </div>
                         )}
                     </div>
-
-                    
                     <div className='job-column'>
                     {job.Company && (
                         <>
