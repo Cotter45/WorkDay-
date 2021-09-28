@@ -18,6 +18,7 @@ function Navigation({ isLoaded }){
   const [search, setSearch] = useState(false);
   const [results, setResults] = useState([]);
   const [param, setParams] = useState('');
+  console.log(results)
 
   const demo = () => {
     let credentials = {

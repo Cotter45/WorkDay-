@@ -203,7 +203,8 @@ router.get('/job_search/:params', asyncHandler( async (req, res) => {
           }
         },
       ]
-    }
+    }, 
+    include: { all: true }
   })
 
 

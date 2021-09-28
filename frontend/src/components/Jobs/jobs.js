@@ -17,6 +17,7 @@ function Jobs() {
     const user = useSelector(state => state.data.users.find(user => user.id === +userId));
 
     const [additionalInfo, setAdditionalInfo] = useState(false);
+    const [jobId, setJobId] = useState('');
     const [jobUpdate, setJobUpdate] = useState(false);
     const [jobs, setJobs] = useState(user?.Jobs);
 
@@ -49,7 +50,7 @@ function Jobs() {
                         <p>Location: {job.location}</p>
                         <p>Pays: ${job.pay}</p>
                         <p>Posted: {new Date(job.createdAt).toDateString()}</p>
-                        {additionalInfo && (
+                        {additionalInfo && jobId === job.id && (
                             <div className='job-additional-info'>
                                 <p>Posted by: {job.User.first_name + ' ' + job.User.last_name}</p>
                                 <p>Description: <br></br> {job.description}</p>
@@ -79,7 +80,7 @@ function Jobs() {
                                 <img className='profile-image' src={job.Company.profile_picture} alt='profile'></img>
                             </div>
                         </div>
-                        {additionalInfo && (
+                        {additionalInfo && jobId === job.id && (
                             <div>
                                 <p className='applicants'>{job.Applications.length} applicants</p>
                                 <p>Email: {job.Company.email}</p>
@@ -106,7 +107,10 @@ function Jobs() {
                         </div>
                     )}
                         <div>
-                            <button className='post-button' onClick={() => setAdditionalInfo(!additionalInfo)}>{additionalInfo ? 'Less Info' : 'More Info'}</button>
+                            <button className='post-button' onClick={() => {
+                                setJobId(job.id)
+                                setAdditionalInfo(!additionalInfo)
+                            }}>{additionalInfo ? 'Less Info' : 'More Info'}</button>
                         </div>
                     </div>
                 </>
