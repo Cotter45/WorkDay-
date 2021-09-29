@@ -14,6 +14,37 @@ const ADD_COMMENT = 'api/add-comment';
 const EDIT_COMMENT = 'api/edit-comment';
 const DELETE_COMMENT = 'api/delete-comment';
 const EDIT_PROFILE = 'api/edit-profile';
+const APPLY_TO_JOB = 'api/apply_to_job';
+const SAVE_JOB = 'api/save_job_for_later';
+
+const save_job_action = (data) => ({
+    type: SAVE_JOB,
+    payload: data 
+})
+
+export const save_job = (job_id) => async dispatch => {
+    const fetch = await csrfFetch(`/api/jobs/save/${job_id}`, {
+        method: 'POST',
+    })
+    const response = await fetch.json();
+    dispatch(save_job_action(response));
+    return fetch;
+}
+
+const job_application_action = (data) => ({
+    type: APPLY_TO_JOB,
+    payload: data 
+})
+
+export const job_application = (application) => async dispatch => {
+    const fetch = await csrfFetch(`/api/jobs/apply/${application.job_id}`, {
+        method: 'POST',
+        body: JSON.stringify(application)
+    })
+    const response = await fetch.json();
+    dispatch(job_application_action(response));
+    return fetch;
+}
 
 const edit_profile_action = (data) => ({
     type: EDIT_PROFILE,
@@ -30,8 +61,6 @@ export const edit_profile = (user, userId) => async dispatch => {
             current_job,
             description } = user;
             // company,    
-
-            
     if (background_image.name && profile_picture.name) {
         let formData1 = new FormData();
         formData1.append('image', profile_picture);
@@ -79,30 +108,11 @@ export const edit_profile = (user, userId) => async dispatch => {
         const response1 = await fetch1.json();
         user.profile_picture = response1.profile_picture;
 
-        // let formData3 = new FormData();
-        // formData3.append('background_image', background_image)
-        // formData3.append('profile_picture', response1)
-        // formData3.append('first_name', first_name)
-        // formData3.append('last_name', last_name)
-        // formData3.append('email', email)
-        // formData3.append('location', location)
-        // // formData1.append('company', company)
-        // formData3.append('current_job', current_job)
-        // formData3.append('description', description)
-
-        // const fetch3 = await csrfFetch(`/api/users/update_profile/${userId}`, {
-        //     method: 'PUT',
-        //     headers: {
-        //         "Content-Type": "multipart/form-data"
-        //     },
-        //     body: formData3
-        // })
         const fetch3 = await csrfFetch(`/api/users/update_profile/${userId}`, {
             method: 'PUT',
             body: JSON.stringify(user)
         })
         const data = await fetch3.json();
-        console.log('RESPONSE2', data)
         dispatch(edit_profile_action(data));
         return fetch3;
 
@@ -121,17 +131,6 @@ export const edit_profile = (user, userId) => async dispatch => {
         const response2 = await fetch2.json();
         console.log('RESPONSE FROM THE GRAVE', response2)
         user.background_image = response2.background_image;
-
-        // let formData3 = new FormData();
-        // formData3.append('profile_picture', profile_picture)
-        // formData3.append('background_image', response2.new_background_image)
-        // formData3.append('first_name', first_name)
-        // formData3.append('last_name', last_name)
-        // formData3.append('email', email)
-        // formData3.append('location', location)
-        // // formData1.append('company', company)
-        // formData3.append('current_job', current_job)
-        // formData3.append('description', description)
 
         const fetch3 = await csrfFetch(`/api/users/update_profile/${userId}`, {
             method: 'PUT',
@@ -431,9 +430,9 @@ export const get_data = (user_id) => async dispatch => {
 const initialState = { 
     following: null,
     company: null, 
-    jobs: null,
-    saved_jobs: null,
-    applications: null,
+    jobs: [],
+    saved_jobs: [],
+    applications: [],
     conversations: null,
     // my_posts: null,
     posts: null,
@@ -531,6 +530,22 @@ function data_reducer(state = initialState, action) {
             const post_with_comment = newState.posts.find(post => post.id === +action.payload.post_id);
             const delete_comment = post_with_comment.Comments.find(comment => comment.id === +action.payload.comment_id);
             post_with_comment.Comments.splice(post_with_comment.Comments.indexOf(delete_comment), 1, { message: 'This comment has been removed'})
+            return newState;
+        case APPLY_TO_JOB:
+            const replace_job = newState.jobs?.find(job => job.id === action.payload.job.id);
+            if (replace_job) {
+                newState.jobs.splice(newState.jobs.indexOf(replace_job), 1, action.payload.job);
+            } else {
+                newState.jobs.push(action.payload.job);
+            }
+            const replace_search = newState.search.find(job => job.id === action.payload.job.id);
+            if (replace_search) {
+                console.log('HIT')
+                newState.search.splice(newState.search.indexOf(replace_search), 1, action.payload.job);
+            }
+            return newState;
+        case SAVE_JOB:
+            newState.saved_jobs.push(action.payload.job);
             return newState;
         default: 
             return state;

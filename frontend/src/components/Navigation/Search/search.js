@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Modal } from '../../../context/Modal';
 import { search } from '../../../store/api';
 
 import '../Navigation.css';
@@ -16,11 +15,14 @@ function Search({ param, setParams, setResults, setSearch }) {
             setSearch(false);
             return;
         }
+        const debounce = setTimeout(() => {
+            dispatch(search(param));
+            setSearch(true);
+            setResults(search_results);
+        }, 500)
 
-        dispatch(search(param));
-        setSearch(true);
-        setResults(search_results);
-        
+        return () => clearTimeout(debounce);
+
     }, [dispatch, param])
 
 

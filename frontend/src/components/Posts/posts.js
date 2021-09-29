@@ -61,7 +61,7 @@ function Posts({ posts, modal, setUpdate, update }) {
                             <p>{post.Likes.length} <i className="far fa-thumbs-up" /> - {post.Comments.length} comments</p>
                         </div>
                         <div className='feed-buttons'>
-                            <button className='post-button' onClick={() => likePost(post.id)}><i className="far fa-thumbs-up" /> Like</button>
+                            <button className={post.Likes.find(like => like.user_id === user.id) ? 'liked' : 'post-button'} onClick={() => likePost(post.id)}><i className="far fa-thumbs-up" /> Like</button>
                             <button className='post-button' onClick={() => {
                                 if (whatPost === post.id) {
                                     setWhatPost(post.id)

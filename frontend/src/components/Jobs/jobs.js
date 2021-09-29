@@ -9,7 +9,7 @@ import EditJobModal from '../EditJobModal';
 
 import './jobs.css';
 
-function Jobs() {
+function Jobs({ myApplications }) {
     const userId = useParams().id;
 
 
@@ -19,7 +19,7 @@ function Jobs() {
     const [additionalInfo, setAdditionalInfo] = useState(false);
     const [jobId, setJobId] = useState('');
     const [jobUpdate, setJobUpdate] = useState(false);
-    const [jobs, setJobs] = useState(user?.Jobs);
+    const [jobs, setJobs] = useState(user?.Jobs ? user.Jobs : myApplications);
 
     useEffect(() => {
         if (jobs) return;

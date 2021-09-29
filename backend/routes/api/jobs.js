@@ -39,6 +39,26 @@ const job = require("../../db/models/job");
 const router = express.Router();
 
 
+// Route for applying to a job posting 
+router.post('/apply/:job_id', asyncHandler( async (req, res) => {
+    const { job_id } = req.params;
+    const { user_id } = req.body;
+
+    const app = await Application.create({
+        job_id: +job_id,
+        user_id: +user_id
+    })
+
+    const job = await Job.findOne({
+        where: {
+            id: +job_id
+        },
+        include: { all: true }
+    })
+
+    return res.json({ job })
+}))
+
 // route to delete a job posting
 router.delete('/:job_id', asyncHandler( async (req, res) => {
     const { job_id } = req.params;

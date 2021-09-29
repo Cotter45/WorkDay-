@@ -9,6 +9,7 @@ import Navigation from './components/Navigation';
 import HomePage from './components/Home/home';
 import Feed from './components/Feed/feed';
 import UserProfile from './components/UserProfile/user_profile';
+import MyJobs from './components/MyJobsPage/myjobs';
 // import { Modal } from './context/Modal';
 
 
@@ -50,6 +51,9 @@ function App() {
             </Route>
             <Route exact only path='/feed'>
               <Feed />
+            </Route>
+            <Route exact only path='/jobs'>
+              <MyJobs />
             </Route>
             <Route path='/profile/:id'>
               <UserProfile />

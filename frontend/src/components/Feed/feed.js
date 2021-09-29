@@ -9,6 +9,7 @@ import './feed.css';
 import { get_data } from '../../store/api';
 import NewPost from '../NewPostModal/newpost';
 import NewPostModal from '../NewPostModal';
+import ProfileCard from './profile-card';
 
 function Feed() {
     const history = useHistory();
@@ -56,28 +57,7 @@ function Feed() {
         <div id='feed-main'>
             <div className='card-container'>
                 <div className='left-cards'>
-                    <div onClick={visitProfile} className='profile-card'>
-                        <div className='profile-images'>
-                            <div className='background-image-container'>
-                                <img src={user?.background_image} alt='background'></img>
-                            </div>
-                            <img className='profile-image' src={user?.profile_picture} alt='me'></img>
-                        </div>
-                        <div className='profile-info'>
-                            <h4>{user?.first_name + ' ' + user?.last_name}</h4>
-                            <p>{user?.current_job}</p>
-                            <div className='profile-extra-info'>
-                                <h4>Location</h4>
-                                <p>{user?.location}</p>
-                                <h4>Email</h4>
-                                <p>{user?.email}</p>
-                                <h4>Birthday</h4>
-                                <p>{user && new Date(user.birthday).toDateString()}</p>
-                                <h4>About</h4>
-                                <p>{user?.description}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <ProfileCard visitProfile={visitProfile} user={user} />
                     {company && (
                         <div onClick={visitCompany} className='team-card'>
                             <div className='profile-images'>

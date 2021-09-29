@@ -1,26 +1,35 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import LoginSignup from '../../LoginOrSignup';
+import { job_application } from '../../../store/api';
 
 function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo, user }) {
+    const dispatch = useDispatch();
 
     const sessionUser = useSelector(state => state.session.user);
 
     const [loggedIn, setLoggedIn] = useState(sessionUser ? true : false);
+    const [applied, setApplied] = useState(result.Applications.find(app => app.user_id === +user.id) ? true : false);
+    const [saved, setSaved] = useState(false);
+    const [applicants, setApplicants] = useState(result.Applications.length);
 
-
-    const apply = (e) => {
-        console.log('apply', user)
-        if (sessionUser) {
-
-        } else {
-            setLoggedIn(true)
+    const apply = async (e) => {
+        console.log('apply')
+        const app = {
+            user_id: user.id,
+            job_id: result.id
         }
+
+        await dispatch(job_application(app));
+        setApplied(true);
+        setApplicants(applicants + 1);
     }
     
     const save = (e) => {
         console.log('save')
 
+
+        setSaved(true);
     }
 
     return (
@@ -53,14 +62,19 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
                     <>
                     {additionalInfo && jobId === result.id && (
                         <div>
-                            <p className='applicants'>{result.Applications.length} applicants</p>
+                            <p className='applicants'>{applicants} applicants</p>
                             <p>Email: {result.Company.email}</p>
                             <p>Phone: {result.Company.phone}</p>
                             <p>Founded: {new Date(result.Company.founded).toDateString()}</p>
-                            {loggedIn && (
+                            {loggedIn && !applied && (
                                 <div className='app-buttons'>
                                     <button onClick={(e) => apply()} className='app-button'>Apply</button>
                                     <button className='app-button'>Save</button>
+                                </div>
+                            )}
+                            {loggedIn && applied && (
+                                <div className='app-buttons'>
+                                    <button className='selected'>Awaiting response</button>
                                 </div>
                             )}
                             {!loggedIn && (
@@ -83,13 +97,18 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
                             </div>
                         </div>
                         <div>
-                            <p className='applicants'>{result.Applications?.length} applicants</p>
+                            <p className='applicants'>{applicants} applicants</p>
                             <p>Email: {user.email}</p>
                         </div>
-                        {loggedIn && (
+                        {loggedIn && !applied && (
                             <div className='app-buttons'>
-                                <button onClick={(e) => apply()} className='app-button'>Apply</button>
-                                <button className='app-button'>Save</button>
+                                <button onClick={(e) => apply(e)} className='app-button'>Apply</button>
+                                <button onClick={(e) => save(e)} className='app-button'>Save</button>
+                            </div>
+                        )}
+                        {loggedIn && applied && (
+                            <div className='app-buttons'>
+                                <button className='selected'>Awaiting response</button>
                             </div>
                         )}
                         {!loggedIn && (

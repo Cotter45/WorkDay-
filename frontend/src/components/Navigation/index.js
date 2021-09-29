@@ -17,6 +17,7 @@ function Navigation({ isLoaded }){
   const dispatch = useDispatch();
 
   const sessionUser = useSelector(state => state.session.user);
+  const searchResults = useSelector(state => state.data.search);
 
   const [search, setSearch] = useState(false);
   const [results, setResults] = useState([]);
@@ -25,6 +26,12 @@ function Navigation({ isLoaded }){
   const [jobs, setJobs] = useState(false);
   const [companies, setCompanies] = useState(false);
   const [users, setUsers] = useState(false);
+
+  useEffect(() => {
+    if (!search) return;
+
+    setResults(searchResults);
+  }, [search, searchResults])
 
   const demo = () => {
     let credentials = {
