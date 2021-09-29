@@ -5,15 +5,18 @@ import { useState, useEffect } from 'react';
 
 import './myjobs.css';
 import ProfileCard from '../Feed/profile-card';
-import Jobs from '../Jobs/jobs';
-import JobResults from '../Navigation/Search/job-results';
+import { get_data, job_application, save_job } from '../../store/api';
+import Applications from './applications';
+import SavedJobs from './savedjobs';
 
-function MyJobs() {
+
+function MyJobs({ user_id, isLoaded, setIsLoaded }) {
     const history = useHistory();
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.session.user);
-    const myApplications = useSelector(state => state.data.applications).filter(app => app.user_id === user.id);
+    const myApplications = useSelector(state => state.data.applications);
+    const mySaves = useSelector(state => state.data.saved_jobs);
     const stateJobs = useSelector(state => state.data.jobs);
 
     const [viewMyApps, setViewMyApps] = useState(true);
@@ -23,105 +26,143 @@ function MyJobs() {
 
     const [additionalInfo, setAdditionalInfo] = useState(false);
     const [jobId, setJobId] = useState('');
-    const [job, setJob] = useState('');
+    const [apps, setApps] = useState(myApplications);
+    const [savedJobs, setSavedJobs] = useState(mySaves);
+
+    const [update, setUpdate] = useState(false);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        if (!jobId) return;
-        setJob(stateJobs.find(job => job.id === jobId))
-    }, [jobId, stateJobs])
+        if (isLoaded) return;
+        (async function stuff() {
+            await dispatch(get_data(user.id));
+        })()
+        setIsLoaded(true);
+    }, [dispatch, isLoaded, setIsLoaded, user.id])
+
+    useEffect(() => {
+        if (savedJobs.length) return;
+        if (mySaves.length) {
+            setSavedJobs(mySaves);
+        }
+    }, [mySaves, savedJobs.length])
+
+    useEffect(() => {
+        if (!update) return;
+        setApps(myApplications);
+        setUpdate(!update)
+    }, [myApplications, update])
+
+    useEffect(() => {
+        if (apps.length) return;
+        if (myApplications.length) {
+            setApps(myApplications);
+        }
+    }, [apps, myApplications])
 
     const visitProfile = () => {
         history.push(`/profile/${user.id}/posts`)
     }
 
+    const deleteApp = async () => {
+        const application = {
+            job_id: jobId,
+            user_id: user.id 
+        }
+        await dispatch(job_application(application));
+        setUpdate(!update);
+    }
+
+    const deleteSave = async () => {
+        const save = {
+            job_id: jobId,
+            user_id: user.id 
+        }
+
+        await dispatch(save_job(save))
+        setUpdate(!update);
+    }
+
+    const refresh = async () => {
+        await dispatch(get_data(user_id));
+        // setUpdate(!update)
+        // setApps(myApplications)
+    }
+    console.log(apps)
+
     return (
-        <div className='myjobs-main-container'>
-            <div className='myjobs-container'>
-                <div className='left-columns'>
-                    <div className='menu'>
-                        <div onClick={() => {
-                            setViewMyApps(!viewMyApps)
-                            setViewSaved(false)
-                            setViewPosted(false)
-                            setReviewApps(false)
-                        }} className='menu-tabs'>
-                            <i className="far fa-money-bill-alt"></i>
-                            <p>My Applications</p>
+        <>
+        {isLoaded && (
+            <div className='myjobs-main-container'>
+                <div className='myjobs-container'>
+                    <div className='left-columns'>
+                        <div className='menu'>
+                            <div onClick={() => {
+                                setViewMyApps(true)
+                                setViewSaved(false)
+                                setViewPosted(false)
+                                setReviewApps(false)
+                            }} className={viewMyApps ? 'highlight' : 'menu-tabs'}>
+                                <i className="far fa-money-bill-alt"></i>
+                                <p>My Applications</p>
+                            </div>
+                            <div onClick={() => {
+                                setViewMyApps(false)
+                                setViewSaved(true)
+                                setViewPosted(false)
+                                setReviewApps(false)
+                            }} className={viewSaved ? 'highlight' : 'menu-tabs'}>
+                                <i className="fas fa-bookmark"></i>
+                                <p> Saved Jobs</p>
+                            </div>
+                            <div onClick={() => {
+                                setViewMyApps(false)
+                                setViewSaved(false)
+                                setViewPosted(true)
+                                setReviewApps(false)
+                            }} className={viewPosted ? 'highlight' : 'menu-tabs'}>
+                                <i className="fas fa-briefcase"></i>
+                                <p> Posted Jobs</p>
+                            </div>
+                            <div onClick={() => {
+                                setViewMyApps(false)
+                                setViewSaved(false)
+                                setViewPosted(false)
+                                setReviewApps(true)
+                            }} className={reviewApps ? 'highlight' : 'menu-tabs'}>
+                                <i className="fas fa-user-check"></i>
+                                <p> Review Applicants</p>
+                            </div>
                         </div>
-                        <div onClick={() => {
-                            setViewMyApps(false)
-                            setViewSaved(!viewSaved)
-                            setViewPosted(false)
-                            setReviewApps(false)
-                        }} className='menu-tabs'>
-                            <i className="fas fa-bookmark"></i>
-                            <p> Saved Jobs</p>
-                        </div>
-                        <div onClick={() => {
-                            setViewMyApps(false)
-                            setViewSaved(false)
-                            setViewPosted(!viewPosted)
-                            setReviewApps(false)
-                        }} className='menu-tabs'>
-                            <i className="fas fa-briefcase"></i>
-                            <p> Posted Jobs</p>
-                        </div>
-                        <div onClick={() => {
-                            setViewMyApps(false)
-                            setViewSaved(false)
-                            setViewPosted(false)
-                            setReviewApps(!reviewApps)
-                        }} className='menu-tabs'>
-                            <i className="fas fa-user-check"></i>
-                            <p> Review Applicants</p>
-                        </div>
+                        <ProfileCard visitProfile={visitProfile} user={user} />
                     </div>
-                    <ProfileCard visitProfile={visitProfile} user={user} />
-                </div>
-                <div className='right-columns'>
-                    {viewMyApps && myApplications.map(app => (
-                        <div key={app.id} className='app-info-container'>
-                            <div className='app-info'>
-                                <p>{app.Job.title} for {stateJobs.find(job => job.id === app.job_id) ? stateJobs.find(job => job.id === app.job_id).Company.name : 'Contract'}</p>
-                                {additionalInfo && jobId === app.id && (
-                                    <>
-                                    <p>Location: {app.Job.location}</p>
-                                    <p>Pays: ${app.Job.pay}</p>
-                                    <p>Posted: {new Date(app.Job.createdAt).toDateString()}</p>
-                                    <p>Posted by: {app.User.first_name + ' ' + app.User.last_name}</p>
-                                    <p>Description: <br></br> {app.Job.description}</p>
-                                    {job.Requirements && (
-                                        <div className='app-requirements'>
-                                            <p>Requirements: </p>
-                                            {job.Requirements.map(requirement => (
-                                                <div key={requirement.id}>
-                                                    <li>{requirement.requirement}</li>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                    </>
-                                )}
-                            </div>
-                            <div className='post-buttons'>
-                                <button className={additionalInfo && jobId === app.id ? 'selected' : 'post-button'} onClick={() => {
-                                    if (!additionalInfo) {
-                                        setJobId(app.id)
-                                        setAdditionalInfo(!additionalInfo)
-                                    } else if (additionalInfo && jobId === app.id) {
-                                        setJobId(app.id)
-                                        setAdditionalInfo(false)
-                                    } else {
-                                        setJobId(app.id)
-                                        setAdditionalInfo(true)
-                                    }
-                                }}>{additionalInfo && jobId === app.id ? 'Less Info' : 'More Info'}</button>
-                            </div>
-                        </div>
-                    ))}
+                    <div className='right-columns'>
+                        <button className='refresh-button' onClick={refresh}><i className="fas fa-sync-alt"></i></button>
+                        {viewMyApps && (
+                            <Applications 
+                                apps={apps} 
+                                additionalInfo={additionalInfo} 
+                                jobId={jobId} 
+                                stateJobs={stateJobs} 
+                                deleteApp={deleteApp} 
+                                setJobId={setJobId} 
+                                setAdditionalInfo={setAdditionalInfo} />
+                        )}
+                        {viewSaved && (
+                            <SavedJobs 
+                                deleteSave={deleteSave}
+                                stateJobs={stateJobs}
+                                additionalInfo={additionalInfo}
+                                jobId={jobId}
+                                setJobId={setJobId}
+                                setAdditionalInfo={setAdditionalInfo}
+                                savedJobs={savedJobs} />
+                        )}
+                    </div>
                 </div>
             </div>
-        </div>
+        )} 
+        </>
     )
 }
 

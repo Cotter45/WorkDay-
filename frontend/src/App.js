@@ -16,7 +16,9 @@ import MyJobs from './components/MyJobsPage/myjobs';
 
 function App() {
   const dispatch = useDispatch();
+
   const [isLoaded, setIsLoaded] = useState(false);
+  const [appUpdate, setAppUpdate] = useState(false);
   // const [showModal, setShowModal] = useState(false);
 
   const user = useSelector(state => state.session.user);
@@ -53,7 +55,7 @@ function App() {
               <Feed />
             </Route>
             <Route exact only path='/jobs'>
-              <MyJobs />
+              <MyJobs isLoaded={isLoaded} setIsLoaded={setIsLoaded} user_id={user_id} />
             </Route>
             <Route path='/profile/:id'>
               <UserProfile />

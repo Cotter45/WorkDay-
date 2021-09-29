@@ -1,22 +1,23 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import LoginSignup from '../../LoginOrSignup';
-import { job_application } from '../../../store/api';
+import { job_application, save_job } from '../../../store/api';
 
 function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo, user }) {
     const dispatch = useDispatch();
 
     const sessionUser = useSelector(state => state.session.user);
+    const saved_jobs = useSelector(state => state.data.saved_jobs);
 
     const [loggedIn, setLoggedIn] = useState(sessionUser ? true : false);
-    const [applied, setApplied] = useState(result.Applications.find(app => app.user_id === +user.id) ? true : false);
-    const [saved, setSaved] = useState(false);
+    const [applied, setApplied] = useState(result.Applications.find(app => app.job_id === result.id) ? true : false);
+    const [saved, setSaved] = useState(saved_jobs?.find(job => job?.job_id === result.id) ? true : false);
     const [applicants, setApplicants] = useState(result.Applications.length);
 
     const apply = async (e) => {
         console.log('apply')
         const app = {
-            user_id: user.id,
+            user_id: sessionUser.id,
             job_id: result.id
         }
 
@@ -25,10 +26,13 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
         setApplicants(applicants + 1);
     }
     
-    const save = (e) => {
-        console.log('save')
+    const save = async (e) => {
+        const app = {
+            user_id: sessionUser.id,
+            job_id: result.id
+        }
 
-
+        await dispatch(save_job(app))
         setSaved(true);
     }
 
@@ -66,15 +70,20 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
                             <p>Email: {result.Company.email}</p>
                             <p>Phone: {result.Company.phone}</p>
                             <p>Founded: {new Date(result.Company.founded).toDateString()}</p>
-                            {loggedIn && !applied && (
+                            {loggedIn && !applied && !saved && (
                                 <div className='app-buttons'>
                                     <button onClick={(e) => apply()} className='app-button'>Apply</button>
-                                    <button className='app-button'>Save</button>
+                                    <button onClick={(e) => save()} className='app-button'>Save</button>
                                 </div>
                             )}
                             {loggedIn && applied && (
                                 <div className='app-buttons'>
                                     <button className='selected'>Awaiting response</button>
+                                </div>
+                            )}
+                            {loggedIn && saved && (
+                                <div className='app-buttons'>
+                                    <button className='selected'>Saved</button>
                                 </div>
                             )}
                             {!loggedIn && (
@@ -100,15 +109,20 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
                             <p className='applicants'>{applicants} applicants</p>
                             <p>Email: {user.email}</p>
                         </div>
-                        {loggedIn && !applied && (
+                        {loggedIn && !applied && !saved && (
                             <div className='app-buttons'>
-                                <button onClick={(e) => apply(e)} className='app-button'>Apply</button>
-                                <button onClick={(e) => save(e)} className='app-button'>Save</button>
+                                <button onClick={(e) => apply()} className='app-button'>Apply</button>
+                                <button onClick={(e) => save()} className='app-button'>Save</button>
                             </div>
                         )}
                         {loggedIn && applied && (
                             <div className='app-buttons'>
                                 <button className='selected'>Awaiting response</button>
+                            </div>
+                        )}
+                        {loggedIn && saved && (
+                            <div className='app-buttons'>
+                                <button className='selected'>Saved</button>
                             </div>
                         )}
                         {!loggedIn && (

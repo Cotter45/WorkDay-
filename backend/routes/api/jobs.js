@@ -39,24 +39,93 @@ const job = require("../../db/models/job");
 const router = express.Router();
 
 
+// Route for saving a job posting 
+router.post('/save/:job_id', asyncHandler( async (req, res) => {
+    const { user_id, job_id } = req.body;
+
+    console.log('SAVE', user_id, job_id)
+
+    const save = await Save_for_Later.findOne({
+        where: {
+            job_id: +job_id,
+            user_id: +user_id 
+        }
+    })
+
+    if (save === null) {
+        await Save_for_Later.create({
+            job_id: +job_id,
+            user_id: +user_id 
+        })
+        const newSave = await Save_for_Later.findOne({
+            where: {
+                job_id: +job_id,
+                user_id: +user_id
+            },
+            include: [
+                { 
+                model: Job,
+                include: { all: true }
+                }, 
+                {
+                model: User,
+                include: { all: true } 
+                }
+            ]
+        })
+        return res.json({ newSave })
+    } else {
+        const id = save.id;
+        await save.destroy();
+        return res.json({ id });
+    }
+}))
+
 // Route for applying to a job posting 
 router.post('/apply/:job_id', asyncHandler( async (req, res) => {
-    const { job_id } = req.params;
-    const { user_id } = req.body;
+    // const { job_id } = req.params;
+    const { user_id, job_id } = req.body;
 
-    const app = await Application.create({
-        job_id: +job_id,
-        user_id: +user_id
-    })
-
-    const job = await Job.findOne({
+    
+    const exists = await Application.findOne({
         where: {
-            id: +job_id
-        },
-        include: { all: true }
+            job_id: +job_id,
+            user_id: +user_id
+        }
     })
 
-    return res.json({ job })
+    if (exists === null) {
+        await Application.create({
+            job_id: +job_id,
+            user_id: +user_id
+        })
+        
+        const job = await Application.findOne({
+            where: {
+                job_id: +job_id,
+                user_id: +user_id 
+            },
+            include: [
+                { 
+                model: Job,
+                include: { all: true }
+                }, 
+                {
+                model: User,
+                include: { all: true } 
+                }
+            ]
+        })
+        
+        return res.json({ job })
+    } else if (exists) {
+        const id = exists.id;
+        await exists.destroy()
+
+        return res.json({ id })
+    }
+
+
 }))
 
 // route to delete a job posting

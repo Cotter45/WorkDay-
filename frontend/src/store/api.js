@@ -15,21 +15,39 @@ const EDIT_COMMENT = 'api/edit-comment';
 const DELETE_COMMENT = 'api/delete-comment';
 const EDIT_PROFILE = 'api/edit-profile';
 const APPLY_TO_JOB = 'api/apply_to_job';
+const DELETE_APP = 'api/delete_app_for_job';
 const SAVE_JOB = 'api/save_job_for_later';
+const DELETE_SAVE = 'api/delete_save_job';
+
+
+const delete_save_job_action = (data) => ({
+    type: DELETE_SAVE,
+    payload: data 
+})
 
 const save_job_action = (data) => ({
     type: SAVE_JOB,
     payload: data 
 })
 
-export const save_job = (job_id) => async dispatch => {
-    const fetch = await csrfFetch(`/api/jobs/save/${job_id}`, {
+export const save_job = (save) => async dispatch => {
+    const fetch = await csrfFetch(`/api/jobs/save/${save.job_id}`, {
         method: 'POST',
+        body: JSON.stringify(save)
     })
     const response = await fetch.json();
-    dispatch(save_job_action(response));
+    if (response.newSave) {
+        dispatch(save_job_action(response));
+    } else {
+        dispatch(delete_save_job_action(response));
+    }
     return fetch;
 }
+
+const delete_job_application_action = (data) => ({
+    type: DELETE_APP,
+    payload: data 
+})
 
 const job_application_action = (data) => ({
     type: APPLY_TO_JOB,
@@ -42,7 +60,12 @@ export const job_application = (application) => async dispatch => {
         body: JSON.stringify(application)
     })
     const response = await fetch.json();
-    dispatch(job_application_action(response));
+    if (response.job) {
+        console.log('SHOULDNT BE HERE')
+        dispatch(job_application_action(response));
+    } else {
+        dispatch(delete_job_application_action(response));
+    }
     return fetch;
 }
 
@@ -438,7 +461,7 @@ const initialState = {
     posts: null,
     components: null,
     images: null,
-    search: null,
+    search: [],
     team: null,
     users: []
 }
@@ -461,6 +484,7 @@ function data_reducer(state = initialState, action) {
             return newState;
         case SEARCH_DATA:
             newState.search = [...action.payload.jobResults, ...action.payload.userResults, ...action.payload.companyResults];
+            // newState.jobs.push(...action.payload.jobResults);
             return newState;
         case USER_PAGE:
             const user = newState.users.find(user => user.id === action.payload.user.id);
@@ -475,7 +499,6 @@ function data_reducer(state = initialState, action) {
             if (!editor) {
                 newState.users.push(action.payload.newUser);
             } else {
-                console.log(action.payload.newUser, 'EDIT PROFILE SWITCH')
                 newState.users.splice(newState.users.indexOf(editor), 1, action.payload.newUser);
             }
             return newState;
@@ -532,20 +555,28 @@ function data_reducer(state = initialState, action) {
             post_with_comment.Comments.splice(post_with_comment.Comments.indexOf(delete_comment), 1, { message: 'This comment has been removed'})
             return newState;
         case APPLY_TO_JOB:
-            const replace_job = newState.jobs?.find(job => job.id === action.payload.job.id);
-            if (replace_job) {
-                newState.jobs.splice(newState.jobs.indexOf(replace_job), 1, action.payload.job);
-            } else {
-                newState.jobs.push(action.payload.job);
-            }
+            // const replace_job = newState.jobs?.find(job => job.id === action.payload.job.id);
+            // if (replace_job) {
+            //     newState.jobs.splice(newState.jobs.indexOf(replace_job), 1, action.payload.job);
+            // } else {
+            //     newState.jobs.push(action.payload.job);
+            // }
             const replace_search = newState.search.find(job => job.id === action.payload.job.id);
             if (replace_search) {
-                console.log('HIT')
                 newState.search.splice(newState.search.indexOf(replace_search), 1, action.payload.job);
             }
+            newState.applications.push(action.payload.job);
+            return newState;
+        case DELETE_APP:
+            const delete_app = newState.applications.find(app => app.id === +action.payload.id);
+            newState.applications.splice(newState.applications.indexOf(delete_app), 1);
             return newState;
         case SAVE_JOB:
-            newState.saved_jobs.push(action.payload.job);
+            newState.saved_jobs.push(action.payload.newSave);
+            return newState;
+        case DELETE_SAVE: 
+            const saver = newState.saved_jobs.find(save => save.id === +action.payload.id);
+            newState.saved_jobs.splice(newState.saved_jobs.indexOf(saver), 1);
             return newState;
         default: 
             return state;

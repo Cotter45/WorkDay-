@@ -119,16 +119,6 @@ router.put('/profile_picture/:user_id', singleMulterUpload('image'), asyncHandle
     }
   })
 
-  // await user.update({
-  //   profile_picture
-  // })
-
-
-  // const newUser = await User.findOne({
-  //   where: {
-  //     id: +user_id
-  //   }
-  // })
   return res.json({ profile_picture })
 }))
 
@@ -143,17 +133,6 @@ router.put('/background_image/:user_id', singleMulterUpload('image'), asyncHandl
   })
 
   const background_image = await singlePublicFileUpload(req.file);
-
-  // const newUser = await user.update({
-  //     background_image
-  // })
-  
-    
-  // const newUser = await User.findOne({
-  //   where: {
-  //     id: +user_id
-  //   }
-  // })
 
   return res.json({ background_image })
 }))
@@ -252,6 +231,41 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
       ]
     })
 
+    const app = await Application.findAll({
+      where: {
+        user_id: +user_id 
+      },
+      include: [
+        { 
+          model: Job,
+          include: { all: true }
+        }, 
+        {
+          model: User,
+          include: { all: true } 
+        }
+      ]
+    })
+
+    const saves = await Save_for_Later.findAll({
+      where: {
+        user_id: +user_id 
+      },
+      include: [
+        { 
+          model: Job,
+          include: { all: true }
+        }, 
+        {
+          model: User,
+          include: { all: true } 
+        }
+      ]
+    })
+
+    user.dataValues.Applications = app;
+    user.dataValues.Save_for_Laters = saves;
+
     const posts = await Post.findAll({
       include: [
             { model: User },
@@ -268,9 +282,6 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
           ],
           limit: 25
     })
-
-    // user.Posts = posts;
-    // console.log(user)
 
     return res.json({ user, posts })
 }))
