@@ -106,9 +106,17 @@ function Jobs() {
                     )}
                         <div>
                             <button className='post-button' onClick={() => {
-                                setJobId(job.id)
-                                setAdditionalInfo(!additionalInfo)
-                            }}>{additionalInfo ? 'Less Info' : 'More Info'}</button>
+                                if (!additionalInfo) {
+                                    setJobId(job.id)
+                                    setAdditionalInfo(!additionalInfo)
+                                } else if (additionalInfo && jobId === job.id) {
+                                    setJobId(job.id)
+                                    setAdditionalInfo(false)
+                                } else {
+                                    setJobId(job.id)
+                                    setAdditionalInfo(true)
+                                }
+                            }}>{additionalInfo && jobId === job.id ? 'Less Info' : 'More Info'}</button>
                         </div>
                     </div>
                 </>

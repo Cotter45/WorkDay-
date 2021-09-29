@@ -156,6 +156,27 @@ module.exports = (sequelize, DataTypes) => {
           len: [60, 60],
         },
       },
+      description: {
+        type: DataTypes.TEXT,
+      },
+      location: {
+        type: DataTypes.STRING, 
+      },
+      current_job: {
+        type: DataTypes.STRING, 
+      },
+      profile_picture: {
+        type: DataTypes.STRING, 
+      },
+      background_image: {
+        type: DataTypes.STRING,
+      },
+      team_id: {
+        type: DataTypes.INTEGER,
+      },
+      current_company: {
+        type: DataTypes.INTEGER,
+      }
     },
     {
       sequelize,
@@ -171,7 +192,9 @@ module.exports = (sequelize, DataTypes) => {
           attributes: { exclude: ["hashedPassword"], include: ['profile_picture', 'background_image', 'birthday', 'description', 'current_job', 'location'] },
         },
         loginUser: {
-          attributes: {},
+          attributes: {
+            include: ['profile_picture', 'background_image', 'birthday', 'description', 'current_job', 'location']
+          },
         },
       },
     }

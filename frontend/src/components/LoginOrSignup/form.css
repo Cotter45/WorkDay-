@@ -1,0 +1,12 @@
+.switch-forms {
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 5px gray;
+}
+
+.switch-forms:hover {
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 10px gray;
+    cursor: pointer;
+}

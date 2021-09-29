@@ -1,0 +1,103 @@
+.edit-profile-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    height: fit-content;
+}
+
+.edit-profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    width: 100%;
+    gap: 15px;
+}
+
+.profile-light {
+    height: 100%;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.edit-background-image { 
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.edit-background-image > img {
+    height: 50px;
+    width: 100%;
+    object-fit: cover;
+}
+
+.edit-profile-image {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    height: fit-content;
+}
+
+.edit-profile-pic {
+    height: 75px;
+    width: 75px;
+    border-radius: 50%;
+}
+
+.edit-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 10px;
+}
+
+.edit-light-info {
+    display: grid;
+    grid-template-columns: repeat(2, 2fr);
+    gap: 15px;
+}
+
+.edit-light-info > label > input {
+    border: none;
+    box-shadow: 0px 5px 5px gray;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.profile-light-description {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+}
+
+.profile-light-description > textarea {
+    border: none;
+    box-shadow: 0px 5px 5px gray;
+    height: 75px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.edit-buttons {
+    padding: 25px;
+}
+
+.edit-button {
+    border: none;
+    color: gray;
+}
+
+.edit-button:hover {
+    color: black;
+}

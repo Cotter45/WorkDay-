@@ -17,7 +17,8 @@ module.exports = {
         allowNull: false
       },
       birthday: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
+        defaultValue: Sequelize.fn("now")
       },
       email: {
         type: Sequelize.STRING(256),
@@ -29,19 +30,24 @@ module.exports = {
         allowNull: false,
       },
       description: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        defaultValue: 'Fill me in!'
       },
       location: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: 'Fill me in!'
       },
       current_job: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: 'Fill me in!'
       },
       profile_picture: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/SNice.svg/1200px-SNice.svg.png'
       },
       background_image: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: 'https://media-exp1.licdn.com/dms/image/C4E16AQHcazg7sZUg8Q/profile-displaybackgroundimage-shrink_200_800/0/1617046261689?e=1637798400&v=beta&t=t-RcxroppKq4IoOSo8qAEOOsXKheEVWPoEIaZh5TmNo'
       },
       team_id: {
         type: Sequelize.INTEGER, 

@@ -1,4 +1,6 @@
+import { set } from 'js-cookie';
 import { useState } from 'react';
+import CompanyResults from './company-results';
 import JobResults from './job-results';
 
 import './results.css';
@@ -38,18 +40,19 @@ function Results({ results, uuidv4, jobs, companies, users }) {
                         </>
                     )}
                 </div>
-                <div className='company-results'>
-                    {result.name && (
-                        <>
-                        <p>{result.name}</p>
-                        </>
-                    )}
-                </div>
+                {result.name && (
+                    <CompanyResults result={result} additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} companies={companies} />
+                )}
             </div>
         ))}
         {results && jobs && results.filter(result => result.title !== undefined).map(result => (
             <div className='results-container' key={uuidv4()}>
                 <JobResults result={result} additionalInfo={additionalInfo} jobId={jobId} setJobId={setJobId} setAdditionalInfo={setAdditionalInfo} user={result.User} />
+            </div>
+        ))}
+        {results && companies && results.filter(result => result.name !== undefined).map(result => (
+            <div className='results-container' key={uuidv4()}>
+                <CompanyResults result={result} additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} companies={companies} />
             </div>
         ))}
         </>

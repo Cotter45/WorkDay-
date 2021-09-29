@@ -13,6 +13,144 @@ const LIKE_POST = 'api/like-post';
 const ADD_COMMENT = 'api/add-comment';
 const EDIT_COMMENT = 'api/edit-comment';
 const DELETE_COMMENT = 'api/delete-comment';
+const EDIT_PROFILE = 'api/edit-profile';
+
+const edit_profile_action = (data) => ({
+    type: EDIT_PROFILE,
+    payload: data 
+})
+
+export const edit_profile = (user, userId) => async dispatch => {
+    const { background_image,
+            profile_picture,
+            first_name,
+            last_name,
+            email,
+            location,
+            current_job,
+            description } = user;
+            // company,    
+
+            
+    if (background_image.name && profile_picture.name) {
+        let formData1 = new FormData();
+        formData1.append('image', profile_picture);
+        const fetch1 = await csrfFetch(`/api/users/profile_picture/${userId}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: formData1
+        })
+        const response1 = await fetch1.json();
+        user.profile_picture = response1.profile_picture;
+
+        let formData2 = new FormData();
+        formData2.append('image', background_image);
+        const fetch2 = await csrfFetch(`/api/users/background_image/${userId}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: formData2
+        })
+        const response2 = await fetch2.json();
+        user.background_image = response2.background_image;
+
+        const fetch3 = await csrfFetch(`/api/users/update_profile/${userId}`, {
+            method: 'PUT',
+            body: JSON.stringify(user)
+        })
+        const data = await fetch3.json();
+        dispatch(edit_profile_action(data));
+        return fetch3;
+
+    } else if (!background_image.name && profile_picture.name) {
+
+        let formData1 = new FormData();
+        formData1.append('image', profile_picture);
+        const fetch1 = await csrfFetch(`/api/users/profile_picture/${userId}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: formData1
+        })
+        const response1 = await fetch1.json();
+        user.profile_picture = response1.profile_picture;
+
+        // let formData3 = new FormData();
+        // formData3.append('background_image', background_image)
+        // formData3.append('profile_picture', response1)
+        // formData3.append('first_name', first_name)
+        // formData3.append('last_name', last_name)
+        // formData3.append('email', email)
+        // formData3.append('location', location)
+        // // formData1.append('company', company)
+        // formData3.append('current_job', current_job)
+        // formData3.append('description', description)
+
+        // const fetch3 = await csrfFetch(`/api/users/update_profile/${userId}`, {
+        //     method: 'PUT',
+        //     headers: {
+        //         "Content-Type": "multipart/form-data"
+        //     },
+        //     body: formData3
+        // })
+        const fetch3 = await csrfFetch(`/api/users/update_profile/${userId}`, {
+            method: 'PUT',
+            body: JSON.stringify(user)
+        })
+        const data = await fetch3.json();
+        console.log('RESPONSE2', data)
+        dispatch(edit_profile_action(data));
+        return fetch3;
+
+    } else if (!profile_picture.name && background_image.name) {
+        console.log('BACKGROUND NO PROFILE', background_image)
+
+        let formData2 = new FormData();
+        formData2.append('image', background_image);
+        const fetch2 = await csrfFetch(`/api/users/background_image/${userId}`, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "multipart/form-data"
+            },
+            body: formData2
+        })
+        const response2 = await fetch2.json();
+        console.log('RESPONSE FROM THE GRAVE', response2)
+        user.background_image = response2.background_image;
+
+        // let formData3 = new FormData();
+        // formData3.append('profile_picture', profile_picture)
+        // formData3.append('background_image', response2.new_background_image)
+        // formData3.append('first_name', first_name)
+        // formData3.append('last_name', last_name)
+        // formData3.append('email', email)
+        // formData3.append('location', location)
+        // // formData1.append('company', company)
+        // formData3.append('current_job', current_job)
+        // formData3.append('description', description)
+
+        const fetch3 = await csrfFetch(`/api/users/update_profile/${userId}`, {
+            method: 'PUT',
+            body: JSON.stringify(user)
+        })
+        const data = await fetch3.json();
+        console.log(data, 'DATA')
+        dispatch(edit_profile_action(data));
+        return fetch3;
+    } else {
+        const response = await csrfFetch(`/api/users/update_profile/${userId}`, {
+            method: 'PUT',
+            body: JSON.stringify(user)
+        })
+        const data = await response.json();
+        dispatch(edit_profile_action(data));
+        return response;
+    }
+}
 
 const delete_comment_action = (data) => ({
     type: DELETE_COMMENT,
@@ -331,6 +469,15 @@ function data_reducer(state = initialState, action) {
                 newState.users.push(action.payload.user);
             } else {
                 newState.users.splice(newState.users.indexOf(user), 1, action.payload.user);
+            }
+            return newState;
+        case EDIT_PROFILE:
+            const editor = newState.users.find(user => user.id === action.payload.newUser.id);
+            if (!editor) {
+                newState.users.push(action.payload.newUser);
+            } else {
+                console.log(action.payload.newUser, 'EDIT PROFILE SWITCH')
+                newState.users.splice(newState.users.indexOf(editor), 1, action.payload.newUser);
             }
             return newState;
         case CREATE_POST:

@@ -6,6 +6,7 @@ const asyncHandler = require("express-async-handler");
 
 const { handleValidationErrors } = require("../../utils/validation");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
+const { singleMulterUpload, singlePublicFileUpload } = require("../../awsS3");
 
 
 const { 
@@ -44,20 +45,118 @@ const validateSignup = [
     .exists({ checkFalsy: true })
     .isEmail()
     .withMessage('Please provide a valid email.'),
-  check('username')
-    .exists({ checkFalsy: true })
-    .isLength({ min: 4 })
-    .withMessage('Please provide a username with at least 4 characters.'),
-  check('username')
+  check('first_name')
     .not()
     .isEmail()
-    .withMessage('Username cannot be an email.'),
+    .withMessage('First name cannot be an email.'),
+  check('last_name')
+    .not()
+    .isEmail()
+    .withMessage('Last name cannot be an email.'),
   check('password')
     .exists({ checkFalsy: true })
     .isLength({ min: 6 })
     .withMessage('Password must be 6 characters or more.'),
   handleValidationErrors,
 ];
+
+//Route to update users profile information
+router.put('/update_profile/:user_id', asyncHandler( async (req, res) => {
+  const { user_id } = req.params;
+  const { background_image, profile_picture, first_name, last_name, email, location, current_job, description } = req.body;
+
+  const user = await User.findOne({
+    where: {
+      id: +user_id 
+    }
+  })
+
+  const update = await user.update({
+    background_image,
+    profile_picture,
+    first_name,
+    last_name,
+    email,
+    location,
+    current_job,
+    description
+  })
+
+  const newUser = await User.findOne({
+    where: {
+      id: +user_id 
+    },
+    include: [
+      { 
+        model: Job,
+        include: { all: true }
+      },
+      {
+        model: Company,
+        include: { all: true }
+      },
+      {
+        model: Post,
+        include: { all: true }
+      }
+    ]
+  })
+
+  console.log("WTF IS HAPPENING", update, background_image, profile_picture)
+
+  return res.json({ newUser })
+}))
+
+
+// Route to update users profile picture
+router.put('/profile_picture/:user_id', singleMulterUpload('image'), asyncHandler( async (req, res) => {
+  const { user_id } = req.params;
+
+  const profile_picture = await singlePublicFileUpload(req.file);
+  const user = await User.findOne({
+    where: {
+      id: +user_id
+    }
+  })
+
+  // await user.update({
+  //   profile_picture
+  // })
+
+
+  // const newUser = await User.findOne({
+  //   where: {
+  //     id: +user_id
+  //   }
+  // })
+  return res.json({ profile_picture })
+}))
+
+// Route to update users background image 
+router.put('/background_image/:user_id', singleMulterUpload('image'), asyncHandler( async (req, res) => {
+  const { user_id } = req.params;
+
+  const user = await User.findOne({
+    where: {
+      id: +user_id
+    }
+  })
+
+  const background_image = await singlePublicFileUpload(req.file);
+
+  // const newUser = await user.update({
+  //     background_image
+  // })
+  
+    
+  // const newUser = await User.findOne({
+  //   where: {
+  //     id: +user_id
+  //   }
+  // })
+
+  return res.json({ background_image })
+}))
 
 // Sign up
 router.post('', validateSignup, asyncHandler(async (req, res) => {
@@ -95,7 +194,7 @@ router.get('/profile/:user_id', asyncHandler( async (req, res) => {
       }
     ]
   })
-  console.log(user);
+
   return res.json({ user })
 }))
 

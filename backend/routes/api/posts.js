@@ -119,7 +119,6 @@ router.post('/:postId/comment', singleMulterUpload('image'), asyncHandler( async
     let newComment;
 
     if (image_url) {
-        console.log('HERE')
         newComment = await Comment.create({
             comment,
             image_url,

@@ -7,23 +7,30 @@ import { get_user_data } from '../../store/api';
 import './profile.css';
 import Posts from '../Posts/posts';
 import Jobs from '../Jobs/jobs';
+import EditProfileModal from '../EditProfileModal';
 
 function UserProfile() {
     const dispatch = useDispatch();
     const userId = useParams().id;
 
     const user = useSelector(state => state.data.users.find(user => user.id === +userId));
+    // const [user, setUser] = useState(stateUsers.find(user => user.id === +userId));
     const statePosts = useSelector(state => state.data.posts)?.filter(post => post?.poster_id === user?.id);
     const me = useSelector(state => state.session.user);
 
-    // const [jobs, setJobs] = useState(user?.Jobs);
     const [posts, setPosts] = useState(user?.id === me?.id ? statePosts : user?.Posts);
-    // const [jobUpdate, setJobUpdate] = useState(false);
     const [update, setUpdate] = useState(false);
     const [userUpdate, setUserUpdate] = useState(false);
     const [showJob, setShowJob] = useState(false);
     const [showPost, setShowPost] = useState(true);
+    const [edit, setEdit] = useState(false);
+    // const [profileUpdate, setProfileUpdate] = useState(false);
 
+    // useEffect(() => {
+    //     if (!profileUpdate) return;
+
+    //     setUser(stateUsers.find(user => user.id === +userId));
+    // }, [user, userId])
 
     useEffect(() => {
         if (userUpdate) return;
@@ -31,40 +38,25 @@ function UserProfile() {
         (async function sendIt() {
             await dispatch(get_user_data(userId));
         })()
-
         setUserUpdate(!userUpdate);
     }, [dispatch, user, userId, userUpdate])
 
-    // useEffect(() => {
-    //     if (jobs) return;
-    //     setJobs(user?.Jobs);
-    // }, [jobs, user])
 
     useEffect(() => {
         if (posts) return;
         setPosts(user?.id === me?.id ? statePosts : user?.Posts);
     }, [me?.id, posts, statePosts, user])
 
-    // useEffect(() => {
-    //     if (!jobUpdate) return;
-    //     setJobs(user?.Jobs)
-    // }, [jobUpdate, user?.Jobs])
 
     useEffect(() => {
         if (!update) return;
         (async function sendIt() {
             await dispatch(get_user_data(userId));
         })()
+        // setUser(stateUsers.find(user => user.id === +userId))
         setPosts(user?.id === me?.id ? statePosts : user?.Posts);
-        setUpdate(!update);
+        // setUpdate(!update);
     }, [user?.Posts, update, dispatch, userId, user?.id, me?.id, statePosts])
-
-
-    
-    // let myAccount;
-    // if (user && me) {
-    //     myAccount = me.id === +userId;
-    // }
 
 
     return (
@@ -91,6 +83,15 @@ function UserProfile() {
                         <div className='profile-description'>
                             <p>{user.description && user.description}</p>
                         </div>
+                        {me.id === +userId && (
+                            <EditProfileModal update={update} setUpdate={setUpdate} user={user} />
+                        )}
+                        {me && edit && (
+                            <>
+                                <button className='edit-account'><i className="fas fa-check fa-2x"></i></button>
+                                <button className='edit-account' onClick={() => setEdit(!edit)}><i className="fas fa-times fa-2x"></i></button>
+                            </>
+                        )}
                     </div>
                     <div className='router'>
                         <div className='router-links'>

@@ -14,10 +14,11 @@
     align-items: center;
     gap: 5px;
     position: fixed;
-    z-index: 10;
+    z-index: 5;
     top: 10vh;
     border-radius: 5px;
-    background-color: rgb(237, 235, 235);
+    background-color: rgb(251, 251, 251);
+    box-shadow: 0px 5px 5px black;
 }
 
 .filters {
@@ -66,6 +67,10 @@
     font-size: 1rem;
 }
 
+.selected:hover {
+    box-shadow: 0px 5px 10px rgb(172, 77, 99);
+}
+
 .close-search {
     position: relative;
     right: -45%;
@@ -96,4 +101,49 @@
 
 .job-result-info > p {
     text-overflow: ellipsis;
+}
+
+.company-result {
+    width: 80%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.company-result:hover {
+    box-shadow: 0px 5px 5px gray;
+}
+
+.app-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.app-button {
+    border: none;
+    padding: 10px;
+    box-shadow: 0px 5px 5px grey;
+    border-radius: 5px;
+    
+}
+
+.app-button:hover {
+    box-shadow: 0px 5px 5px black;
+    border-radius: 5px;
+}
+
+.log-in {
+    box-shadow: 0px 5px 5px rgb(223, 121, 121);
+    border-radius: 5px;
+    padding: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.log-in:hover {
+    box-shadow: 0px 5px 5px red;
+    cursor: pointer;
 }
