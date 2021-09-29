@@ -55,7 +55,7 @@ function UserProfile() {
         })()
         // setUser(stateUsers.find(user => user.id === +userId))
         setPosts(user?.id === me?.id ? statePosts : user?.Posts);
-        // setUpdate(!update);
+        setUpdate(!update);
     }, [user?.Posts, update, dispatch, userId, user?.id, me?.id, statePosts])
 
 

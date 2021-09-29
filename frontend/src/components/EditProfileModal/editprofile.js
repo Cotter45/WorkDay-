@@ -3,6 +3,8 @@ import { useDispatch } from 'react-redux';
 import { edit_profile } from '../../store/api';
 
 import UserProfile from "../UserProfile/user_profile";
+import { get_data } from '../../store/api';
+import * as sessionActions from '../../store/session';
 
 import './edit-profile.css';
 
@@ -37,7 +39,9 @@ function EditProfile({ setShowModal, showModal, user, setUpdate, update }) {
         }
         // company,
         await dispatch(edit_profile(newUser, user.id));
-        // setUpdate(!update);
+        await dispatch(sessionActions.restoreUser());
+        await dispatch(get_data(user.id))
+        setUpdate(!update);
         setShowModal(!showModal);
         
     }

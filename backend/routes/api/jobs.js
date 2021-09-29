@@ -43,8 +43,6 @@ const router = express.Router();
 router.post('/save/:job_id', asyncHandler( async (req, res) => {
     const { user_id, job_id } = req.body;
 
-    console.log('SAVE', user_id, job_id)
-
     const save = await Save_for_Later.findOne({
         where: {
             job_id: +job_id,

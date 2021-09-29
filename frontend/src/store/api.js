@@ -481,6 +481,12 @@ function data_reducer(state = initialState, action) {
             newState.images = action.payload.user.Images;
             newState.posts = action.payload.posts;
             newState.team = action.payload.user.Team;
+            const updated_user = newState.users.find(user => user.id === action.payload.user.id);
+            if (updated_user) {
+                newState.users.splice(newState.users.indexOf(updated_user), 1, action.payload.user);
+            } else {
+                newState.users.push(action.payload.user);
+            }
             return newState;
         case SEARCH_DATA:
             newState.search = [...action.payload.jobResults, ...action.payload.userResults, ...action.payload.companyResults];

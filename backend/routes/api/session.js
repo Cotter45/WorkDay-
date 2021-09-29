@@ -50,14 +50,19 @@ router.delete('/', (_req, res) => {
 );
 
 // Restore session user
-router.get('/', restoreUser, (req, res) => {
+router.get('/', restoreUser, asyncHandler( async (req, res) => {
     const { user } = req;
     if (user) {
+      const newUser = await User.findOne({
+        where: {
+          id: +user.id
+        }
+      })
       return res.json({
-        user: user
+        user: newUser
     });
     } else return res.json({});
   }
-);
+));
 
 module.exports = router;

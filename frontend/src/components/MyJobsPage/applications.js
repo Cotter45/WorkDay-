@@ -18,7 +18,7 @@ function Applications({ apps, additionalInfo, jobId, stateJobs, deleteApp, setJo
             await dispatch(get_data(user.id));
         })()
         setLoaded(true);
-    }, [dispatch, loaded, user, user.id])
+    }, [dispatch, loaded, user])
 
 
     return (

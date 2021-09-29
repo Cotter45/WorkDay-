@@ -11,8 +11,10 @@ function Posts({ posts, modal, setUpdate, update }) {
     const history = useHistory();
     const dispatch = useDispatch();
 
-    const user = useSelector(state => state.session.user);
+    const me = useSelector(state => state.session.user);
+    const users = useSelector(state => state.data.users);
 
+    const [user, setUser] = useState(users.find(user => user.id === me.id));
     const [comments, setComments] = useState(false);
     const [whatPost, setWhatPost] = useState('');
 

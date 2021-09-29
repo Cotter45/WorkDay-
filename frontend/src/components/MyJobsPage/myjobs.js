@@ -33,12 +33,13 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
+        if (!user) return;
         if (isLoaded) return;
         (async function stuff() {
             await dispatch(get_data(user.id));
         })()
         setIsLoaded(true);
-    }, [dispatch, isLoaded, setIsLoaded, user.id])
+    }, [dispatch, isLoaded, setIsLoaded])
 
     useEffect(() => {
         if (savedJobs.length) return;
