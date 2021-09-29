@@ -9,38 +9,41 @@ import EditJobModal from '../EditJobModal';
 
 import './jobs.css';
 
-function Jobs({ myApplications }) {
+function Jobs({ viewPosted }) {
     const userId = useParams().id;
 
 
-    // const user = useSelector(state => state.session.user);
+    const me = useSelector(state => state.session.user);
+    const users = useSelector(state => state.data.users);
     const user = useSelector(state => state.data.users.find(user => user.id === +userId));
 
     const [additionalInfo, setAdditionalInfo] = useState(false);
     const [jobId, setJobId] = useState('');
     const [jobUpdate, setJobUpdate] = useState(false);
-    const [jobs, setJobs] = useState(user?.Jobs ? user.Jobs : myApplications);
+    const [jobs, setJobs] = useState('');
 
     useEffect(() => {
         if (jobs) return;
-        setJobs(user?.Jobs);
-    }, [jobs, user])
+        setJobs(viewPosted ? users.find(user => user.id === me.id).Jobs : users.find(user => user.id === +userId).Jobs);
+    }, [jobs, me.id, user, userId, users, viewPosted])
 
     useEffect(() => {
         if (!jobUpdate) return;
-        setJobs(user?.Jobs)
-    }, [jobUpdate, user?.Jobs])
+        setJobs(viewPosted ? users.find(user => user.id === me.id).Jobs : users.find(user => user.id === +userId).Jobs)
+    }, [jobUpdate, me.id, user.Jobs, userId, users, viewPosted])
 
 
     return (
         <div className='jobs-main-container'>
             <>
-            <div className='new-post-button'>
-                <CreateJobModal jobUpdate={jobUpdate} setJobUpdate={setJobUpdate} />
-            </div>
-            {jobs && jobs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((job, index) => (
+            {me && me.id === +userId && (
+                <div className='new-post-button'>
+                    <CreateJobModal jobUpdate={jobUpdate} setJobUpdate={setJobUpdate} />
+                </div>
+            )}
+            {jobs && jobs.filter(job => job.poster_id === +userId).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map((job, index) => (
                 <div key={job.message ? index : uuidv4()} className='job-container'>
-                    {!job.message && job.poster_id === user.id && (
+                    {!job.message && job.poster_id === me.id && (
                         <EditJobModal jobUpdate={jobUpdate} setJobUpdate={setJobUpdate} job={job} />
                     )}
                     {!job.message && (
@@ -93,14 +96,14 @@ function Jobs({ myApplications }) {
                             <div className='job-company-info'>
                                 <div className='profile-images'>
                                     <div className='background-image-container'>
-                                        <img alt='company' className='company-background' src={user.background_image}></img>
+                                        <img alt='company' className='company-background' src={user ? user.background_image : me.background_image}></img>
                                     </div>
-                                    <img className='profile-image' src={user.profile_picture} alt='profile'></img>
+                                    <img className='profile-image' src={user ? user.profile_picture : me.profile_picture} alt='profile'></img>
                                 </div>
                             </div>
                             <div>
                                 {/* <p className='applicants'>{applications?.length} applicants</p> */}
-                                <p>Email: {user.email}</p>
+                                <p>Email: {user ? user.email : me.email}</p>
                             </div>
                         </div>
                     )}

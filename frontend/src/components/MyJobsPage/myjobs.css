@@ -115,3 +115,16 @@
     padding-left: 10px;
     padding-right: 10px;
 }
+
+.right-columns > .jobs-main-container {
+    position: relative;
+    top: 0;
+    width: 100%;
+}
+
+.right-columns > .jobs-main-container > .job-container {
+    position: relative;
+    top: 0;
+    left: 5%;
+    width: 80%;
+}

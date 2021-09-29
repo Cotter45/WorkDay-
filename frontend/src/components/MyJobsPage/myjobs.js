@@ -8,6 +8,7 @@ import ProfileCard from '../Feed/profile-card';
 import { get_data, job_application, save_job } from '../../store/api';
 import Applications from './applications';
 import SavedJobs from './savedjobs';
+import Jobs from '../Jobs/jobs';
 
 
 function MyJobs({ user_id, isLoaded, setIsLoaded }) {
@@ -158,6 +159,11 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                                 setJobId={setJobId}
                                 setAdditionalInfo={setAdditionalInfo}
                                 savedJobs={savedJobs} />
+                        )}
+                        {viewPosted && (
+                            <Jobs 
+                                viewPosted={viewPosted}
+                            />
                         )}
                     </div>
                 </div>

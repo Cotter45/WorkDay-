@@ -521,7 +521,7 @@ function data_reducer(state = initialState, action) {
             return newState;
         case CREATE_JOB:
             newState.jobs.push(action.payload.newJob);
-            const person = newState.users.find(person => person.id === action.payload.newJob.poster_id);
+            const person = newState.users.find(person => person.id === +action.payload.newJob.poster_id);
             person.Jobs.push(action.payload.newJob);
             return newState;
         case UPDATE_JOB:

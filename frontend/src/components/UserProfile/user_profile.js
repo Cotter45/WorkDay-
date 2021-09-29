@@ -18,7 +18,7 @@ function UserProfile() {
     const statePosts = useSelector(state => state.data.posts)?.filter(post => post?.poster_id === user?.id);
     const me = useSelector(state => state.session.user);
 
-    const [posts, setPosts] = useState(user?.id === me?.id ? statePosts : user?.Posts);
+    const [posts, setPosts] = useState();
     const [update, setUpdate] = useState(false);
     const [userUpdate, setUserUpdate] = useState(false);
     const [showJob, setShowJob] = useState(false);
@@ -43,9 +43,9 @@ function UserProfile() {
 
 
     useEffect(() => {
-        if (posts) return;
+        if (posts && posts[0].poster_id === +userId) return;
         setPosts(user?.id === me?.id ? statePosts : user?.Posts);
-    }, [me?.id, posts, statePosts, user])
+    }, [me?.id, posts, statePosts, user, userId])
 
 
     useEffect(() => {
