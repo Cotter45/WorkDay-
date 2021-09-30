@@ -115,7 +115,7 @@ router.put('/comments/:comment_id', singleMulterUpload('image'), asyncHandler( a
         }
     })
     
-    if (image_url) {
+    if (!req.file) {
         await findComment.update({
             comment,
             image_url,
@@ -163,7 +163,7 @@ router.post('/:postId/comment', singleMulterUpload('image'), asyncHandler( async
 
     let newComment;
 
-    if (image_url || !req.file) {
+    if (!req.file) {
         newComment = await Comment.create({
             comment,
             image_url,
@@ -293,7 +293,7 @@ router.post('/', singleMulterUpload('image'), asyncHandler( async (req, res) => 
 
     let post;
 
-    if (image_url || !req.file) {
+    if (!req.file) {
         post = await Post.create({
             description, image_url, poster_id, company_id
         })
