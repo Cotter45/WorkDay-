@@ -48,7 +48,7 @@ Postgres/Sequelize
 - During this project week I found a few people coming to me to ask questions, this was a first! I wasn't always able to help, but I found that taking the time away from my project and helping others for a few minutes with theirs was a major boost to my productivity as well as theirs. WIN WIN. It was a lot of fun to be working solo yet staying in touch with the whole team and working together to debug.
 
 ### Check out the wiki to see my documentation
-- https://github.com/Cotter45/WorkDay/wiki
+- https://github.com/Cotter45/WorkDay-/wiki
 
 ### Some Screenshots
 
