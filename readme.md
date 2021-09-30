@@ -54,9 +54,7 @@ Postgres/Sequelize
 
 * Recorded Updating Profile
 
-<!-- ![](./info/recording.mov) -->
-<video width="320" height="240" controls>
-  <source src="./info/recording.mov" type="video/mp4">
-</video>
+![](./info/recording.mov)
+
 
 
