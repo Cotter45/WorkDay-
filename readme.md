@@ -37,7 +37,7 @@ Postgres/Sequelize
 ![Database Screenshot](./info/workday-schema.png)
 
 ### To do at time of submission:
-- I still have plans to add Company pages utilizing the user roles to display different informatin for employees of that company.
+- I still have plans to add Company pages utilizing the user roles to display different information for employees of that company.
 - These pages would be customizable, meaning a user with a superuser role would be able to add different preset, prestyle components to the pages in any order they'd like. Things like: to-do cards, charts, calendars, maps or notes
 - I'd like to add a resume section to the users page as well as a photo album section
 - I'd like to implement web sockets for messaging or live updates
