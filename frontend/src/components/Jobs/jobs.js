@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Link, useParams, Switch, Route } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { get_job_data } from '../../store/api';
 
 import CreateJobModal from '../CreateJobModal';
 
@@ -9,18 +10,28 @@ import EditJobModal from '../EditJobModal';
 
 import './jobs.css';
 
-function Jobs({ viewPosted }) {
+function Jobs({ viewPosted, stateJobs }) {
+    const dispatch = useDispatch();
     const userId = useParams().id;
 
 
     const me = useSelector(state => state.session.user);
     const users = useSelector(state => state.data.users);
     const user = useSelector(state => state.data.users.find(user => user.id === +userId));
+    // const myJobs = useSelector(state => state.data.jobs);
 
     const [additionalInfo, setAdditionalInfo] = useState(false);
     const [jobId, setJobId] = useState('');
     const [jobUpdate, setJobUpdate] = useState(false);
-    const [jobs, setJobs] = useState('');
+    const [jobs, setJobs] = useState(stateJobs ? stateJobs : '');
+
+    // useEffect(() => {
+    //     if (userId) return;
+    //     if (jobs) return;
+    //     dispatch(get_job_data(me.id)).then(() => {
+    //         setJobs(myJobs);
+    //     })
+    // }, [dispatch, myJobs, userId])
 
     useEffect(() => {
         if (jobs) return;
@@ -31,6 +42,7 @@ function Jobs({ viewPosted }) {
         if (!jobUpdate) return;
         setJobs(viewPosted ? users.find(user => user.id === me.id).Jobs : users.find(user => user.id === +userId).Jobs)
     }, [jobUpdate, me.id, user, userId, users, viewPosted])
+
 
 
     return (

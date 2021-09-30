@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from 'react';
-import { get_data } from "../../store/api";
+import { get_job_data } from "../../store/api";
 
 
 function SavedJobs({ deleteSave, savedJobs, stateJobs, additionalInfo, jobId, setJobId, setAdditionalInfo }) {
@@ -14,7 +14,7 @@ function SavedJobs({ deleteSave, savedJobs, stateJobs, additionalInfo, jobId, se
         if (!user) return;
         if (loaded) return;
         (async function getStuff() {
-            await dispatch(get_data(user.id));
+            await dispatch(get_job_data(user.id));
         })()
         setLoaded(true);
     }, [dispatch, loaded, user])

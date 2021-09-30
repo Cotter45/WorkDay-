@@ -1,6 +1,7 @@
 import { csrfFetch } from "./csrf";
 
 const GET_DATA = 'api/get_data';
+const GET_JOB_DATA = 'api/get_job_data';
 const SEARCH_DATA = 'api/search_data';
 const USER_PAGE = 'api/get_user';
 const EDIT_POST = 'api/edit_post';
@@ -18,6 +19,18 @@ const APPLY_TO_JOB = 'api/apply_to_job';
 const DELETE_APP = 'api/delete_app_for_job';
 const SAVE_JOB = 'api/save_job_for_later';
 const DELETE_SAVE = 'api/delete_save_job';
+
+const get_job_data_action = (data) => ({
+    type: GET_JOB_DATA,
+    payload: data 
+})
+
+export const get_job_data = (userId) => async dispatch => {
+    const fetch = await csrfFetch(`/api/users/jobs/${userId}`);
+    const response = await fetch.json();
+    dispatch(get_job_data_action(response));
+    return response;
+}
 
 
 const delete_save_job_action = (data) => ({
@@ -457,9 +470,9 @@ function data_reducer(state = initialState, action) {
         case GET_DATA:
             newState.following = action.payload.user.Follows;
             newState.company = action.payload.user.Company;
-            newState.jobs = action.payload.user.Jobs;
-            newState.saved_jobs = action.payload.user.Save_for_Laters;
-            newState.applications = action.payload.user.Applications;
+            // newState.jobs = action.payload.user.Jobs;
+            // newState.saved_jobs = action.payload.user.Save_for_Laters;
+            // newState.applications = action.payload.user.Applications;
             newState.conversations = action.payload.user.Conversations;
             // newState.my_posts = action.payload.user.Posts;
             newState.components = action.payload.user.Components;
@@ -469,6 +482,17 @@ function data_reducer(state = initialState, action) {
             const updated_user = newState.users.find(user => user.id === action.payload.user.id);
             if (updated_user) {
                 newState.users.splice(newState.users.indexOf(updated_user), 1, action.payload.user);
+            } else {
+                newState.users.push(action.payload.user);
+            }
+            return newState;
+        case GET_JOB_DATA:
+            newState.jobs = action.payload.user.Jobs;
+            newState.saved_jobs = action.payload.user.Save_for_Laters;
+            newState.applications = action.payload.user.Applications;
+            const new_updated_user = newState.users.find(user => user.id === action.payload.user.id);
+            if (new_updated_user) {
+                newState.users.splice(newState.users.indexOf(new_updated_user), 1, action.payload.user);
             } else {
                 newState.users.push(action.payload.user);
             }

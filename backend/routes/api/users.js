@@ -193,8 +193,17 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
         { model: Conversation,
           include: [ User, Message ],
         },
-        { model: Post,
-          include: [
+        { model: Image },
+        { model: Component },
+        { 
+          model: Team,
+          include: { all: true }
+        }
+      ]
+    })
+
+    const posts = await Post.findAll({
+      include: [
             { model: User },
             { model: Company },
             {
@@ -208,37 +217,36 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
             { model: Image }
           ],
           limit: 25
-        },
-        { model: Image },
-        { model: Component },
-        { 
-          model: Team,
-          include: { all: true }
-        }
-      ]
     })
 
-    const jobs = await Job.findAll({
+    return res.json({ user, posts })
+}))
+
+// route for all job information
+router.get('/jobs/:user_id', asyncHandler( async (req, res) => {
+  const { user_id } = req.params;
+
+  const user = await User.findOne({
+    where: {
+      id: +user_id
+    }
+  })
+
+  const jobs = await Job.findAll({
       where: {
         poster_id: +user_id 
       },
       include: [
         {
           model: Application,
-          include: { all: true } 
+          include: { model: User }
         }, 
         {
           model: User,
-          include: { all: true } 
         }, 
         { 
           model: Requirement,
-          include: { all: true } 
         }, 
-        { 
-          model: Save_for_Later,
-          include: { all: true }
-        },
         {
           model: Company,
           include: { all: true }
@@ -282,24 +290,7 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
     user.dataValues.Save_for_Laters = saves;
     user.dataValues.Jobs = jobs;
 
-    const posts = await Post.findAll({
-      include: [
-            { model: User },
-            { model: Company },
-            {
-              model: Comment,
-              include: [ User, Like, Image ]
-            },
-            { 
-              model: Like,
-              include: [ User ]
-            },
-            { model: Image }
-          ],
-          limit: 25
-    })
-
-    return res.json({ user, posts })
+    return res.json({ user })
 }))
 
 router.get('/search/:params', asyncHandler( async (req, res) => {

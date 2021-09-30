@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 import './myjobs.css';
 import ProfileCard from '../Feed/profile-card';
-import { get_data, job_application, save_job } from '../../store/api';
+import { get_data, get_job_data, job_application, save_job } from '../../store/api';
 import Applications from './applications';
 import SavedJobs from './savedjobs';
 import Jobs from '../Jobs/jobs';
@@ -17,8 +17,8 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
     const dispatch = useDispatch();
 
     const user = useSelector(state => state.session.user);
-    const myApplications = useSelector(state => state.data.applications);
-    const mySaves = useSelector(state => state.data.saved_jobs);
+    const apps = useSelector(state => state.data.applications);
+    const savedJobs = useSelector(state => state.data.saved_jobs);
     const stateJobs = useSelector(state => state.data.jobs);
 
     const [viewMyApps, setViewMyApps] = useState(true);
@@ -28,40 +28,16 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
 
     const [additionalInfo, setAdditionalInfo] = useState(false);
     const [jobId, setJobId] = useState('');
-    const [apps, setApps] = useState(myApplications);
-    const [savedJobs, setSavedJobs] = useState(mySaves);
 
     const [update, setUpdate] = useState(false);
-    const [loaded, setLoaded] = useState(true);
+    const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
         if (!user) return;
-        if (isLoaded) return;
-        (async function stuff() {
-            await dispatch(get_data(user.id));
-        })()
-        setIsLoaded(true);
-    }, [dispatch, isLoaded, setIsLoaded])
-
-    useEffect(() => {
-        if (savedJobs.length) return;
-        if (mySaves.length) {
-            setSavedJobs(mySaves);
-        }
-    }, [mySaves, savedJobs.length])
-
-    useEffect(() => {
-        if (!update) return;
-        setApps(myApplications);
-        setUpdate(!update)
-    }, [myApplications, update])
-
-    useEffect(() => {
-        if (apps.length) return;
-        if (myApplications.length) {
-            setApps(myApplications);
-        }
-    }, [apps, myApplications])
+        if (stateJobs.length) return;
+        dispatch(get_job_data(user.id));
+        setLoaded(true)
+    }, [dispatch, stateJobs, user])
 
     const visitProfile = () => {
         history.push(`/profile/${user.id}/posts`)
@@ -73,7 +49,7 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
             user_id: user.id 
         }
         await dispatch(job_application(application));
-        await dispatch(get_data(user.id));
+        // await dispatch(get_job_data(user.id));
         setUpdate(!update);
     }
 
@@ -84,16 +60,14 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
         }
 
         await dispatch(save_job(save))
-        await dispatch(get_data(user.id));
+        // await dispatch(get_job_data(user.id));
         setUpdate(!update);
     }
 
     const refresh = async () => {
         setLoaded(false);
-        await dispatch(get_data(user_id));
+        await dispatch(get_job_data(user_id));
         setLoaded(true);
-        // setUpdate(!update)
-        // setApps(myApplications)
     }
 
     return (
@@ -143,9 +117,9 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                         <ProfileCard visitProfile={visitProfile} user={user} />
                     </div>
                     <div className='right-columns'>
-                        {!loaded && (
+                        {/* {!loaded && (
                             <div className='loading'></div>
-                        )}
+                        )} */}
                         <button className='refresh-button' onClick={refresh}><i className="fas fa-sync-alt"></i></button>
                         {viewMyApps && (
                             <Applications 
@@ -170,6 +144,7 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                         {viewPosted && (
                             <Jobs 
                                 viewPosted={viewPosted}
+                                stateJobs={stateJobs}
                             />
                         )}
                         {reviewApps && (

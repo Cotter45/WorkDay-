@@ -1,8 +1,20 @@
 import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { get_data } from '../../store/api';
 
 import './home.css';
 
 function HomePage() {
+    const dispatch = useDispatch();
+
+    const user = useSelector(state => state.session.user);
+    const data = useSelector(state => state.data);
+
+    useEffect(() => {
+        if (!user) return;
+        if (data) return;
+        dispatch(get_data(user.id));
+    }, [data, dispatch, user])
     
     const [slide, setSlide] = useState(1);
 
