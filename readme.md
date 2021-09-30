@@ -54,7 +54,7 @@ Postgres/Sequelize
 
 * Recorded Updating Profile
 
-![](./info/recording.mov)
+![Movie](./info/recording.mov)
 
 
 
