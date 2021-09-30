@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useParams, Switch, Route } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { get_job_data } from '../../store/api';
+import { get_job_data, get_user_data } from '../../store/api';
 
 import CreateJobModal from '../CreateJobModal';
 
@@ -23,25 +23,28 @@ function Jobs({ viewPosted, stateJobs }) {
     const [additionalInfo, setAdditionalInfo] = useState(false);
     const [jobId, setJobId] = useState('');
     const [jobUpdate, setJobUpdate] = useState(false);
-    const [jobs, setJobs] = useState(stateJobs ? stateJobs : '');
+    const [jobs, setJobs] = useState(stateJobs ? stateJobs : user.Jobs);
 
     // useEffect(() => {
-    //     if (userId) return;
-    //     if (jobs) return;
-    //     dispatch(get_job_data(me.id)).then(() => {
-    //         setJobs(myJobs);
+    //     if (!userId) return;
+    //     if (jobs && jobs.length) return;
+    //     dispatch(get_job_data(userId)).then(() => {
+    //         setJobs(stateJobs);
     //     })
-    // }, [dispatch, myJobs, userId])
+    // }, [dispatch, jobs, me?.id, stateJobs, userId])
 
     useEffect(() => {
         if (jobs) return;
-        setJobs(viewPosted ? users.find(user => user.id === me.id).Jobs : users.find(user => user.id === +userId).Jobs);
-    }, [jobs, me.id, user, userId, users, viewPosted])
+        dispatch(get_user_data(userId));
+        setJobs(viewPosted ? stateJobs : users.find(user => user.id === +userId).Jobs);
+    }, [dispatch, jobs, me?.id, stateJobs, user, userId, users, viewPosted])
 
     useEffect(() => {
         if (!jobUpdate) return;
-        setJobs(viewPosted ? users.find(user => user.id === me.id).Jobs : users.find(user => user.id === +userId).Jobs)
-    }, [jobUpdate, me.id, user, userId, users, viewPosted])
+        dispatch(get_user_data(userId));
+        setJobs(viewPosted ? stateJobs : users.find(user => user.id === +userId).Jobs)
+        setJobUpdate(false);
+    }, [dispatch, jobUpdate, me, stateJobs, user, userId, users, viewPosted])
 
 
 

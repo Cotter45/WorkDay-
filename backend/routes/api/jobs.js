@@ -206,23 +206,16 @@ router.post('/', asyncHandler( async (req, res) => {
         include: [
             {
             model: Application,
-            include: { all: true } 
+            include: { model: User }
             }, 
             {
             model: User,
-            include: { all: true } 
             }, 
             { 
             model: Requirement,
-            include: { all: true } 
             }, 
-            { 
-            model: Save_for_Later,
-            include: { all: true }
-            },
             {
             model: Company,
-            include: { all: true }
             }
         ]
     })
@@ -283,27 +276,19 @@ router.put('/:job_id', asyncHandler( async (req, res) => {
       id: +poster_id
     },
     include: [
-        {
-          model: Application,
-          include: { all: true } 
-        }, 
-        {
-          model: User,
-          include: { all: true } 
-        }, 
-        { 
-          model: Requirement,
-          include: { all: true } 
-        }, 
-        { 
-          model: Save_for_Later,
-          include: { all: true }
-        },
-        {
-          model: Company,
-          include: { all: true }
-        }
-      ]
+      { 
+        model: Job,
+        include: { all: true }
+      },
+      {
+        model: Company,
+        include: { all: true }
+      },
+      {
+        model: Post,
+        include: { all: true }
+      }
+    ]
   })
 
     return res.json({ updated_job, user })
