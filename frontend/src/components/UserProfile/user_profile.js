@@ -34,11 +34,12 @@ function UserProfile() {
 
     useEffect(() => {
         if (!userId) return;
+        if (!me) return;
         if (+userId === me.id) {
             setShowJob(false)
             setShowPost(true)
         }
-    }, [me.id, userId])
+    }, [me, userId])
 
     useEffect(() => {
         if (userUpdate) return;
