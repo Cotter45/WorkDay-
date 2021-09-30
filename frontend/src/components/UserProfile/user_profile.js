@@ -50,6 +50,13 @@ function UserProfile() {
         setUserUpdate(!userUpdate);
     }, [dispatch, user, userId, userUpdate])
 
+    useEffect(() => {
+        if (user) return;
+        (async function sendIt() {
+            await dispatch(get_user_data(userId));
+        })()
+    }, [dispatch, user, userId])
+
 
     // useEffect(() => {
     //     if (!posts) return;
