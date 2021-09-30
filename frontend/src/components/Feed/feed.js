@@ -42,11 +42,11 @@ function Feed() {
     }, [statePosts, update])
 
     const visitProfile = () => {
-        history.push(`/profile/${user.id}/posts`)
+        history.push(`/profile/${user.id}`)
     }
 
     const visitCompany = () => {
-        history.push(`/company/${company.id}/posts`)
+        history.push(`/company/${company.id}`)
     }
 
     return (

@@ -28,14 +28,12 @@ function Comments({ post, update, setUpdate }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('what')
 
         const newComment = {
             comment: comment ? comment : '',
             image_url: photo ? photo : '',
             user_id: user.id
         }
-        console.log(newComment)
         await dispatch(add_comment(newComment, post.id));
         setComment('');
         setPhoto('');
@@ -51,7 +49,6 @@ function Comments({ post, update, setUpdate }) {
             post_id: post.id
         }
         
-        console.log(comment)
         await dispatch(edit_comment(comment, comment_id));
         setUpdate(!update);
         setNewComment('');
@@ -62,7 +59,6 @@ function Comments({ post, update, setUpdate }) {
 
     const handleDeleteComment = async (e, comment_id) => {
         e.preventDefault();
-        console.log(comment_id)
 
         await dispatch(delete_comment(comment_id));
         setUpdate(!update);

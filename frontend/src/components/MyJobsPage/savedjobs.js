@@ -32,7 +32,7 @@ function SavedJobs({ deleteSave, savedJobs, stateJobs, additionalInfo, jobId, se
                         <p>Location: {save.Job.location}</p>
                         <p>Pays: ${save.Job.pay}</p>
                         <p>Posted: {new Date(save.Job.createdAt).toDateString()}</p>
-                        <p>Posted by: {save.User.first_name + ' ' + save.User.last_name}</p>
+                        <p>Posted by: {save.Job.User.first_name + ' ' + save.Job.User.last_name}</p>
                         <p>Description: <br></br> {save.Job.description}</p>
                         {save.Job.Requirements && (
                             <div className='app-requirements'>

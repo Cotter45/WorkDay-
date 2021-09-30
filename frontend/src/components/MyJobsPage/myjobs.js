@@ -9,6 +9,7 @@ import { get_data, job_application, save_job } from '../../store/api';
 import Applications from './applications';
 import SavedJobs from './savedjobs';
 import Jobs from '../Jobs/jobs';
+import Applicants from './applicants';
 
 
 function MyJobs({ user_id, isLoaded, setIsLoaded }) {
@@ -31,7 +32,7 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
     const [savedJobs, setSavedJobs] = useState(mySaves);
 
     const [update, setUpdate] = useState(false);
-    const [loaded, setLoaded] = useState(false);
+    const [loaded, setLoaded] = useState(true);
 
     useEffect(() => {
         if (!user) return;
@@ -86,11 +87,12 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
     }
 
     const refresh = async () => {
+        setLoaded(false);
         await dispatch(get_data(user_id));
+        setLoaded(true);
         // setUpdate(!update)
         // setApps(myApplications)
     }
-    console.log(apps)
 
     return (
         <>
@@ -139,6 +141,9 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                         <ProfileCard visitProfile={visitProfile} user={user} />
                     </div>
                     <div className='right-columns'>
+                        {!loaded && (
+                            <div className='loading'></div>
+                        )}
                         <button className='refresh-button' onClick={refresh}><i className="fas fa-sync-alt"></i></button>
                         {viewMyApps && (
                             <Applications 
@@ -163,6 +168,11 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                         {viewPosted && (
                             <Jobs 
                                 viewPosted={viewPosted}
+                            />
+                        )}
+                        {reviewApps && (
+                            <Applicants 
+
                             />
                         )}
                     </div>

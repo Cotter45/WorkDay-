@@ -61,7 +61,6 @@ export const job_application = (application) => async dispatch => {
     })
     const response = await fetch.json();
     if (response.job) {
-        console.log('SHOULDNT BE HERE')
         dispatch(job_application_action(response));
     } else {
         dispatch(delete_job_application_action(response));
@@ -76,14 +75,8 @@ const edit_profile_action = (data) => ({
 
 export const edit_profile = (user, userId) => async dispatch => {
     const { background_image,
-            profile_picture,
-            first_name,
-            last_name,
-            email,
-            location,
-            current_job,
-            description } = user;
-            // company,    
+            profile_picture,} = user;
+            
     if (background_image.name && profile_picture.name) {
         let formData1 = new FormData();
         formData1.append('image', profile_picture);
@@ -140,7 +133,6 @@ export const edit_profile = (user, userId) => async dispatch => {
         return fetch3;
 
     } else if (!profile_picture.name && background_image.name) {
-        console.log('BACKGROUND NO PROFILE', background_image)
 
         let formData2 = new FormData();
         formData2.append('image', background_image);
@@ -152,7 +144,6 @@ export const edit_profile = (user, userId) => async dispatch => {
             body: formData2
         })
         const response2 = await fetch2.json();
-        console.log('RESPONSE FROM THE GRAVE', response2)
         user.background_image = response2.background_image;
 
         const fetch3 = await csrfFetch(`/api/users/update_profile/${userId}`, {
@@ -160,7 +151,6 @@ export const edit_profile = (user, userId) => async dispatch => {
             body: JSON.stringify(user)
         })
         const data = await fetch3.json();
-        console.log(data, 'DATA')
         dispatch(edit_profile_action(data));
         return fetch3;
     } else {
@@ -363,7 +353,6 @@ export const create_post = (post) => async dispatch => {
             body: formData
         })
         const data = await response.json();
-        console.log(data.returnPost, 'STORE')
         dispatch(create_post_action(data.returnPost));
         return response;
     } else {
@@ -372,7 +361,6 @@ export const create_post = (post) => async dispatch => {
             body: JSON.stringify(post)
         })
         const data = await response.json();
-        console.log(data.returnPost, 'STORE')
         dispatch(create_post_action(data.returnPost));
         return response;
     }
@@ -388,7 +376,6 @@ export const edit_post = (post, postId) => async dispatch => {
     let formData = new FormData();
 
     if (post.imageUrl.name) {
-        console.log('FORM', imageUrl)
         formData.append('description', description);
         formData.append('image', imageUrl);
         const response = await csrfFetch(`/api/posts/${postId}`, {
@@ -432,7 +419,6 @@ const search_action = (data) => ({
 export const search = (params) => async dispatch => {
     const response = await csrfFetch(`/api/users/search/${params}`);
     const data = await response.json();
-    // console.log(data);
     dispatch(search_action(data));
     return response;
 }
@@ -446,7 +432,6 @@ export const get_data = (user_id) => async dispatch => {
     const response = await csrfFetch(`/api/users/${user_id}`);
     const data = await response.json();
     dispatch(data_action(data));
-    // console.log(data)
     return response;
 }
 
@@ -520,7 +505,7 @@ function data_reducer(state = initialState, action) {
             newState.posts.splice(newState.posts.indexOf(deleteMe), 1, {message: 'This post has been removed'});
             return newState;
         case CREATE_JOB:
-            newState.jobs.push(action.payload.newJob);
+            // newState.jobs.push(action.payload.newJob);
             const person = newState.users.find(person => person.id === +action.payload.newJob.poster_id);
             person.Jobs.push(action.payload.newJob);
             return newState;

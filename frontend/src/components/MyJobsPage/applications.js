@@ -34,7 +34,7 @@ function Applications({ apps, additionalInfo, jobId, stateJobs, deleteApp, setJo
                             <p>Location: {app.Job.location}</p>
                             <p>Pays: ${app.Job.pay}</p>
                             <p>Posted: {new Date(app.Job.createdAt).toDateString()}</p>
-                            <p>Posted by: {app.User.first_name + ' ' + app.User.last_name}</p>
+                            <p>Posted by: {app.Job.User.first_name + ' ' + app.Job.User.last_name}</p>
                             <p>Description: <br></br> {app.Job.description}</p>
                             {app.Job.Requirements && (
                                 <div className='app-requirements'>

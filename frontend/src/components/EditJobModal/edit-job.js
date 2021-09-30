@@ -64,7 +64,7 @@ function EditJob({ job, setShowModal, setJobUpdate, jobUpdate, createPost }) {
         if (!createPost) {
             await dispatch(update_job(edit, job.id));
             setJobUpdate(!jobUpdate);
-            setShowModal(false);
+            // setShowModal(false);
         } else {
             await dispatch(create_job(edit));
             setJobUpdate(!jobUpdate);

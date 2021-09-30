@@ -61,13 +61,13 @@ router.post('/save/:job_id', asyncHandler( async (req, res) => {
                 user_id: +user_id
             },
             include: [
-                { 
-                model: Job,
-                include: { all: true }
-                }, 
                 {
                 model: User,
                 include: { all: true } 
+                }, 
+                {
+                model: Job,
+                include: { all: true }
                 }
             ]
         })
@@ -104,13 +104,13 @@ router.post('/apply/:job_id', asyncHandler( async (req, res) => {
                 user_id: +user_id 
             },
             include: [
-                { 
-                model: Job,
-                include: { all: true }
-                }, 
                 {
                 model: User,
                 include: { all: true } 
+                }, 
+                {
+                model: Job,
+                include: { all: true }
                 }
             ]
         })
@@ -203,7 +203,28 @@ router.post('/', asyncHandler( async (req, res) => {
         where: {
             id: +job.id
         },
-        include: { all: true }
+        include: [
+            {
+            model: Application,
+            include: { all: true } 
+            }, 
+            {
+            model: User,
+            include: { all: true } 
+            }, 
+            { 
+            model: Requirement,
+            include: { all: true } 
+            }, 
+            { 
+            model: Save_for_Later,
+            include: { all: true }
+            },
+            {
+            model: Company,
+            include: { all: true }
+            }
+        ]
     })
 
     return res.json({ newJob })
@@ -262,19 +283,27 @@ router.put('/:job_id', asyncHandler( async (req, res) => {
       id: +poster_id
     },
     include: [
-      { 
-        model: Job,
-        include: { all: true }
-      },
-      {
-        model: Company,
-        include: { all: true }
-      },
-      {
-        model: Post,
-        include: { all: true }
-      }
-    ]
+        {
+          model: Application,
+          include: { all: true } 
+        }, 
+        {
+          model: User,
+          include: { all: true } 
+        }, 
+        { 
+          model: Requirement,
+          include: { all: true } 
+        }, 
+        { 
+          model: Save_for_Later,
+          include: { all: true }
+        },
+        {
+          model: Company,
+          include: { all: true }
+        }
+      ]
   })
 
     return res.json({ updated_job, user })

@@ -39,7 +39,7 @@ function MenuButton({ user }) {
       </button>
       {showMenu && (
         <div className="profile-dropdown">
-          <div onClick={() => history.push(`/profile/${user.id}/posts`)} className='dropdown-card'>
+          <div onClick={() => history.push(`/profile/${user.id}`)} className='dropdown-card'>
             <div>
               <img className='dropdown-img' src={user.profile_picture} alt='me'></img>
             </div>

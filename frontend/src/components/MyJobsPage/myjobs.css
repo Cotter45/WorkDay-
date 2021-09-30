@@ -128,3 +128,30 @@
     left: 5%;
     width: 80%;
 }
+
+.right-columns > .loading {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 5;
+}
+
+.application-main-container {
+    width: 100%;
+}
+
+.applicant-container {
+     padding: 5px;
+     width: 100%;
+     display: flex;
+     /* flex-direction: column; */
+     align-items: center;
+     justify-content: space-between;
+     border-bottom: 1px solid gray;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    
+}

@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import LoginSignup from '../../LoginOrSignup';
-import { job_application, save_job } from '../../../store/api';
+import { get_data, job_application, save_job } from '../../../store/api';
 
 function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo, user }) {
     const dispatch = useDispatch();
@@ -15,13 +15,13 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
     const [applicants, setApplicants] = useState(result.Applications.length);
 
     const apply = async (e) => {
-        console.log('apply')
         const app = {
             user_id: sessionUser.id,
             job_id: result.id
         }
 
         await dispatch(job_application(app));
+        await dispatch(get_data(sessionUser.id));
         setApplied(true);
         setApplicants(applicants + 1);
     }
@@ -32,7 +32,8 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
             job_id: result.id
         }
 
-        await dispatch(save_job(app))
+        await dispatch(save_job(app));
+        await dispatch(get_data(sessionUser.id));
         setSaved(true);
     }
 

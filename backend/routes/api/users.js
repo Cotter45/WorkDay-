@@ -102,8 +102,6 @@ router.put('/update_profile/:user_id', asyncHandler( async (req, res) => {
     ]
   })
 
-  console.log("WTF IS HAPPENING", update, background_image, profile_picture)
-
   return res.json({ newUser })
 }))
 
@@ -192,17 +190,6 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
         { model: Company,
         include: { all: true }
         },
-        { model: Job,
-          include: { all: true }
-        },
-        {
-          model: Save_for_Later,
-          include: { all: true }
-        },
-        {
-          model: Application,
-          include: { all: true }
-        },
         { model: Conversation,
           include: [ User, Message ],
         },
@@ -226,6 +213,34 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
         { model: Component },
         { 
           model: Team,
+          include: { all: true }
+        }
+      ]
+    })
+
+    const jobs = await Job.findAll({
+      where: {
+        poster_id: +user_id 
+      },
+      include: [
+        {
+          model: Application,
+          include: { all: true } 
+        }, 
+        {
+          model: User,
+          include: { all: true } 
+        }, 
+        { 
+          model: Requirement,
+          include: { all: true } 
+        }, 
+        { 
+          model: Save_for_Later,
+          include: { all: true }
+        },
+        {
+          model: Company,
           include: { all: true }
         }
       ]
@@ -265,6 +280,7 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
 
     user.dataValues.Applications = app;
     user.dataValues.Save_for_Laters = saves;
+    user.dataValues.Jobs = jobs;
 
     const posts = await Post.findAll({
       include: [
