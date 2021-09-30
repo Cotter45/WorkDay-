@@ -58,8 +58,8 @@ function HomePage() {
                     <div className='welcome-links'>
                         <button className='link-button'><a href='#about'>About</a></button>
                         {/* <button><a href='#companies'>For Companies</a></button> */}
-                        <button className='link-button'><a href='#companies'>Find Help</a></button>
-                        <button className='link-button'><a href='#job-seekers'>Find Work</a></button>
+                        <button className='link-button'><a href='#companies'>Explore</a></button>
+                        {/* <button className='link-button'><a href='#home-info'>Extra Info</a></button> */}
                     </div>
                 </div>
             </div>
