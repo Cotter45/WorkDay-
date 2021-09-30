@@ -1,5 +1,10 @@
 # WorkDay
 
+# Table of Contents
+1. [Technology Used](https://github.com/Cotter45/WorkDay-#Workday-was-built-with)
+2. [Some Things I learned](https://github.com/Cotter45/WorkDay-#Some-Things-I-Learned)
+3. [Recording of Profile](https://github.com/Cotter45/WorkDay-#Some-screenshots)
+
 WorkDay is a modern day solution to those Craiglist ads we've all come to know and love. Here you can talk with your community and share jobs you've found or need help with. If you need a website built, or even someone to mow your lawn, it's super easy to connect with your community and find the right person for the job.  
 
 ![Jobs Page](./info/jobs.png)
@@ -37,7 +42,7 @@ Postgres/Sequelize
 ![Database Screenshot](./info/workday-schema.png)
 
 ### To do at time of submission:
-- I still have plans to add Company pages utilizing the user roles to display different informatin for employees of that company.
+- I still have plans to add Company pages utilizing the user roles to display different information for employees of that company.
 - These pages would be customizable, meaning a user with a superuser role would be able to add different preset, prestyle components to the pages in any order they'd like. Things like: to-do cards, charts, calendars, maps or notes
 - I'd like to add a resume section to the users page as well as a photo album section
 - I'd like to implement web sockets for messaging or live updates
