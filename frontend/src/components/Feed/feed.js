@@ -19,27 +19,27 @@ function Feed() {
     const following = useSelector(state => state.data.following);
     const company = useSelector(state => state.data.company);
     const conversations = useSelector(state => state.data.conversations);
-    const statePosts = useSelector(state => state.data.posts);
+    const posts = useSelector(state => state.data.posts);
     const team = useSelector(state => state.data.team);
 
     const [update, setUpdate] = useState(false);
-    const [posts, setPosts] = useState(statePosts);
+    // const [posts, setPosts] = useState(statePosts);
     // const [addPhoto, setAddPhoto] = useState(false);
     // const [addImage, setAddImage] = useState(false);
     // const [photo, setPhoto] = useState('');
 
-    useEffect(() => {
-        if (posts) return;
+    // useEffect(() => {
+    //     if (posts) return;
 
-        setPosts(statePosts);
-    }, [posts, statePosts])
+    //     setPosts(statePosts);
+    // }, [posts, statePosts])
 
-    useEffect(() => {
-        if(!update) return;
+    // useEffect(() => {
+    //     if(!update) return;
 
-        setPosts(statePosts);
-        setUpdate(false);
-    }, [statePosts, update])
+    //     setPosts(statePosts);
+    //     setUpdate(false);
+    // }, [statePosts, update])
 
     const visitProfile = () => {
         history.push(`/profile/${user.id}`)

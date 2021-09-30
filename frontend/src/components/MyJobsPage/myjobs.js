@@ -73,6 +73,7 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
             user_id: user.id 
         }
         await dispatch(job_application(application));
+        await dispatch(get_data(user.id));
         setUpdate(!update);
     }
 
@@ -83,6 +84,7 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
         }
 
         await dispatch(save_job(save))
+        await dispatch(get_data(user.id));
         setUpdate(!update);
     }
 
