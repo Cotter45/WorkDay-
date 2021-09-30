@@ -54,9 +54,6 @@ Postgres/Sequelize
 
 * Recorded Updating Profile
 
-![Movie](./info/recording.mov)
-
-
 https://user-images.githubusercontent.com/80602015/135538185-6567ed9c-6251-4e58-9e6a-fbcc8fab9119.mov
 
 
