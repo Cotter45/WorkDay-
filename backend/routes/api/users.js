@@ -249,7 +249,6 @@ router.get('/jobs/:user_id', asyncHandler( async (req, res) => {
         }, 
         {
           model: Company,
-          include: { all: true }
         }
       ]
     })
@@ -264,8 +263,7 @@ router.get('/jobs/:user_id', asyncHandler( async (req, res) => {
           include: { all: true }
         }, 
         {
-          model: User,
-          include: { all: true } 
+          model: User
         }
       ]
     })
@@ -280,8 +278,7 @@ router.get('/jobs/:user_id', asyncHandler( async (req, res) => {
           include: { all: true }
         }, 
         {
-          model: User,
-          include: { all: true } 
+          model: User
         }
       ]
     })
