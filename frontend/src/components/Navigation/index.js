@@ -48,7 +48,7 @@ function Navigation({ isLoaded }){
       <>
         <NavLink activeClassName='active' className='nav-link' exact to="/feed"><i className="fas fa-home fa-2x" /></NavLink>
         <NavLink activeClassName='active' className='nav-link' exact to="/jobs"><i className="fas fa-briefcase fa-2x" /></NavLink>
-        <NavLink activeClassName='active' className='nav-link' exact to="/messages"><i className="fas fa-comment-dots fa-2x" /></NavLink>
+        {/* <NavLink activeClassName='active' className='nav-link' exact to="/messages"><i className="fas fa-comment-dots fa-2x" /></NavLink> */}
         <MenuButton user={sessionUser} />
       </>
     );
@@ -82,14 +82,14 @@ function Navigation({ isLoaded }){
                 setUsers(false)
               }}
               >Jobs</button>
-            <button
+            {/* <button
               className={ companies ? 'selected' : 'post-button'}
               onClick={() => {
                 setJobs(false)
                 setCompanies(!companies)
                 setUsers(false)
               }}
-              >Companies</button>
+              >Companies</button> */}
             <button
               className={ users ? 'selected' : 'post-button'}
               onClick={() => {

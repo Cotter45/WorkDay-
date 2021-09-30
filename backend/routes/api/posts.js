@@ -248,7 +248,7 @@ router.post('/', singleMulterUpload('image'), asyncHandler( async (req, res) => 
 
     let post;
 
-    if (image_url) {
+    if (image_url || !req.file) {
         post = await Post.create({
             description, image_url, poster_id, company_id
         })

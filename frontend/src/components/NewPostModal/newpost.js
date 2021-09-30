@@ -80,16 +80,18 @@ function NewPost({ user, disabled, setShowModal, update, setUpdate, showModal })
                         </div>
                         )}
                 </div>
-            <div className='feed-post'>
-                <div className='post-text'>
-                    <p>{description}</p>
+                {(description || photo) && (
+                <div className='feed-post'>
+                    <div className='post-text'>
+                        <p>{description}</p>
+                    </div>
+                    <div className='post-images'>
+                        {photo && (
+                            <img className='feed-image' alt='post' src={photo.name ? URL.createObjectURL(photo) : photo}></img>
+                        )}
+                    </div>
                 </div>
-                <div className='post-images'>
-                    {photo && (
-                        <img className='feed-image' alt='post' src={photo.name ? URL.createObjectURL(photo) : photo}></img>
-                    )}
-                </div>
-            </div>
+                )}
             <div className='submit-post'>
                 <button className='post-button' onClick={handleSubmit}>Submit</button>
             </div>

@@ -347,7 +347,6 @@ router.get('/search/:params', asyncHandler( async (req, res) => {
         },
       ]
     }, 
-    include: { all: true },
     limit: 25
   })
   

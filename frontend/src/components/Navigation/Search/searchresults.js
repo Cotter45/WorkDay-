@@ -4,15 +4,17 @@ import CompanyResults from './company-results';
 import JobResults from './job-results';
 
 import './results.css';
+import UserResults from './user-results';
 
 function Results({ results, uuidv4, jobs, companies, users }) {
 
     const [additionalInfo, setAdditionalInfo] = useState(false);
     const [jobId, setJobId] = useState('');
+    const [userId, setUserId] = useState('');
 
     return (
         <>
-        {companies && (
+        {/* {companies && (
             <div className='filters'>
                 <div className='ranges'>
                     <label>Average Rating</label>
@@ -27,21 +29,24 @@ function Results({ results, uuidv4, jobs, companies, users }) {
                     <input type='range'></input>
                 </div>
             </div>
-        )}
+        )} */}
         {results && !jobs && !companies && !users && results.map(result => (
             <div className='results-container' key={uuidv4()}>
                 {result.title && (
                     <JobResults result={result} additionalInfo={additionalInfo} jobId={jobId} setJobId={setJobId} setAdditionalInfo={setAdditionalInfo} user={result.User} />
                 )}
-                <div className='user-results'>
+                {/* <div className='user-results'>
                     {result.first_name && (
                         <>
                         <p>{result.first_name + ' ' + result.last_name}</p>
                         </>
                     )}
-                </div>
+                </div> */}
                 {result.name && (
                     <CompanyResults result={result} additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} companies={companies} />
+                )}
+                {result.first_name && (
+                    <UserResults userId={userId} setUserId={setUserId} result={result} additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} users={users} />
                 )}
             </div>
         ))}
@@ -50,11 +55,16 @@ function Results({ results, uuidv4, jobs, companies, users }) {
                 <JobResults result={result} additionalInfo={additionalInfo} jobId={jobId} setJobId={setJobId} setAdditionalInfo={setAdditionalInfo} user={result.User} />
             </div>
         ))}
-        {results && companies && results.filter(result => result.name !== undefined).map(result => (
+        {results && users && results.filter(result => result.first_name !== undefined).map(result => (
+            <div className='results-container' key={uuidv4()}>
+                <UserResults userId={userId} setUserId={setUserId} result={result} additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} users={users} />
+            </div>
+        ))}
+        {/* {results && companies && results.filter(result => result.name !== undefined).map(result => (
             <div className='results-container' key={uuidv4()}>
                 <CompanyResults result={result} additionalInfo={additionalInfo} setAdditionalInfo={setAdditionalInfo} companies={companies} />
             </div>
-        ))}
+        ))} */}
         </>
     )
 }

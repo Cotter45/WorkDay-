@@ -55,60 +55,37 @@ function Feed() {
                 <div className='loading'>Loading...</div>
             )}
         <div id='feed-main'>
-            <div className='card-container'>
-                <div className='left-cards'>
-                    <ProfileCard visitProfile={visitProfile} user={user} />
-                    {company && (
-                        <div onClick={visitCompany} className='team-card'>
-                            <div className='profile-images'>
-                                <div className='background-image-container'>
-                                    <img className='company-background' src={company?.background_image} alt='background'></img>
-                                </div>
-                                <img className='profile-image' src={company?.profile_picture} alt='me'></img>
-                            </div>
-                            <div>
-                                <h4>{company.name}</h4>
-                                <p>{company.email}</p>
-                                <h4>{team.name}</h4>
-                                <p>{team.Users.length} {team.Users.length > 1 ? 'members' : 'member'}</p>
-                                <p>{team.Projects.length} projects</p>
-                            </div>
-
-                        </div>
-                    )}
-                </div>
-                <div className='right-cards'>
-                    <div className='messages'>
-                        <div className='message-header'>
-                            <div className='message-header-left'>
-                                <img className='message-user-pic' src={user?.profile_picture} alt='me'></img>
-                                <h4>Messaging</h4>
-                            </div>
-                            <div>
-                                <button className='trash-message'><i className="far fa-edit" /></button>
-                            </div>
-                        </div>
-                        {conversations && conversations.map(conversation => (
-                            <div key={conversation.id} className='conversation'>
-                                {conversation.Users && conversation.Users.filter(talker => talker.id !== user.id).map(user => (
-                                    <div key={user.id} className='conversation-user'>
-                                        <img className='message-user-pic' src={user.profile_picture} alt='people'></img>
-                                        <p>{user.first_name}</p>
-                                        <p>-</p>
+            <div className='container'>
+                {/* <div className='card-container'> */}
+                    <div className='left-cards'>
+                        <ProfileCard visitProfile={visitProfile} user={user} />
+                        {/* {company && (
+                            <div onClick={visitCompany} className='team-card'>
+                                <div className='profile-images'>
+                                    <div className='background-image-container'>
+                                        <img className='company-background' src={company?.background_image} alt='background'></img>
                                     </div>
-                                ))}
-                                {/* <button className='trash-message'><i className="far fa-trash-alt" /></button> */}
+                                    <img className='profile-image' src={company?.profile_picture} alt='me'></img>
+                                </div>
+                                <div>
+                                    <h4>{company.name}</h4>
+                                    <p>{company.email}</p>
+                                    <h4>{team.name}</h4>
+                                    <p>{team.Users.length} {team.Users.length > 1 ? 'members' : 'member'}</p>
+                                    <p>{team.Projects.length} projects</p>
+                                </div>
+
                             </div>
-                        ))}
+                        )} */}
                     </div>
+                {/* </div> */}
+                <div className='feed'>
+                    <NewPostModal setUpdate={setUpdate} update={update} user={user} />
+                    {posts && (
+                        <Posts update={update} setUpdate={setUpdate} posts={posts} />
+                    )}
+                    <p>That's all for now folks...</p>
                 </div>
-            </div>
-            <div className='feed'>
-                <NewPostModal setUpdate={setUpdate} update={update} user={user} />
-                {posts && (
-                    <Posts update={update} setUpdate={setUpdate} posts={posts} />
-                )}
-                <p>That's all for now folks...</p>
             </div>
         </div>
         </>
@@ -116,3 +93,30 @@ function Feed() {
 }
 
 export default Feed;
+
+
+{/* <div className='right-cards'>
+    <div className='messages'>
+        <div className='message-header'>
+            <div className='message-header-left'>
+                <img className='message-user-pic' src={user?.profile_picture} alt='me'></img>
+                <h4>Messaging</h4>
+            </div>
+            <div>
+                <button className='trash-message'><i className="far fa-edit" /></button>
+            </div>
+        </div> */}
+        // {conversations && conversations.map(conversation => (
+            // <div key={conversation.id} className='conversation'>
+                // {conversation.Users && conversation.Users.filter(talker => talker.id !== user.id).map(user => (
+                //     <div key={user.id} className='conversation-user'>
+                //         <img className='message-user-pic' src={user.profile_picture} alt='people'></img>
+                //         <p>{user.first_name}</p>
+                //         <p>-</p>
+                //     </div>
+                // ))}
+                {/* <button className='trash-message'><i className="far fa-trash-alt" /></button> */}
+//             </div>
+//         ))}
+//     </div>
+// </div>

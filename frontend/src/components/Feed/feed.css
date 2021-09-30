@@ -1,5 +1,5 @@
 #feed-main {
-    height: 75%;
+    height: 80%;
     width: 100vw;
     /* max-width: 1200px; */
     display: flex;
@@ -7,11 +7,18 @@
     gap: 25px;
     align-items: center;
     position: relative;
-    top: 10vh;
-    padding-top: 150px;
+    top: 12vh;
+    /* padding-top: 150px; */
     overflow: hidden;
     /* background-color: rgb(239, 239, 237); */
     /* padding-bottom: 200px; */
+}
+
+.container {
+    max-width: 1200px;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 25px;
 }
 
 .card-container {
@@ -42,7 +49,7 @@
     border-radius: 5px;
     position: relative;
     left: 0;
-    height: 40vh;
+    height: 500px;
     width: 250px;
     overflow-y: scroll;
     border: 1px solid lightgray;
@@ -128,7 +135,6 @@
     padding-top: 5px;
     background-color: white;
     border-radius: 5px;
-    overflow-y: scroll;
     position: relative;
     right: 0;
     height: fit-content;
@@ -219,7 +225,7 @@
 .post {
     background-color: white;
     border-radius: 5px;
-    max-width: 650px;
+    max-width: 800px;
     min-height: 125px;
     height: fit-content;
     width: 50vw;
@@ -237,7 +243,7 @@
 .new-post {
     background-color: white;
     border-radius: 5px;
-    max-width: 650px;
+    max-width: 800px;
     min-height: 125px;
     height: fit-content;
     width: 50vw;
@@ -365,18 +371,18 @@ button:hover {
 
 .feed {
     position: relative;
-    top: 2vh;
-    max-width: 650px;
-    height: 80vh;
-    max-height: 1200px;
+    top: 125px;
+    max-width: 800px;
+    height: 100%;
+    max-height: 900px;
     width: 50vw;
     display: flex;
     flex-direction: column;
     gap: 25px;
     border-radius: 5px;
-    overflow-y: scroll;
-    padding-bottom: 150px;
-    /* background-color: rgb(240, 240, 240); */
+    overflow: scroll;
+    margin-bottom: 200px;
+    /* padding-bottom: 500px; */
 }
 
 .feed-post {

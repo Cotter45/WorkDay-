@@ -15,10 +15,10 @@ function UserProfile() {
 
     const user = useSelector(state => state.data.users.find(user => user.id === +userId));
     // const [user, setUser] = useState(stateUsers.find(user => user.id === +userId));
-    const statePosts = useSelector(state => state.data.posts)?.filter(post => post?.poster_id === user?.id);
+    const posts = useSelector(state => state.data.posts)?.filter(post => post.poster_id === +userId);
     const me = useSelector(state => state.session.user);
 
-    const [posts, setPosts] = useState();
+    // const [posts, setPosts] = useState('');
     const [update, setUpdate] = useState(false);
     const [userUpdate, setUserUpdate] = useState(false);
     const [showJob, setShowJob] = useState(false);
@@ -51,21 +51,22 @@ function UserProfile() {
     }, [dispatch, user, userId, userUpdate])
 
 
-    useEffect(() => {
-        if (posts && posts[0].poster_id === +userId) return;
-        setPosts(user?.id === me?.id ? statePosts : user?.Posts);
-    }, [me?.id, posts, statePosts, user, userId])
+    // useEffect(() => {
+    //     if (!posts) return;
+    //     if (posts.length && posts[0].poster_id === +userId) return;
+    //     setPosts(user?.id === me?.id ? statePosts : user?.Posts);
+    // }, [me?.id, posts, statePosts, user, userId])
 
 
-    useEffect(() => {
-        if (!update) return;
-        (async function sendIt() {
-            await dispatch(get_user_data(userId));
-        })()
-        // setUser(stateUsers.find(user => user.id === +userId))
-        setPosts(user?.id === me?.id ? statePosts : user?.Posts);
-        setUpdate(!update);
-    }, [user?.Posts, update, dispatch, userId, user?.id, me?.id, statePosts])
+    // useEffect(() => {
+    //     if (!update) return;
+    //     (async function sendIt() {
+    //         await dispatch(get_user_data(userId));
+    //     })()
+    //     // setUser(stateUsers.find(user => user.id === +userId))
+    //     setPosts(user?.id === me?.id ? statePosts : user?.Posts);
+    //     setUpdate(!update);
+    // }, [user?.Posts, update, dispatch, userId, user?.id, me?.id, statePosts])
 
 
     return (
@@ -116,7 +117,7 @@ function UserProfile() {
                             {/* <Link to={`/profile/${userId}/job_posts`}>Job Posts</Link> */}
                         </div>
 
-                    {showPost && (
+                    {posts && showPost && (
                         <Posts update={update} setUpdate={setUpdate} posts={posts} />
                     )}
                     {showJob && (

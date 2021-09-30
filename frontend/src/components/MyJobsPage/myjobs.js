@@ -33,11 +33,17 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        if (!user) return;
-        if (stateJobs.length) return;
+        if (!user && loaded) return;
         dispatch(get_job_data(user.id));
         setLoaded(true)
-    }, [dispatch, stateJobs, user])
+    }, [dispatch, loaded, user])
+
+    // useEffect(() => {
+    //     if (!user) return;
+    //     if (stateJobs.length) return;
+    //     dispatch(get_job_data(user.id));
+    //     setLoaded(true)
+    // }, [dispatch, stateJobs, user])
 
     const visitProfile = () => {
         history.push(`/profile/${user.id}/posts`)
