@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 
 import './comments.css';
-import { add_comment, delete_comment, edit_comment } from '../../store/api';
+import { add_comment, delete_comment, edit_comment, like_comment } from '../../store/api';
 import NewComment from './newcomment';
 import EditComment from './editcomment';
 
@@ -37,6 +37,18 @@ function Comments({ post, update, setUpdate }) {
         await dispatch(add_comment(newComment, post.id));
         setComment('');
         setPhoto('');
+        setUpdate(!update)
+    }
+
+    const handleLikeComment = async (e, comment_id) => {
+        e.preventDefault();
+
+        const data = {
+            user_id: user.id,
+            comment_id,
+            post_id: post.id 
+        }
+        await dispatch(like_comment(data));
         setUpdate(!update)
     }
 
@@ -152,7 +164,7 @@ function Comments({ post, update, setUpdate }) {
                         )}
                     </div>
                     <div className='comment-buttons'>
-                        <button onClick={() => alert('DO THIS')}>Like</button>
+                        <button onClick={(e) => handleLikeComment(e, comment.id)}>Like</button>
                         <p> | </p>
                         {comment.Likes && (<p>{comment.Likes.length} likes</p>)}
                     </div>

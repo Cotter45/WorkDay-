@@ -19,6 +19,22 @@ const APPLY_TO_JOB = 'api/apply_to_job';
 const DELETE_APP = 'api/delete_app_for_job';
 const SAVE_JOB = 'api/save_job_for_later';
 const DELETE_SAVE = 'api/delete_save_job';
+const LIKE_COMMENT = 'api/like_comment';
+
+const like_comment_action = (data) => ({
+    type: LIKE_COMMENT,
+    payload: data 
+})
+
+export const like_comment = (data) => async dispatch => {
+    const fetch = await csrfFetch(`/api/posts/comments/${data.comment_id}`, {
+        method: 'POST',
+        body: JSON.stringify(data)
+    })
+    const response = await fetch.json();
+    dispatch(like_comment_action(response));
+    return response;
+}
 
 const get_job_data_action = (data) => ({
     type: GET_JOB_DATA,
@@ -560,6 +576,10 @@ function data_reducer(state = initialState, action) {
         case ADD_COMMENT:
             const commentPost = newState.posts.find(post => post.id === action.payload.newPost.id);
             newState.posts.splice(newState.posts.indexOf(commentPost), 1, action.payload.newPost);
+            return newState;
+        case LIKE_COMMENT:
+            const post_like = newState.posts.find(post => post.id === +action.payload.post.id);
+            newState.posts.splice(newState.posts.indexOf(post_like), 1, action.payload.post);
             return newState;
         case EDIT_COMMENT:
             const findPost = newState.posts.find(post => post.id === action.payload.newPost.id);

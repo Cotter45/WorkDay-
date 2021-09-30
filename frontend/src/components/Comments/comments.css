@@ -20,6 +20,7 @@
     flex-direction: column;
     gap: 10px;
     width: 80%;
+    border-bottom: 1px solid lightgray;
     /* padding-left: 5px; */
 }
 

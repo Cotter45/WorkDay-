@@ -45,6 +45,7 @@ const router = express.Router();
 // router for liking a comment
 router.post('/comments/:comment_id', asyncHandler( async (req, res) => {
     const { comment_id } = req.params;
+    const { post_id, user_id } = req.body;
 
     const like = await Like.findOne({
         where: {
@@ -56,9 +57,33 @@ router.post('/comments/:comment_id', asyncHandler( async (req, res) => {
         await like.destroy()
     } else {
         await Like.create({
-            
+            user_id: +user_id,
+            post_id: null,
+            comment_id: +comment_id,
+            company_id: null 
         })
     }
+
+    const post = await Post.findOne({
+        where: {
+            id: +post_id
+        },
+        include: [
+            { model: User },
+            { model: Company },
+            {
+              model: Comment,
+              include: [ User, Like, Image ]
+            },
+            { 
+              model: Like,
+              include: [ User ]
+            },
+            { model: Image }
+          ],
+    })
+
+    return res.json({ post })
 }))
 
 // router for deleting a comment
