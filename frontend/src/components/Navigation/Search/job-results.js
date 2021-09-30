@@ -10,7 +10,7 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
     const saved_jobs = useSelector(state => state.data.saved_jobs);
 
     const [loggedIn, setLoggedIn] = useState(sessionUser ? true : false);
-    const [applied, setApplied] = useState(result.Applications.find(app => app.job_id === result.id) ? true : false);
+    const [applied, setApplied] = useState(result.Applications.find(app => app.userId === sessionUser.id) ? true : false);
     const [saved, setSaved] = useState(saved_jobs?.find(job => job?.job_id === result.id) ? true : false);
     const [applicants, setApplicants] = useState(result.Applications.length);
 
