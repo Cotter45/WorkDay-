@@ -92,7 +92,7 @@ router.post('/apply/:job_id', asyncHandler( async (req, res) => {
         }
     })
 
-    if (exists === null) {
+    if (!exists) {
         await Application.create({
             job_id: +job_id,
             user_id: +user_id
@@ -105,18 +105,19 @@ router.post('/apply/:job_id', asyncHandler( async (req, res) => {
             },
             include: [
                 {
-                model: User,
-                include: { all: true } 
+                    model: User,
+                    include: { all: true } 
                 }, 
                 {
-                model: Job,
-                include: { all: true }
+                    model: Job,
+                    include: { all: true }
                 }
             ]
         })
         
         return res.json({ job })
     } else if (exists) {
+        console.log('YEA')
         const id = exists.id;
         await exists.destroy()
 

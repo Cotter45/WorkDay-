@@ -10,7 +10,7 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
     const saved_jobs = useSelector(state => state.data.saved_jobs);
 
     const [loggedIn, setLoggedIn] = useState(sessionUser ? true : false);
-    const [applied, setApplied] = useState(result.Applications.find(app => app.userId === sessionUser.id) ? true : false);
+    const [applied, setApplied] = useState(result.Applications.find(app => app.user_id === sessionUser.id) ? true : false);
     const [saved, setSaved] = useState(saved_jobs?.find(job => job?.job_id === result.id) ? true : false);
     const [applicants, setApplicants] = useState(result.Applications.length);
 
@@ -20,10 +20,10 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
             job_id: result.id
         }
 
-        await dispatch(job_application(app));
         setApplied(true);
-        await dispatch(get_data(sessionUser.id));
         setApplicants(applicants + 1);
+        await dispatch(job_application(app));
+        await dispatch(get_data(sessionUser.id));
     }
     
     const save = async (e) => {
@@ -32,8 +32,8 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
             job_id: result.id
         }
 
-        await dispatch(save_job(app));
         setSaved(true);
+        await dispatch(save_job(app));
         await dispatch(get_data(sessionUser.id));
     }
 
