@@ -21,8 +21,8 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
         }
 
         await dispatch(job_application(app));
-        await dispatch(get_data(sessionUser.id));
         setApplied(true);
+        await dispatch(get_data(sessionUser.id));
         setApplicants(applicants + 1);
     }
     
@@ -33,8 +33,8 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
         }
 
         await dispatch(save_job(app));
-        await dispatch(get_data(sessionUser.id));
         setSaved(true);
+        await dispatch(get_data(sessionUser.id));
     }
 
     return (

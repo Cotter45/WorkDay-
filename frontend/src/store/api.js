@@ -237,6 +237,7 @@ export const add_comment = (newComment, postId) => async dispatch => {
     let formData = new FormData();
 
     if (image_url.name) {
+        console.log('wut')
         formData.append('comment', comment);
         formData.append('image', image_url);
         formData.append('user_id', user_id);
@@ -352,7 +353,7 @@ export const create_post = (post) => async dispatch => {
     const { description, image_url, poster_id, company_id } = post;
     let formData = new FormData();
 
-    if (post.image_url.name) {
+    if (image_url.name) {
         formData.append('description', description);
         formData.append('image', image_url);
         formData.append('poster_id', poster_id);

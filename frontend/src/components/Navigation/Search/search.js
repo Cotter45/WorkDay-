@@ -22,7 +22,6 @@ function Search({ param, setParams, setResults, setSearch }) {
         }, 500)
 
         return () => clearTimeout(debounce);
-
     }, [dispatch, param])
 
 

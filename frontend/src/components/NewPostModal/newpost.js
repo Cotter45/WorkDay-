@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { create_post } from '../../store/api';
+import { create_post, get_data } from '../../store/api';
 
 
 function NewPost({ user, disabled, setShowModal, update, setUpdate, showModal }) {
@@ -21,11 +21,12 @@ function NewPost({ user, disabled, setShowModal, update, setUpdate, showModal })
             description,
             image_url: photo,
             poster_id: user.id,
-            company_id: user.current_company
+            company_id: user.current_company ? user.current_company : 1
         }
 
         await dispatch(create_post(post));
-        setUpdate(!update);
+        await dispatch(get_data(user.id));
+        // setUpdate(!update);
         setShowModal(false);
     }
 

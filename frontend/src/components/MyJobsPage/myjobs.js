@@ -33,7 +33,8 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
-        if (!user && loaded) return;
+        if (!user) return;
+        if (loaded) return;
         dispatch(get_job_data(user.id));
         setLoaded(true)
     }, [dispatch, loaded, user])

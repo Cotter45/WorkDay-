@@ -30,8 +30,11 @@ function Navigation({ isLoaded }){
   useEffect(() => {
     if (!search) return;
 
-    setResults(searchResults);
-  }, [search, searchResults])
+    if (param) {
+      setResults(searchResults);
+    }
+
+  }, [param, search, searchResults])
 
   const demo = () => {
     let credentials = {

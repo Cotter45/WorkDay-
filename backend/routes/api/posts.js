@@ -118,7 +118,7 @@ router.post('/:postId/comment', singleMulterUpload('image'), asyncHandler( async
 
     let newComment;
 
-    if (image_url) {
+    if (image_url || !req.file) {
         newComment = await Comment.create({
             comment,
             image_url,
