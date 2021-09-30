@@ -1,9 +1,9 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { get_data, job_application } from '../../store/api';
+import { get_job_data, job_application } from '../../store/api';
 
-function Applicants() {
+function Applicants({ update, setUpdate }) {
     const history = useHistory();
     const dispatch = useDispatch();
 
@@ -14,7 +14,7 @@ function Applicants() {
     const [appId, setappId] = useState('');
     const [jobId, setJobId] = useState('');
     const [userId, setUserId] = useState('');
-    const [update, setUpdate] = useState(false);
+    // const [update, setUpdate] = useState(false);
 
     const handleDelete = async () => {
 
@@ -24,7 +24,8 @@ function Applicants() {
         }
 
         await dispatch(job_application(app));
-        await dispatch(get_data(user.id));
+        await dispatch(get_job_data(user.id));
+        // setUpdate(!update)
     }
 
     return (

@@ -156,7 +156,8 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                         )}
                         {reviewApps && (
                             <Applicants 
-
+                                update={update}
+                                setUpdate={setUpdate}
                             />
                         )}
                     </div>
