@@ -21,21 +21,26 @@ function EditPostForm({ post, setShowModal, setUpdate, update }) {
         if (!description) return;
 
         let errors = [];
-
+        if (description.length === 0 && !imageUrl) errors.push('Please add some content to post')
         if (description.length > 254) errors.push('Description cannot be longer than 255 characters');
         setErrors(errors);
-    }, [description])
+    }, [description, imageUrl])
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let newPost = {
-            description,
-            imageUrl
+
+        if (description.length === 0 && !imageUrl) {
+            alert('Please add some content to post')
+        } else {
+            let newPost = {
+                description,
+                imageUrl
+            }
+            await dispatch(edit_post(newPost, post.id))
+            setUpdate(!update);
+            setSuccess(true);
         }
-        await dispatch(edit_post(newPost, post.id))
-        setUpdate(!update);
-        setSuccess(true);
     }
 
     const deletePost = async (e) => {

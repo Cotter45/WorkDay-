@@ -31,6 +31,8 @@ function Comments({ post, update, setUpdate }) {
 
         if (comment.length > 254) {
             alert('Comment must be less than 255 characters')
+        } else if (comment.length === 0 && !photo) {
+            alert('Please add some content to comment')
         } else {
             const newComment = {
                 comment: comment ? comment : '',
@@ -59,19 +61,26 @@ function Comments({ post, update, setUpdate }) {
 
     const handleEditComment = async (e, comment_id) => {
         e.preventDefault();
-        const comment = {
-            comment: newComment,
-            image_url: photo,
-            user_id: user.id,
-            post_id: post.id
+
+        if (newComment.length > 254) {
+            alert('Comment must be less than 255 characters')
+        } else if (newComment.length === 0 && !photo) {
+            alert('Please add some content to comment')
+        } else {
+            const comment = {
+                comment: newComment,
+                image_url: photo,
+                user_id: user.id,
+                post_id: post.id
+            }
+            
+            await dispatch(edit_comment(comment, comment_id));
+            setUpdate(!update);
+            setNewComment('');
+            setPhoto('');
+            setEdit(!edit);
+            setEditComment('');
         }
-        
-        await dispatch(edit_comment(comment, comment_id));
-        setUpdate(!update);
-        setNewComment('');
-        setPhoto('');
-        setEdit(!edit);
-        setEditComment('');
     }
 
     const handleDeleteComment = async (e, comment_id) => {

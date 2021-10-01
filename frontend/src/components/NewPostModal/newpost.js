@@ -19,6 +19,8 @@ function NewPost({ user, disabled, setShowModal, update, setUpdate, showModal })
 
         if (description.length > 500) {
             alert('Description must be less than 500 characters')
+        } else if (description.length === 0 && !photo) {
+            alert('Please add some content to your post')
         } else {
             const post = {
                 description,
