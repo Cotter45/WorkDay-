@@ -193,10 +193,10 @@ router.post('/', asyncHandler( async (req, res) => {
         poster_id
     })
 
-    requirements.forEach( async req => {
+    await requirements.forEach( async req => {
         await Requirement.create({
             requirement: req,
-            job_id: job.id
+            job_id: +job.id
         })
     })
 
@@ -263,13 +263,34 @@ router.put('/:job_id', asyncHandler( async (req, res) => {
     }
 
 
-    const updated_job = await job.update({
+    await job.update({
         title,
         description,
         location,
         pay,
         company_id,
         poster_id,
+    })
+
+    const updated_job = await Job.findOne({
+        where: {
+            id: +job.id
+        },
+        include: [
+            {
+            model: Application,
+            include: { model: User }
+            }, 
+            {
+            model: User,
+            }, 
+            { 
+            model: Requirement,
+            }, 
+            {
+            model: Company,
+            }
+        ]
     })
 
     const user = await User.findOne({

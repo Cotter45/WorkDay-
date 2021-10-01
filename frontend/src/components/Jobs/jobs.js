@@ -41,7 +41,7 @@ function Jobs({ viewPosted, stateJobs }) {
 
     useEffect(() => {
         if (!jobUpdate) return;
-        dispatch(get_user_data(userId));
+        dispatch(get_user_data(userId ? userId : me.id));
         setJobs(viewPosted ? stateJobs : users.find(user => user.id === +userId).Jobs)
         setJobUpdate(false);
     }, [dispatch, jobUpdate, me, stateJobs, user, userId, users, viewPosted])
@@ -76,9 +76,9 @@ function Jobs({ viewPosted, stateJobs }) {
                                     <div className='job-requirements'>
                                         <p>Requirements: </p>
                                         {job.Requirements.map(requirement => (
-                                            <div key={requirement.id}>
+                                            <ul key={requirement.id}>
                                                 <li>{requirement.requirement}</li>
-                                            </div>
+                                            </ul>
                                         ))}
                                     </div>
                                 )}

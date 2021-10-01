@@ -290,6 +290,8 @@ router.get('/jobs/:user_id', asyncHandler( async (req, res) => {
     return res.json({ user })
 }))
 
+
+// Route to search for jobs or users 
 router.get('/search/:params', asyncHandler( async (req, res) => {
   const params = req.params.params.toLowerCase().split(' ').concat(req.params.params.toUpperCase().split(' '));
 
@@ -350,35 +352,37 @@ router.get('/search/:params', asyncHandler( async (req, res) => {
     limit: 25
   })
   
-  const companyResults = await Company.findAll({
-    where: {
-      [Op.or]: [
-        {
-          name: {
-            [Op.or]: {
-                [Op.in]: params,
-                [Op.substring]: req.params.params,
-                [Op.iRegexp]: req.params.params
+  // const companyResults = await Company.findAll({
+  //   where: {
+  //     [Op.or]: [
+  //       {
+  //         name: {
+  //           [Op.or]: {
+  //               [Op.in]: params,
+  //               [Op.substring]: req.params.params,
+  //               [Op.iRegexp]: req.params.params
 
-            }
-          }
-        },
-        {
-          location: {
-            [Op.or]: {
-                [Op.in]: params,
-                [Op.substring]: req.params.params,
-                [Op.iRegexp]: req.params.params
+  //           }
+  //         }
+  //       },
+  //       {
+  //         location: {
+  //           [Op.or]: {
+  //               [Op.in]: params,
+  //               [Op.substring]: req.params.params,
+  //               [Op.iRegexp]: req.params.params
 
-            }
-          }
-        },
-      ]
-    }, 
-    include: { all: true },
-    limit: 25
-  })
-  return res.json({ jobResults, userResults, companyResults })
+  //           }
+  //         }
+  //       },
+  //     ]
+  //   }, 
+  //   include: { all: true },
+  //   limit: 25
+  // })
+
+  // companyResults
+  return res.json({ jobResults, userResults })
 }))
 
 module.exports = router;

@@ -14,7 +14,7 @@ function EditJob({ job, setShowModal, setJobUpdate, jobUpdate, createPost }) {
     const [location,setLocation] = useState(job?.location ? job.location : '');
     const [pay, setPay] = useState(job?.pay ? job.pay : '');
     const [description, setDescription] = useState(job?.description ? job.description : '');
-    const [requirements, setRequirements] = useState(job ? job.Requirements.map(req => req.requirement) : []);
+    const [requirements, setRequirements] = useState(job?.Requirements ? job.Requirements.map(req => req.requirement) : []);
     const [temp, setTemp] = useState('');
     const [errors, setErrors] = useState([]);
     const [freelance, setFreelance] = useState(me.Company ? false : true);

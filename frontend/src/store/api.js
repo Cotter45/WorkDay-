@@ -515,7 +515,8 @@ function data_reducer(state = initialState, action) {
             }
             return newState;
         case SEARCH_DATA:
-            newState.search = [...action.payload.jobResults, ...action.payload.userResults, ...action.payload.companyResults];
+            // , ...action.payload.companyResults
+            newState.search = [...action.payload.jobResults, ...action.payload.userResults ];
             // newState.jobs.push(...action.payload.jobResults);
             return newState;
         case USER_PAGE:
@@ -546,9 +547,11 @@ function data_reducer(state = initialState, action) {
             newState.posts.splice(newState.posts.indexOf(deleteMe), 1, {message: 'This post has been removed'});
             return newState;
         case CREATE_JOB:
-            // newState.jobs.push(action.payload.newJob);
+            newState.jobs.push(action.payload.newJob);
             const person = newState.users.find(person => person.id === +action.payload.newJob.poster_id);
-            person.Jobs.push(action.payload.newJob);
+            if (person.Jobs) {
+                person.Jobs.push(action.payload.newJob);
+            }
             return newState;
         case UPDATE_JOB:
             const update_job = newState.jobs.find(job => job.id === action.payload.updated_job.id);
