@@ -17,7 +17,7 @@ function EditJob({ job, setShowModal, setJobUpdate, jobUpdate, createPost }) {
     const [requirements, setRequirements] = useState(job ? job.Requirements.map(req => req.requirement) : []);
     const [temp, setTemp] = useState('');
     const [errors, setErrors] = useState([]);
-    const [freelance, setFreelance] = useState(false);
+    const [freelance, setFreelance] = useState(me.Company ? false : true);
     const [corporate, setCorporate] = useState(false);
     const [company, setCompany] = useState(me.Company);
 
@@ -25,7 +25,7 @@ function EditJob({ job, setShowModal, setJobUpdate, jobUpdate, createPost }) {
         let newErrors = [];
 
         if (createPost) {
-            if (!freelance && !corporate) {
+            if (!freelance && !corporate && me.Company) {
                 newErrors.push('You should let people know if this is a freelance gig or corporate job.')
             }
         }
@@ -154,10 +154,12 @@ function EditJob({ job, setShowModal, setJobUpdate, jobUpdate, createPost }) {
                                 setCorporate(false)
                                 setFreelance(!freelance)
                             }}>Freelance</button>
-                            <button className='post-button' onClick={() => {
-                                setFreelance(false)
-                                setCorporate(!corporate)
-                            }}>Corporate</button>
+                            {me.Company && (
+                                <button className='post-button' onClick={() => {
+                                    setFreelance(false)
+                                    setCorporate(!corporate)
+                                }}>Corporate</button>
+                            )}
                         </div>
                         {!freelance && corporate && (
                             <div className='job-column'>
