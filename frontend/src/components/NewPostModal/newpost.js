@@ -17,17 +17,22 @@ function NewPost({ user, disabled, setShowModal, update, setUpdate, showModal })
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const post = {
-            description,
-            image_url: photo,
-            poster_id: user.id,
-            company_id: user.current_company ? user.current_company : 1
+        if (description.length > 500) {
+            alert('Description must be less than 500 characters')
+        } else {
+            const post = {
+                description,
+                image_url: photo,
+                poster_id: user.id,
+                company_id: user.current_company ? user.current_company : 1
+            }
+    
+            await dispatch(create_post(post));
+            await dispatch(get_data(user.id));
+            // setUpdate(!update);
+            setShowModal(false);
         }
 
-        await dispatch(create_post(post));
-        await dispatch(get_data(user.id));
-        // setUpdate(!update);
-        setShowModal(false);
     }
 
 

@@ -29,15 +29,20 @@ function Comments({ post, update, setUpdate }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const newComment = {
-            comment: comment ? comment : '',
-            image_url: photo ? photo : '',
-            user_id: user.id
+        if (comment.length > 254) {
+            alert('Comment must be less than 255 characters')
+        } else {
+            const newComment = {
+                comment: comment ? comment : '',
+                image_url: photo ? photo : '',
+                user_id: user.id
+            }
+            await dispatch(add_comment(newComment, post.id));
+            setComment('');
+            setPhoto('');
+            setUpdate(!update)
         }
-        await dispatch(add_comment(newComment, post.id));
-        setComment('');
-        setPhoto('');
-        setUpdate(!update)
+
     }
 
     const handleLikeComment = async (e, comment_id) => {
