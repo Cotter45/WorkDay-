@@ -91,6 +91,18 @@ router.delete('/comments/:comment_id', asyncHandler( async (req, res) => {
     const { comment_id } = req.params;
     let post_id;
 
+    const likes = await Like.findAll({
+        where: {
+            comment_id: +comment_id 
+        }
+    })
+
+    if (likes) {
+        likes.forEach( async like => {
+            await like.destroy()
+        })
+    }
+
     const comment = await Comment.findOne({
         where: {
             id: +comment_id
