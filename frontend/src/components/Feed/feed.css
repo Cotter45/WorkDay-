@@ -398,6 +398,10 @@ button:hover {
     overflow: scroll;
 }
 
+.router > .feed-post {
+    
+}
+
 .post-user-container {
      width: 100%;
      display: flex;

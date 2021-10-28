@@ -122,7 +122,18 @@
 }
 
 .router > .profile-feed-post {
-    width: 80%;
+    width: 100%;
+}
+
+.profile-feed-post {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-feed-post > .feed-post {
+    width: 100%;
 }
 
 .router-links {
