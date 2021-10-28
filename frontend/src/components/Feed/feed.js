@@ -52,8 +52,8 @@ function Feed() {
     return (
         <>
         {!posts && (
-                <div className='loading'>Loading...</div>
-            )}
+            <div className='loading'>Loading...</div>
+        )}
         <div id='feed-main'>
             <div className='container'>
                 {/* <div className='card-container'> */}
