@@ -1,5 +1,5 @@
-import { set } from 'js-cookie';
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
 import CompanyResults from './company-results';
 import JobResults from './job-results';
 
@@ -8,11 +8,18 @@ import UserResults from './user-results';
 
 function Results({ results, uuidv4, jobs, companies, users }) {
 
+    const user = useSelector(state => state.session.user);
+
     const [additionalInfo, setAdditionalInfo] = useState(false);
     const [jobId, setJobId] = useState('');
     const [userId, setUserId] = useState('');
 
     return (
+        <>
+        {!user && (
+            <p>Log in to search</p>
+        )}
+        {user && (
         <>
         {/* {companies && (
             <div className='filters'>
@@ -66,6 +73,8 @@ function Results({ results, uuidv4, jobs, companies, users }) {
             </div>
         ))} */}
         </>
+        )}
+    </>
     )
 }
 
