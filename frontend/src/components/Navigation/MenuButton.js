@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
+import EditProfileModal from "../EditProfileModal";
+import MenuEditProfile from "../EditProfileModal/menuindex";
 
 function MenuButton({ user }) {
   const history = useHistory();
   const dispatch = useDispatch();
 
   const [showMenu, setShowMenu] = useState(false);
+  const [editProfile, setEditProfile] = useState(false);
   
   const openMenu = () => {
     if (showMenu) return;
@@ -17,14 +20,16 @@ function MenuButton({ user }) {
   useEffect(() => {
     if (!showMenu) return;
 
-    const closeMenu = () => {
-      setShowMenu(false);
+    const closeMenu = (e) => {
+      if (!e.target.closest('.profile-dropdown') && !editProfile) {
+        setShowMenu(false);
+      }
     };
 
     document.addEventListener('click', closeMenu);
   
     return () => document.removeEventListener("click", closeMenu);
-  }, [showMenu]);
+  }, [editProfile, showMenu]);
 
   const logout = (e) => {
     e.preventDefault();
@@ -49,6 +54,7 @@ function MenuButton({ user }) {
               <li>{user.email}</li>
             </div>
           </div>
+          <MenuEditProfile editProfile={editProfile} setEditProfile={setEditProfile} user={user} />
           <button className='logout-button' onClick={logout}>Log Out</button>
         </div>
       )}

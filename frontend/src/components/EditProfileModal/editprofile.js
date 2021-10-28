@@ -8,8 +8,10 @@ import * as sessionActions from '../../store/session';
 
 import './edit-profile.css';
 
-function EditProfile({ setShowModal, showModal, user, setUpdate, update }) {
+function EditProfile({ setShowModal, showModal, user, setUpdate, update, setEditProfile }) {
     const dispatch = useDispatch();
+
+    console.log('PROFILE')
 
     const [background_image, setBackgroundImage] = useState(user.background_image);
     const [profile_picture, setProfilePicture] = useState(user.profile_picture);
@@ -41,7 +43,8 @@ function EditProfile({ setShowModal, showModal, user, setUpdate, update }) {
         await dispatch(edit_profile(newUser, user.id));
         await dispatch(sessionActions.restoreUser());
         await dispatch(get_data(user.id))
-        setUpdate(!update);
+        setEditProfile(false);
+        // setUpdate(!update);
         setShowModal(!showModal);
         
     }
@@ -144,7 +147,10 @@ function EditProfile({ setShowModal, showModal, user, setUpdate, update }) {
             </form>
             <div className='edit-buttons'>
                 <button className='edit-button' onClick={handleSubmit}><i className="fas fa-check fa-2x"></i></button>
-                <button className='edit-button' onClick={() => setShowModal(!showModal)}><i className="fas fa-times fa-2x"></i></button>
+                <button className='edit-button' onClick={() => {
+                    setEditProfile(false);
+                    setShowModal(!showModal);
+                }}><i className="fas fa-times fa-2x"></i></button>
             </div>
         </div>
     )

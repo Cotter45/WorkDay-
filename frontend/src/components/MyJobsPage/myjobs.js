@@ -10,6 +10,7 @@ import Applications from './applications';
 import SavedJobs from './savedjobs';
 import Jobs from '../Jobs/jobs';
 import Applicants from './applicants';
+import RecentJobs from './recentJobs';
 
 
 function MyJobs({ user_id, isLoaded, setIsLoaded }) {
@@ -21,7 +22,8 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
     const savedJobs = useSelector(state => state.data.saved_jobs);
     const stateJobs = useSelector(state => state.data.jobs);
 
-    const [viewMyApps, setViewMyApps] = useState(true);
+    const [viewRecent, setViewRecent] = useState(true);
+    const [viewMyApps, setViewMyApps] = useState(false);
     const [viewSaved, setViewSaved] = useState(false);
     const [viewPosted, setViewPosted] = useState(false);
     const [reviewApps, setReviewApps] = useState(false);
@@ -85,6 +87,17 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                     <div className='left-columns'>
                         <div className='menu'>
                             <div onClick={() => {
+                                setViewRecent(true)
+                                setViewMyApps(false)
+                                setViewSaved(false)
+                                setViewPosted(false)
+                                setReviewApps(false)
+                            }} className={viewRecent ? 'highlight' : 'menu-tabs'}>
+                                <i className="far fa-calendar-plus"></i>
+                                <p>Recent Posts</p>
+                            </div>
+                            <div onClick={() => {
+                                setViewRecent(false)
                                 setViewMyApps(true)
                                 setViewSaved(false)
                                 setViewPosted(false)
@@ -94,24 +107,27 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                                 <p>My Applications</p>
                             </div>
                             <div onClick={() => {
+                                setViewRecent(false)
                                 setViewMyApps(false)
                                 setViewSaved(true)
                                 setViewPosted(false)
                                 setReviewApps(false)
                             }} className={viewSaved ? 'highlight' : 'menu-tabs'}>
                                 <i className="fas fa-bookmark"></i>
-                                <p> Saved Jobs</p>
+                                <p>My Saved Jobs</p>
                             </div>
                             <div onClick={() => {
+                                setViewRecent(false)
                                 setViewMyApps(false)
                                 setViewSaved(false)
                                 setViewPosted(true)
                                 setReviewApps(false)
                             }} className={viewPosted ? 'highlight' : 'menu-tabs'}>
                                 <i className="fas fa-briefcase"></i>
-                                <p> Posted Jobs</p>
+                                <p>My Posted Jobs</p>
                             </div>
                             <div onClick={() => {
+                                setViewRecent(false)
                                 setViewMyApps(false)
                                 setViewSaved(false)
                                 setViewPosted(false)
@@ -128,6 +144,9 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                             <div className='loading'></div>
                         )} */}
                         <button className='refresh-button' onClick={refresh}><i className="fas fa-sync-alt"></i></button>
+                        {viewRecent && (
+                            <RecentJobs />
+                        )}
                         {viewMyApps && (
                             <Applications 
                                 apps={apps} 

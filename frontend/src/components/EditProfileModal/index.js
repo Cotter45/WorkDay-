@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from '../../context/Modal';
 import EditProfile from './editprofile';
 
-function EditProfileModal({ user, setUpdate, update }) {
+function EditProfileModal({ user, setUpdate, update, profile }) {
   const [showModal, setShowModal] = useState(false);
 
   return (
