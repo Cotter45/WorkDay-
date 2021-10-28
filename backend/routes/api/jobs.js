@@ -39,6 +39,32 @@ const job = require("../../db/models/job");
 const router = express.Router();
 
 
+// Route for getting recently posted jobs
+router.get("/recent", asyncHandler(async (req, res) => {
+    const jobs = await Job.findAll({
+        include: [
+            {
+            model: Application,
+            include: { model: User }
+            }, 
+            {
+            model: User,
+            }, 
+            { 
+            model: Requirement,
+            }, 
+            {
+            model: Company,
+            }
+        ],
+        order: [
+            ['createdAt', 'DESC']
+        ],
+        limit: 10
+    });
+    return res.json({ jobs });
+}));
+
 // Route for saving a job posting 
 router.post('/save/:job_id', asyncHandler( async (req, res) => {
     const { user_id, job_id } = req.body;

@@ -20,6 +20,19 @@ const DELETE_APP = 'api/delete_app_for_job';
 const SAVE_JOB = 'api/save_job_for_later';
 const DELETE_SAVE = 'api/delete_save_job';
 const LIKE_COMMENT = 'api/like_comment';
+const GET_RECENT_JOBS = 'api/get_recent_jobs';
+
+const recent_jobs_action = (data) => ({
+    type: GET_RECENT_JOBS,
+    payload: data
+})
+
+export const get_jobs = (data) => async dispatch =>{
+    const fetch = await csrfFetch('/api/jobs/recent')
+    const response = await fetch.json();
+    dispatch(recent_jobs_action(response));
+    return response;
+}
 
 const like_comment_action = (data) => ({
     type: LIKE_COMMENT,
@@ -478,7 +491,8 @@ const initialState = {
     images: null,
     search: [],
     team: null,
-    users: []
+    users: [], 
+    recent_jobs: []
 }
 
 function data_reducer(state = initialState, action) {
@@ -616,6 +630,9 @@ function data_reducer(state = initialState, action) {
         case DELETE_SAVE: 
             const saver = newState.saved_jobs.find(save => save.id === +action.payload.id);
             newState.saved_jobs.splice(newState.saved_jobs.indexOf(saver), 1);
+            return newState;
+        case GET_RECENT_JOBS:
+            newState.recent_jobs = action.payload.jobs;
             return newState;
         default: 
             return state;
