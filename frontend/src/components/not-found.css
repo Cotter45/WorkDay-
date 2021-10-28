@@ -1,0 +1,42 @@
+
+.main-container {
+    position: relative;
+    top: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.take_me_home {
+    height: 50vh;
+    width:auto;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.lost-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    align-items: center;
+    gap: 5vw;
+}
+
+.lost-container > p {
+    font-size: 2vw;
+}
+
+.lost-link {
+    text-decoration: none;
+    font-size: 2vw;
+    color: black;
+    box-shadow: 0px 5px 5px lightgray;
+    padding: 1vw;
+    border-radius: 5px;
+}
+
+.lost-link:hover {
+    box-shadow: 0px 5px 5px black;
+
+}

@@ -10,6 +10,7 @@ import HomePage from './components/Home/home';
 import Feed from './components/Feed/feed';
 import UserProfile from './components/UserProfile/user_profile';
 import MyJobs from './components/MyJobsPage/myjobs';
+import NotFound from './components/not-found';
 // import { Modal } from './context/Modal';
 
 
@@ -62,6 +63,9 @@ function App() {
             </Route>
             <Route path='/signup'>
               <SignupFormPage />
+            </Route>
+            <Route path=''>
+              <NotFound />
             </Route>
           </Switch>
         </>

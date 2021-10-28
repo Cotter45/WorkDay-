@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { Link, useParams, Switch, Route } from 'react-router-dom';
+import { Link, useParams, Switch, Route, useHistory } from 'react-router-dom';
 
 import { get_user_data } from '../../store/api';
 
@@ -12,6 +12,7 @@ import EditProfileModal from '../EditProfileModal';
 function UserProfile() {
     const dispatch = useDispatch();
     const userId = useParams().id;
+    const history = useHistory();
 
     const user = useSelector(state => state.data.users.find(user => user.id === +userId));
     // const [user, setUser] = useState(stateUsers.find(user => user.id === +userId));
@@ -31,6 +32,11 @@ function UserProfile() {
 
     //     setUser(stateUsers.find(user => user.id === +userId));
     // }, [user, userId])
+
+    useEffect(() => {
+        if (user) return;
+        history.push('')
+    })
 
     useEffect(() => {
         if (!userId) return;
