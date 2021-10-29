@@ -95,15 +95,15 @@ function HomePage() {
                 <button onClick={flipLeft} className='post-button'><i className="fas fa-chevron-left fa-2x"></i></button>
                 <div className={count === 1 ? 'flip-book' : 'hide'}>
                     <h3>Share with your community</h3>
-                    <img src='/images/feed.png' alt='feed'></img>
+                    <img className='flip-book-image' src='/images/feed.png' alt='feed'></img>
                 </div>
                 <div className={count === 2 ? 'flip-book' : 'hide'}>
                     <h3>Post or find work near you</h3>
-                    <img src='/images/jobs.png' alt='work'></img>
+                    <img className='flip-book-image' src='/images/jobs.png' alt='work'></img>
                 </div>
                 <div className={count === 3 ? 'flip-book' : 'hide'}>
                     <h3>Create profiles to get to know each other</h3>
-                    <img src='/images/profile.png' alt='work'></img>
+                    <img className='flip-book-image' src='/images/profile.png' alt='work'></img>
                 </div>
                 <button onClick={flipRight} className='post-button'><i className="fas fa-chevron-right fa-2x"></i></button>
 

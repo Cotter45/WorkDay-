@@ -40,7 +40,7 @@ function MenuButton({ user }) {
   return (
     <>
       <button className='menu-button' onClick={openMenu}>
-        <i className="fas fa-bars fa-2x" />
+        <i className="fas fa-user fa-2x"></i>
       </button>
       {showMenu && (
         <div className="profile-dropdown">

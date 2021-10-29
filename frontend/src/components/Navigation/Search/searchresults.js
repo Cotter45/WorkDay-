@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import CompanyResults from './company-results';
 import JobResults from './job-results';
@@ -13,6 +13,7 @@ function Results({ results, uuidv4, jobs, companies, users }) {
     const [additionalInfo, setAdditionalInfo] = useState(false);
     const [jobId, setJobId] = useState('');
     const [userId, setUserId] = useState('');
+
 
     return (
         <>

@@ -9,7 +9,7 @@
 }
 
 .take_me_home {
-    height: 50vh;
+    height: 25vh;
     width:auto;
     object-fit: cover;
     border-radius: 5px;
@@ -21,6 +21,12 @@
     width: 100%;
     align-items: center;
     gap: 5vw;
+}
+
+.lost-container > h1 {
+    box-shadow: 0px 5px 5px red;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .lost-container > p {

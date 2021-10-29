@@ -4,10 +4,11 @@ import { search } from '../../../store/api';
 
 import '../Navigation.css';
 
-function Search({ param, setParams, setResults, setSearch }) {
+function Search({ param, setParams, setResults, setSearch, searchBar }) {
     const dispatch = useDispatch();
 
     const search_results = useSelector(state => state.data.search);
+    const user = useSelector(state => state.session.user);
 
     useEffect(() => {
         if (param.length <= 1) {
@@ -26,15 +27,19 @@ function Search({ param, setParams, setResults, setSearch }) {
 
 
     return (
-        <div>
-            <input
-                className='search'
-                placeholder='Search'
-                onFocus={() => setSearch(true)}
-                onChange={(e) => setParams(e.target.value)}
-                value={param}
-            ></input>
-        </div>
+        <>
+        {user && searchBar && (
+            <div>
+                <input
+                    className='search'
+                    placeholder='Search'
+                    onFocus={() => setSearch(true)}
+                    onChange={(e) => setParams(e.target.value)}
+                    value={param}
+                ></input>
+            </div>
+        )}
+        </>
     )
 }
 

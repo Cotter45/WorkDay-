@@ -20,6 +20,7 @@ function Navigation({ isLoaded }){
   const searchResults = useSelector(state => state.data.search);
 
   const [search, setSearch] = useState(false);
+  const [searchBar, setSearchBar] = useState(false);
   const [results, setResults] = useState([]);
   const [param, setParams] = useState('');
 
@@ -50,6 +51,7 @@ function Navigation({ isLoaded }){
     sessionLinks = (
       <>
         <NavLink activeClassName='active' className='nav-link' exact to="/feed"><i className="fas fa-home fa-2x" /></NavLink>
+        <button onClick={() => setSearchBar(!searchBar)} className='nav-link'><i className="fas fa-search fa-2x"></i></button>
         <NavLink activeClassName='active' className='nav-link' exact to="/jobs"><i className="fas fa-briefcase fa-2x" /></NavLink>
         {/* <NavLink activeClassName='active' className='nav-link' exact to="/messages"><i className="fas fa-comment-dots fa-2x" /></NavLink> */}
         <MenuButton user={sessionUser} />
@@ -69,7 +71,7 @@ function Navigation({ isLoaded }){
     <div className='nav-container'> 
       <nav className='nav'>
         <NavLink activeClassName='' className='logo' exact to="/"><img src={process.env.PUBLIC_URL + '/images/logo.png'} alt='logo'></img></NavLink>
-        <Search setSearch={setSearch} param={param} setParams={setParams} setResults={setResults} />
+        <Search searchBar={searchBar} setSearch={setSearch} param={param} setParams={setParams} setResults={setResults} />
         <div className='nav-links'>
           {isLoaded && sessionLinks}
         </div>
