@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 
 import './myjobs.css';
 import ProfileCard from '../Feed/profile-card';
-import { get_data, get_job_data, job_application, save_job } from '../../store/api';
+import { get_data, get_jobs, get_job_data, job_application, save_job } from '../../store/api';
 import Applications from './applications';
 import SavedJobs from './savedjobs';
 import Jobs from '../Jobs/jobs';
@@ -76,6 +76,8 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
     const refresh = async () => {
         setLoaded(false);
         await dispatch(get_job_data(user_id));
+        await dispatch(get_jobs());
+        await dispatch(get_data(user.id));
         setLoaded(true);
     }
 

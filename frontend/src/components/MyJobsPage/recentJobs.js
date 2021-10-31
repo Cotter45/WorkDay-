@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import { get_jobs } from "../../store/api";
+import { get_data, get_jobs, job_application, save_job } from "../../store/api";
 
 
 function RecentJobs() {
@@ -14,11 +14,41 @@ function RecentJobs() {
     const [additionalInfo, setAdditionalInfo] = useState(false);
     const [jobId, setJobId] = useState('');
     const [userId, setUserId] = useState('');
+    const [getJobs, setGetJobs] = useState(false);
+    const [applied, setApplied] = useState(false);
 
     useEffect(() => {
+        if (getJobs) return;
         dispatch(get_jobs())
-        
-    })
+        setGetJobs(true);
+    }, [dispatch, getJobs]);
+
+    const apply = async (e) => {
+        const job = jobs.find(job => job.id === jobId);
+
+        const app = {
+            user_id: user.id,
+            job_id: job.id
+        }
+
+        setApplied(true);
+        // setApplicants(applicants + 1);
+        await dispatch(job_application(app));
+        await dispatch(get_data(user.id));
+    }
+    
+    const save = async (e) => {
+        const job = jobs.find(job => job.id === jobId);
+
+        const app = {
+            user_id: user.id,
+            job_id: job.id
+        }
+
+        // setSaved(true);
+        await dispatch(save_job(app));
+        await dispatch(get_data(user.id));
+    }
 
     return (
         <div className="applicant-main-container">
@@ -26,20 +56,23 @@ function RecentJobs() {
                 <div key={job.id} >
                     <div className='applicant-container'>
                         <div>
-                            <p>{job.User.first_name} {job.User.last_name} for {job.title}</p>
+                            <p>{job.title}: {job.Company ? job.Company.name : 'Contract'}</p>
                             {additionalInfo && jobId === job.id && (
                                 <>
-                                <p>Email: {job.User.email}</p>
-                                <p>Location: {job.User.location}</p>
-                                <p>Current Job: {job.User.current_job}</p>
+                                <p>Posted By: {job.User.first_name} {job.User.last_name}</p>
+                                <p>Description: {job.description}</p>
+                                <p>Location: {job.location}</p>
+                                <p>Pay: ${job.pay}</p>
+                                <p>Date Posted: {new Date(job.createdAt).toLocaleDateString()}</p>
                                 </>
                             )}
                         </div>
                         <div className='button-container'>
                             {additionalInfo && jobId === job.id && (
-                                <>
-                                <button onClick={() => history.push(`/profile/${userId}`)} className='post-button'>View Profile</button>
-                                </>
+                                <div className='app-buttons'>
+                                    <button onClick={(e) => apply()} className='app-button'>Apply</button>
+                                    <button onClick={(e) => save()} className='app-button'>Save</button>
+                                </div>
                             )}
                             <button className={additionalInfo && jobId === job.id ? 'selected' : 'post-button'} onClick={() => {
                                 if (!additionalInfo) {

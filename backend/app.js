@@ -5,12 +5,16 @@ const csurf = require("csurf");
 const helmet = require("helmet");
 const cookieParser = require("cookie-parser");
 const { ValidationError } = require("sequelize");
+const WebSocket = require('ws');
+const { createServer } = require('http');
 
 const routes = require("./routes");
 const { environment } = require("./config");
 const isProduction = environment === "production";
 
 const app = express();
+const server = createServer(app);
+
 
 app.use(morgan("dev"));
 
@@ -40,6 +44,69 @@ app.use(
 );
 
 app.use(routes); // Connect all the routes
+
+// Set up web socket server
+const socket = new WebSocket.Server( { server });
+
+// Set up socket listeners
+socket.on('connection', (ws) => {
+  console.log('Socket Connect', socket);
+
+  ws.on('message', (json) => {
+    const received = JSON.parse(json);
+    const data = received.data;
+
+    // for handling chat messages
+    if (received.type === 'message') {
+      const addMessage = {
+        type: 'add-chat-message',
+        data: data 
+      }
+  
+      const json = JSON.stringify(addMessage);
+  
+      socket.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(json);
+        }
+      })
+    } 
+
+    // for handling drawings
+    else if (received.type === 'draw') {
+      const addDraw = {
+        type: 'user-drawing',
+        data: data 
+      }
+      const json = JSON.stringify(addDraw);
+
+      socket.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(json);
+        }
+      })
+    }
+
+    // for handling reset of canvas
+    else if (received.type === 'reset') {
+      const reset = {
+        type: 'user-reset',
+        data: data 
+      }
+      const json = JSON.stringify(reset);
+
+      socket.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(json);
+        }
+      })
+    }
+  })
+
+  socket.on('close', () => {
+    console.log('socket close')
+  })
+})
 
 // Catch unhandled requests and forward to error handler.
 app.use((_req, _res, next) => {
@@ -72,4 +139,4 @@ app.use((err, _req, res, _next) => {
   });
 });
 
-module.exports = app;
+module.exports = server;
