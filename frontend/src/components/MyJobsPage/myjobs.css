@@ -1,6 +1,6 @@
 .myjobs-main-container {
     width: 100%;
-    height: 90vh;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,7 +10,7 @@
 }
 
 .myjobs-container {
-    width: 80%;
+    width: 90%;
     max-width: 1200px;
     height: fit-content;
     min-height: 750px;
@@ -35,14 +35,17 @@
 .right-columns {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 25px;
-    width: 500px;
+    width: 90%;
     height: 725px;
     background-color: white;
     overflow: scroll;
     border: 1px solid lightgray;
     border-radius: 5px;
     padding-top: 5px;
+    padding: 10px;
+    overflow-x: hidden;
     /* position: relative;
     right: 0; */
 }
@@ -116,6 +119,10 @@
     padding-right: 10px;
 }
 
+.right-columns > * {
+    width: 100%;
+}
+
 .right-columns > .jobs-main-container {
     position: relative;
     top: 0;
@@ -143,6 +150,7 @@
 .applicant-container {
      padding: 5px;
      width: 100%;
+     height: fit-content;
      display: flex;
      /* flex-direction: column; */
      align-items: center;
@@ -150,8 +158,71 @@
      border-bottom: 1px solid gray;
 }
 
+.applicant-container > div {
+    max-width: 60%;
+}
+
 .button-container {
     display: flex;
     flex-direction: column;
     
+}
+
+.bottom-columns {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    z-index: 10;
+}
+
+.bottom-menu {
+    width: 100%;
+    background-color: white;
+    /* border: 1px solid gray; */
+    height: 10vh;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+    /* padding: 25px; */
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.bottom-menu > .menu-tabs {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 4vh;
+    height: 80%;
+}
+
+.bottom-menu > .highlight {
+    width: 20%;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 4vh;
+    height: 80%;
+    box-shadow: none;
+}
+
+@media screen and (max-width: 750px) {
+    .right-columns {
+        height: 60vh;
+    }
+
+    .tab-label {
+        font-size: 3vw;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    }
 }

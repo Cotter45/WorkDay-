@@ -11,11 +11,14 @@ import SavedJobs from './savedjobs';
 import Jobs from '../Jobs/jobs';
 import Applicants from './applicants';
 import RecentJobs from './recentJobs';
+import useWindowSize from '../../util/window-size';
 
 
 function MyJobs({ user_id, isLoaded, setIsLoaded }) {
     const history = useHistory();
     const dispatch = useDispatch();
+
+    const { width, height } = useWindowSize();
 
     const user = useSelector(state => state.session.user);
     const apps = useSelector(state => state.data.applications);
@@ -86,8 +89,8 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
         {isLoaded && (
             <div className='myjobs-main-container'>
                 <div className='myjobs-container'>
-                    <div className='left-columns'>
-                        <div className='menu'>
+                    <div className={width > 750 ? 'left-columns' : 'bottom-columns'}>
+                        <div className={width > 750 ? 'menu' : 'bottom-menu'}>
                             <div onClick={() => {
                                 setViewRecent(true)
                                 setViewMyApps(false)
@@ -96,7 +99,7 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                                 setReviewApps(false)
                             }} className={viewRecent ? 'highlight' : 'menu-tabs'}>
                                 <i className="far fa-calendar-plus"></i>
-                                <p>Recent Posts</p>
+                                <p className='tab-label'>Recent Posts</p>
                             </div>
                             <div onClick={() => {
                                 setViewRecent(false)
@@ -106,7 +109,7 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                                 setReviewApps(false)
                             }} className={viewMyApps ? 'highlight' : 'menu-tabs'}>
                                 <i className="far fa-money-bill-alt"></i>
-                                <p>My Applications</p>
+                                <p className='tab-label'>My Applications</p>
                             </div>
                             <div onClick={() => {
                                 setViewRecent(false)
@@ -116,7 +119,7 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                                 setReviewApps(false)
                             }} className={viewSaved ? 'highlight' : 'menu-tabs'}>
                                 <i className="fas fa-bookmark"></i>
-                                <p>My Saved Jobs</p>
+                                <p className='tab-label'>My Saved Jobs</p>
                             </div>
                             <div onClick={() => {
                                 setViewRecent(false)
@@ -126,7 +129,7 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                                 setReviewApps(false)
                             }} className={viewPosted ? 'highlight' : 'menu-tabs'}>
                                 <i className="fas fa-briefcase"></i>
-                                <p>My Posted Jobs</p>
+                                <p className='tab-label'>My Posted Jobs</p>
                             </div>
                             <div onClick={() => {
                                 setViewRecent(false)
@@ -136,10 +139,12 @@ function MyJobs({ user_id, isLoaded, setIsLoaded }) {
                                 setReviewApps(true)
                             }} className={reviewApps ? 'highlight' : 'menu-tabs'}>
                                 <i className="fas fa-user-check"></i>
-                                <p> Review Applicants</p>
+                                <p className='tab-label'> Review Applicants</p>
                             </div>
                         </div>
-                        <ProfileCard visitProfile={visitProfile} user={user} />
+                        {width > 750 && (
+                            <ProfileCard visitProfile={visitProfile} user={user} />
+                        )}
                     </div>
                     <div className='right-columns'>
                         {/* {!loaded && (
