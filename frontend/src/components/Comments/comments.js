@@ -1,5 +1,5 @@
 import { useHistory } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -25,6 +25,13 @@ function Comments({ post, update, setUpdate }) {
     const [edit, setEdit] = useState(false);
     const [editComment, setEditComment] = useState('');
     const [newComment, setNewComment] = useState('');
+
+    // useEffect(() => {
+    //     const topOfComments = document.querySelector('.comments-container');
+    //     if (topOfComments) {
+    //         topOfComments.scrollIntoView({top: -100, behavior: 'smooth', block: 'start' });
+    //     }
+    // }, [comments])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -61,6 +68,8 @@ function Comments({ post, update, setUpdate }) {
 
     const handleEditComment = async (e, comment_id) => {
         e.preventDefault();
+        // const comments = document.getElementById(`${comment_id}`);
+        // comments.scrollIntoView({ behavior: 'smooth' });
 
         if (newComment.length > 254) {
             alert('Comment must be less than 255 characters')
@@ -112,7 +121,7 @@ function Comments({ post, update, setUpdate }) {
             <img className='post-comment-image' alt='post' src={photo.name ? URL.createObjectURL(photo) : photo}></img>
             )} */}
             {length && comments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).map(comment => (
-                <div key={!comment.message ? comment.id : uuidv4()} className='comment-container'>
+                <div key={!comment.message ? comment.id : uuidv4()} id={comment.id} className='comment-container'>
                 {comment.message && (
                     <p>{comment.message}</p>
                 )}
