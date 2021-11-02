@@ -43,7 +43,9 @@ function EditProfile({ setShowModal, showModal, user, setUpdate, update, setEdit
         await dispatch(edit_profile(newUser, user.id));
         await dispatch(sessionActions.restoreUser());
         await dispatch(get_data(user.id))
-        setEditProfile(false);
+        if (setEditProfile) {
+            setEditProfile(false);
+        }
         // setUpdate(!update);
         setShowModal(!showModal);
         
