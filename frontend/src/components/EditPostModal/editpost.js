@@ -54,12 +54,12 @@ function EditPostForm({ post, setShowModal, setUpdate, update }) {
         <>
         <button className='close-modal' onClick={() => setShowModal(false)}><i className="fas fa-times fa-2x" /></button>
         <form className='edit-post-form' onSubmit={handleSubmit}>
-            {post && (
+            {/* {post && (
                 <div className='post-edit'>
                     <Posts modal={modal} posts={[post]} />
                 </div>
-            )}
-            <label>Description</label>
+            )} */}
+            <label>Post Description</label>
             {errors && errors.map(error => (
                 <p>{error}</p>
             ))}
