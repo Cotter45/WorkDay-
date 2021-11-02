@@ -9,7 +9,7 @@
     position: relative;
     top: 12vh;
     /* padding-top: 150px; */
-    overflow: hidden;
+    /* overflow: hidden; */
     /* background-color: rgb(239, 239, 237); */
     /* padding-bottom: 200px; */
 }
@@ -254,7 +254,7 @@
     gap: 15px;
     padding: 10px;
     padding-top: 50px;
-    overflow: scroll;
+    /* overflow: scroll; */
     border: 1px solid lightgray;
 }
 
@@ -374,14 +374,14 @@ button:hover {
     position: relative;
     top: 125px;
     max-width: 800px;
-    height: 100%;
-    max-height: 50vh;
+    height: fit-content;
+    /* max-height: 50vh; */
     width: 50vw;
     display: flex;
     flex-direction: column;
     gap: 25px;
     border-radius: 5px;
-    overflow: scroll;
+    overflow-y: scroll;
     padding-bottom: 200px;
     /* padding-bottom: 500px; */
 }
@@ -394,8 +394,8 @@ button:hover {
     max-width: 750px;
     /* max-height: 500px; */
     height: fit-content;
-    word-break: break-all;
-    overflow: scroll;
+    /* word-break: break-all; */
+    /* overflow: scroll; */
 }
 
 .router > .feed-post {
@@ -473,5 +473,495 @@ button:hover {
     color: rgb(2, 2, 252);
 }
 
+@media screen and (max-width: 750px) {
+    #feed-main {
+        height: 88vh;
+        width: 100vw;
+        /* max-width: 1200px; */
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        align-items: center;
+        position: relative;
+        top: 12vh;
+        /* overflow-y:hidden; */
+        /* padding-top: 150px; */
+        /* background-color: rgb(239, 239, 237); */
+        /* padding-bottom: 200px; */
+    }
+    
+    .container {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        justify-content: space-evenly;
+        gap: 25px;
+    }
 
+    /* .card-container {
+        position: relative;
+        top: 2vh;
+        height: fit-content;
+        width: 100%;
+        max-width: 1200px;
+        position: absolute;
+        display: flex;
+        justify-content: space-between;
+    } */
+
+    .left-cards {
+        /* display: flex;
+        flex-direction: column;
+        gap: 15px; */
+        display: none;
+    }
+
+    /* .right-cards {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    } */
+
+    /* .profile-card {
+        background-color: white;
+        border-radius: 5px;
+        position: relative;
+        left: 0;
+        height: 500px;
+        width: 250px;
+        overflow-y: scroll;
+        border: 1px solid lightgray;
+        box-shadow: -5px 0px 5px lightgray;
+    } */
+
+    /* .profile-card:hover {
+        cursor: pointer;
+        box-shadow: -5px 5px 5px gray;
+    }
+
+    .profile-images {
+        height: 100px;
+        width: 100%;
+        position: relative;
+        top: 0;
+    }
+
+    .background-image-container {
+        height: 75px;
+        width: 100%;
+    } */
+
+    /* .background-image-container>img {
+        height: 75px;
+        width: 100%;
+        object-fit: contain;
+    } */
+
+    /* .profile-image {
+        height: 75px;
+        width: 75px;
+        border-radius: 50%;
+        position: relative;
+        left: 35%;
+        bottom: 40px;
+        border: 1px solid white;
+    } */
+
+    /* .profile-image-container>img {
+        height: 75px;
+        width: 75px;
+        border-radius: 50%;
+    } */
+
+    /* .profile-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 25px;
+        gap: 5px;
+        width: 80%;
+        position: relative;
+        left: 10%;
+    } */
+
+    /* .profile-info>* {
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    }
+
+    .profile-extra-info {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 25px;
+        gap: 5px;
+    }
+
+    .profile-extra-info>* {
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    } */
+
+    /* .messages {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding-top: 5px;
+        background-color: white;
+        border-radius: 5px;
+        position: relative;
+        right: 0;
+        height: fit-content;
+        padding-bottom: 50px;
+        max-height: 500px;
+        overflow-y: scroll;
+        width: 250px;
+        border: 1px solid lightgray;
+    } */
+
+    /* .message-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-left: 5px;
+        justify-content: space-between;
+        border-bottom: 1px solid gray;
+    }
+
+    .message-header-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding-left: 5px;
+        justify-content: space-between;
+    } */
+
+    /* .conversation {
+        display: flex;
+        border-bottom: 1px solid black;
+        gap: 5px;
+        padding-left: 5px;
+    }
+
+    .trash-message {
+        border: none;
+        background-color: white;
+    }
+
+    .trash-message:hover {
+        box-shadow: 0px 5px 5px gray;
+        cursor: pointer;
+    }
+
+    .conversation-user {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow-x: hidden;
+        gap: 5px;
+    } */
+
+    /* .message-user-pic {
+        height: 25px;
+        width: 25px;
+        border-radius: 50%;
+    }
+
+    .team-card {
+        position: relative;
+        left: 0;
+        bottom: 0;
+        height: 40vh;
+        width: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: 5px;
+        padding-top: 5px;
+        background-color: white;
+        border-radius: 5px;
+        overflow-y: scroll;
+        border: 1px solid lightgray;
+    } */
+
+    /* .team-card:hover {
+        cursor: pointer;
+    }
+
+    .team-card>* {
+        padding: 0;
+        margin: 0;
+    } */
+
+    .post {
+        background-color: white;
+        border-radius: 5px;
+        max-width: 800px;
+        min-height: 125px;
+        height: fit-content;
+        width: 95vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid lightgray;
+        position: fixed;
+        top: 12vh;
+        left: 1vw;
+        padding: 1vw;
+        /* gap: 15px; */
+        /* padding: 10px; */
+        /* border: 1px solid lightgray; */
+    }
+
+    .new-post {
+        background-color: white;
+        border-radius: 5px;
+        max-width: 800px;
+        min-height: 125px;
+        height: fit-content;
+        width: 80vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 10px;
+        padding-top: 50px;
+        /* overflow: scroll; */
+        border: 1px solid lightgray;
+    }
+
+    .post:hover {
+        cursor: pointer;
+    }
+
+    .post-form {
+        display: flex;
+        flex-direction: column;
+        height: fit-content;
+        width: 100%;
+        gap: 5px;
+        align-items: center;
+        justify-content: space-around;
+        padding-top: 5px;
+    }
+
+    .post-input {
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        height: 75px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .post-input>input {
+        width: 75%;
+        height: 50px;
+        border: 1px solid gray;
+        border-radius: 25px;
+        padding-left: 10px;
+        font-size: 16px;
+    }
+
+    .post-buttons {
+        display: flex;
+        gap: 15px;
+        max-height: 25px;
+        height: fit-content
+    }
+
+    .post-button {
+        border: none;
+        /* box-shadow: 0px 5px 5px gray; */
+        border-radius: 5px;
+        padding: 5px;
+        font-size: 1rem;
+        background-color: transparent;
+    }
+
+    .post-button:hover {
+        box-shadow: 0px 5px 10px gray;
+    }
+
+    .submit-post {
+        display: flex;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+/* .post-button-selected {
+    border: none;
+    box-shadow: 0px 5px 5px lightcoral;
+    border-radius: 15px;
+    padding: 5px;
+    font-size: 1rem;
+} */
+
+    .icons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .photo {
+        color: rgb(134, 187, 205);
+    }
+
+    .icons:hover {
+        cursor: pointer;
+    }
+
+    .post-image-input {
+        width: 80%;
+        height: 15px;
+        padding: 10px;
+        border: none;
+        box-shadow: 0px 5px 5px gray;
+        border-radius: 10px;
+        font-size: 16px;
+    }
+
+    #upload-photo {
+        height: 100px;
+        width: 100px;
+        object-fit: cover;
+        position: relative;
+    }
+
+    label {
+        text-align: center;
+    }
+
+    button:hover {
+        cursor: pointer;
+    }
+
+    .post-image {
+        height: 75px;
+        width: 75px;
+        border-radius: 50%;
+        border: 1px solid white;
+    }
+
+    .feed {
+        position: relative;
+        top: 125px;
+        max-width: 800px;
+        height: fit-content;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+        border-radius: 5px;
+        padding-bottom: 200px;
+        overflow:scroll;
+        /* padding-bottom: 500px; */
+    }
+
+    .feed > .profile-feed-post {
+        width: 90%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: fit-content;
+    }
+
+    .feed-post {
+        background-color: white;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid lightgray;
+        max-width: 750px;
+        width: 90%;
+        /* max-height: 500px; */
+        height: fit-content;
+        flex-wrap: wrap;
+        /* overflow: scroll; */
+    }
+
+/* .router>.feed-post {} */
+
+    .post-user-container {
+        width: 100%;
+        display: flex;
+        gap: 10px;
+        height: 75px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    #post-user {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+    }
+
+    #post-user:hover {
+        cursor: pointer;
+    }
+
+    .post-user-info>* {
+        padding: 0;
+        margin: 0;
+    }
+
+    .feed-image {
+        height: 250px;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .likes-comments {
+        border-bottom: 1px solid lightgray;
+    }
+
+    .feed-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+    }
+
+    /* .post-comment > input {
+        font-size: 16px;
+    } */
+
+.edit-post {
+    border: none;
+    height: 40px;
+    width: 40px;
+    padding-right: 10px;
+    background-color: transparent;
+    color: gray;
+}
+
+.edit-post:hover {
+    cursor: pointer;
+    color: black;
+    border-radius: 5px;
+    box-shadow: 0px 5px 5px gray;
+}
+
+.liked {
+    border: none;
+    /* box-shadow: 0px 5px 5px blue; */
+    border-radius: 5px;
+    padding: 5px;
+    font-size: 1rem;
+    color: blue;
+    /* background-color: transparent; */
+}
+
+.liked>* {
+    color: rgb(2, 2, 252);
+}
+
+}
 

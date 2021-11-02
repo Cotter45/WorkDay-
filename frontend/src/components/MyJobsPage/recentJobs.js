@@ -56,7 +56,7 @@ function RecentJobs() {
                 <div key={job.id} >
                     <div className='applicant-container'>
                         <div>
-                            <p>{job.title}: {job.Company ? job.Company.name : 'Contract'}</p>
+                            <p>{job.title} for {job.Company ? job.Company.name : 'Contract'}</p>
                             {additionalInfo && jobId === job.id && (
                                 <>
                                 <p>Posted By: {job.User.first_name} {job.User.last_name}</p>

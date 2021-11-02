@@ -10,6 +10,7 @@ function NewComment({ handleSubmit, comment, setComment, edit, addImage, setAddI
                 <input 
                     value={comment ? comment : ''}
                     onChange={(e) => setComment(e.target.value)}
+                    onClick={(e) => e.preventDefault()}
                 ></input>
             </div>
             {!edit && photo && (
