@@ -14,7 +14,7 @@ function SocketProvider(props) {
         if (!user) return;
         if (socket.current) return;
 
-        const websocket = new WebSocket(process.env.NODE_ENV === 'production' ? 'ws://' + window.location.hostname : 'ws://localhost:5000');
+        const websocket = new WebSocket(process.env.NODE_ENV === 'production' ? process.env.REACT_APP_WS_URL : 'ws://localhost:5000');
 
         websocket.onopen = (e) => {
             console.log('Socket Connection');
