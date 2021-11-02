@@ -266,7 +266,6 @@ export const add_comment = (newComment, postId) => async dispatch => {
     let formData = new FormData();
 
     if (image_url.name) {
-        console.log('wut')
         formData.append('comment', comment);
         formData.append('image', image_url);
         formData.append('user_id', user_id);

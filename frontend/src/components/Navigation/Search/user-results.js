@@ -25,14 +25,11 @@ function UserResults({ result, additionalInfo, setAdditionalInfo, users, userId,
                 <button className={additionalInfo && userId === result.id ? 'selected' : 'post-button'} onClick={() => {
                     if (!additionalInfo) {
                         setUserId(result.id)
-                        console.log('1', result)
                         setAdditionalInfo(!additionalInfo)
                     } else if (additionalInfo && userId === result.id) {
-                        console.log('2')
                         setUserId(result.id)
                         setAdditionalInfo(false)
                     } else {
-                        console.log('3')
                         setUserId(result.id)
                         setAdditionalInfo(true)
                     }

@@ -351,7 +351,6 @@ router.put('/:post_id', singleMulterUpload('image'), asyncHandler( async (req, r
     })
 
     if (!req.file) {
-        console.log('WUT')
         await post.update({
             description,
             image_url: imageUrl

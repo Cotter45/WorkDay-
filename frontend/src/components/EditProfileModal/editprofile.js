@@ -11,7 +11,6 @@ import './edit-profile.css';
 function EditProfile({ setShowModal, showModal, user, setUpdate, update, setEditProfile }) {
     const dispatch = useDispatch();
 
-    console.log('PROFILE')
 
     const [background_image, setBackgroundImage] = useState(user.background_image);
     const [profile_picture, setProfilePicture] = useState(user.profile_picture);

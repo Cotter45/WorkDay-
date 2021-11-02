@@ -143,7 +143,6 @@ router.post('/apply/:job_id', asyncHandler( async (req, res) => {
         
         return res.json({ job })
     } else if (exists) {
-        console.log('YEA')
         const id = exists.id;
         await exists.destroy()
 
