@@ -7,7 +7,7 @@ import './home.css';
 
 function HomePage() {
     const dispatch = useDispatch();
-
+    
     const user = useSelector(state => state.session.user);
     const data = useSelector(state => state.data);
 

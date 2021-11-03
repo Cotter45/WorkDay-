@@ -19,11 +19,11 @@ function App() {
   const dispatch = useDispatch();
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [appUpdate, setAppUpdate] = useState(false);
+  // const [appUpdate, setAppUpdate] = useState(false);
   // const [showModal, setShowModal] = useState(false);
 
   const user = useSelector(state => state.session.user);
-  const data = useSelector(state => state.session.data);
+  // const data = useSelector(state => state.session.data);
 
   let user_id;
   if (user) {

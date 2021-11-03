@@ -16,8 +16,6 @@ function SocketProvider(props) {
 
         const websocket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.origin.replace(/^https/, 'wss') : window.location.origin.replace(/^http/, 'ws'));
         
-        // process.env.NODE_ENV === 'production' ? process.env.REACT_APP_WS_URL : 'wss://localhost:5000'
-
         websocket.onopen = (e) => {
             console.log('Socket Connection');
         }
@@ -29,6 +27,8 @@ function SocketProvider(props) {
         websocket.onclose = (e) => {
             console.log('socket close')
             socket.current = null;
+            const newSocket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.origin.replace(/^https/, 'wss') : window.location.origin.replace(/^http/, 'ws'));
+            socket.current = newSocket;
         }
         
         socket.current = websocket;
