@@ -33,10 +33,10 @@ function UserProfile() {
     //     setUser(stateUsers.find(user => user.id === +userId));
     // }, [user, userId])
 
-    useEffect(() => {
-        if (user) return;
-        history.push('')
-    })
+    // useEffect(() => {
+    //     if (user) return;
+    //     history.push('')
+    // })
 
     useEffect(() => {
         if (!userId) return;

@@ -46,7 +46,7 @@ app.use(
 app.use(routes); // Connect all the routes
 
 // Set up web socket server
-const socket = new WebSocket.Server( { server });
+const socket = new WebSocket.Server({ server });
 
 // Set up socket listeners
 socket.on('connection', (ws) => {

@@ -11,7 +11,7 @@ import App from './App';
 import configureStore from './store';
 import { restoreCSRF, csrfFetch } from "./store/csrf";
 import * as sessionActions from './store/session';
-// import SocketProvider from './context/socket';
+import SocketProvider from './context/socket';
 
 const store = configureStore();
 
@@ -27,11 +27,11 @@ function Root() {
   return (
     <ModalProvider>
       <Provider store={store}>
-        {/* <SocketProvider> */}
+        <SocketProvider>
           <BrowserRouter>
             <App />
           </BrowserRouter>
-        {/* </SocketProvider> */}
+        </SocketProvider>
       </Provider>
     </ModalProvider>
   );

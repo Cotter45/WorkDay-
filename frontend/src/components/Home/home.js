@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Socket } from '../../context/socket';
 import { get_data } from '../../store/api';
 
 import './home.css';
