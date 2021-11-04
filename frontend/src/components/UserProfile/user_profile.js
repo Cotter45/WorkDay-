@@ -159,7 +159,7 @@ function UserProfile() {
                         <Jobs user={user} />
                     )}
                     {tasks && (
-                        <ToDo user={user} />
+                        <ToDo tasks={user.Tasks} />
                     )}
                     {photos && (
                         <Photos />

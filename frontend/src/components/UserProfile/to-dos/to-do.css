@@ -1,0 +1,50 @@
+.todo-container {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 1400px;
+}
+
+.todo {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: fit-content;
+    gap: 2vh;
+}
+
+.priority-container {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    box-shadow: 0px 5px 5px gray;
+    padding: 2vw;
+    height: fit-content;
+    width: 100%;
+    display: flex;
+    gap: 2vw;
+}
+
+.priority-1 {
+   
+}
+.priority-2 {
+   
+}
+.priority-3 {
+   
+}
+
+.task-container {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    box-shadow: 0px 5px 5px lightgray;
+    padding: 2vw;
+}
+
+.task-container:hover {
+    cursor: pointer;
+}
