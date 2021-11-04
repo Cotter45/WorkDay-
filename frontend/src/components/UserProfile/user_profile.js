@@ -8,6 +8,8 @@ import './profile.css';
 import Posts from '../Posts/posts';
 import Jobs from '../Jobs/jobs';
 import EditProfileModal from '../EditProfileModal';
+import ToDo from './to-dos/todo';
+import Photos from './userPhotos/photos';
 
 function UserProfile() {
     const dispatch = useDispatch();
@@ -24,6 +26,8 @@ function UserProfile() {
     const [userUpdate, setUserUpdate] = useState(false);
     const [showJob, setShowJob] = useState(false);
     const [showPost, setShowPost] = useState(true);
+    const [projects, setShowProjects] = useState(false);
+    const [photos, setShowPhotos] = useState(false);
     const [edit, setEdit] = useState(false);
     // const [profileUpdate, setProfileUpdate] = useState(false);
 
@@ -121,11 +125,27 @@ function UserProfile() {
                             <button onClick={() => {
                                 setShowJob(false)
                                 setShowPost(!showPost)
+                                setShowProjects(false)
+                                setShowPhotos(false)
                             }} className='post-button'>Posts</button>
                             <button onClick={() => {
                                 setShowPost(false)
                                 setShowJob(!showJob)
+                                setShowProjects(false)
+                                setShowPhotos(false)
                             }} className='post-button'>Job Posts</button>
+                            <button onClick={() => {
+                                setShowPost(false)
+                                setShowJob(false)
+                                setShowProjects(!projects)
+                                setShowPhotos(false)
+                            }} className='post-button'>Projects</button>
+                            <button onClick={() => {
+                                setShowPost(false)
+                                setShowJob(false)
+                                setShowProjects(false)
+                                setShowPhotos(!photos)
+                            }} className='post-button'>Photos</button>
                             {/* <Link to={`/profile/${userId}/posts`}>Posts</Link> */}
                             {/* <Link to={`/profile/${userId}/job_posts`}>Job Posts</Link> */}
                         </div>
@@ -135,6 +155,12 @@ function UserProfile() {
                     )}
                     {showJob && (
                         <Jobs user={user} />
+                    )}
+                    {projects && (
+                        <ToDo />
+                    )}
+                    {photos && (
+                        <Photos />
                     )}
                     </div>
                 </div>

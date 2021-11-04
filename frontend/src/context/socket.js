@@ -14,7 +14,7 @@ function SocketProvider(props) {
         if (!user) return;
         if (socket.current) return;
 
-        const websocket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.origin.replace(/^https/, 'wss') : window.location.origin.replace(/^http/, 'ws').replace(/3000/, '5000'));
+        let websocket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.origin.replace(/^https/, 'wss') : window.location.origin.replace(/^http/, 'ws').replace(/3000/, '5000'));
         
         websocket.onopen = (e) => {
             console.log('Socket Connection');
@@ -27,8 +27,8 @@ function SocketProvider(props) {
         websocket.onclose = (e) => {
             console.log('socket close')
             socket.current = null;
-            const newSocket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.origin.replace(/^https/, 'wss') : window.location.origin.replace(/^http/, 'ws').replace(/3000/, '5000'));
-            socket.current = newSocket;
+            websocket = new WebSocket(process.env.NODE_ENV === 'production' ? window.location.origin.replace(/^https/, 'wss') : window.location.origin.replace(/^http/, 'ws').replace(/3000/, '5000'));
+            socket.current = websocket;
         }
         
         socket.current = websocket;

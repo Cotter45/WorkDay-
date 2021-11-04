@@ -60,6 +60,26 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
+// Route to fetch a users projects
+router.get('/get_projects/:user_id', asyncHandler( async (req, res) => {
+  const {user_id } = req.params;
+  const projects = await Project.findAll({
+    where: {
+      user_id
+    },
+    include: [
+      {
+        model: Team,
+        include: { all: true }
+      },
+      {
+        model: Post,
+        include: { all: true }
+      }
+    ]
+  });
+}))
+
 //Route to update users profile information
 router.put('/update_profile/:user_id', asyncHandler( async (req, res) => {
   const { user_id } = req.params;

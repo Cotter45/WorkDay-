@@ -21,6 +21,19 @@ const SAVE_JOB = 'api/save_job_for_later';
 const DELETE_SAVE = 'api/delete_save_job';
 const LIKE_COMMENT = 'api/like_comment';
 const GET_RECENT_JOBS = 'api/get_recent_jobs';
+const GET_PROJECTS = 'api/get_projects';
+
+const get_projects_action = (data) => ({
+    type: GET_PROJECTS,
+    payload: data
+})
+
+export const get_projects = (userId) => async dispatch => {
+    const fetch = await csrfFetch(`/api/users/get_projects/${userId}`)
+    const response = await fetch.json();
+    dispatch(get_projects_action(response))
+    return response;
+}
 
 const recent_jobs_action = (data) => ({
     type: GET_RECENT_JOBS,
@@ -491,7 +504,8 @@ const initialState = {
     search: [],
     team: null,
     users: [], 
-    recent_jobs: []
+    recent_jobs: [],
+    projects: [],
 }
 
 function data_reducer(state = initialState, action) {
@@ -632,6 +646,9 @@ function data_reducer(state = initialState, action) {
             return newState;
         case GET_RECENT_JOBS:
             newState.recent_jobs = action.payload.jobs;
+            return newState;
+        case GET_PROJECTS:
+            newState.projects = action.payload.projects;
             return newState;
         default: 
             return state;
