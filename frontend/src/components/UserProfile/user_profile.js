@@ -26,7 +26,7 @@ function UserProfile() {
     const [userUpdate, setUserUpdate] = useState(false);
     const [showJob, setShowJob] = useState(false);
     const [showPost, setShowPost] = useState(true);
-    const [projects, setShowProjects] = useState(false);
+    const [tasks, setShowTasks] = useState(false);
     const [photos, setShowPhotos] = useState(false);
     const [edit, setEdit] = useState(false);
     // const [profileUpdate, setProfileUpdate] = useState(false);
@@ -125,25 +125,27 @@ function UserProfile() {
                             <button onClick={() => {
                                 setShowJob(false)
                                 setShowPost(!showPost)
-                                setShowProjects(false)
+                                setShowTasks(false)
                                 setShowPhotos(false)
                             }} className='post-button'>Posts</button>
                             <button onClick={() => {
                                 setShowPost(false)
                                 setShowJob(!showJob)
-                                setShowProjects(false)
+                                setShowTasks(false)
                                 setShowPhotos(false)
                             }} className='post-button'>Job Posts</button>
+                            {+userId === me.id && (
+                                <button onClick={() => {
+                                    setShowPost(false)
+                                    setShowJob(false)
+                                    setShowTasks(!tasks)
+                                    setShowPhotos(false)
+                                }} className='post-button'>To-Do</button>
+                            )}
                             <button onClick={() => {
                                 setShowPost(false)
                                 setShowJob(false)
-                                setShowProjects(!projects)
-                                setShowPhotos(false)
-                            }} className='post-button'>Projects</button>
-                            <button onClick={() => {
-                                setShowPost(false)
-                                setShowJob(false)
-                                setShowProjects(false)
+                                setShowTasks(false)
                                 setShowPhotos(!photos)
                             }} className='post-button'>Photos</button>
                             {/* <Link to={`/profile/${userId}/posts`}>Posts</Link> */}
@@ -156,8 +158,8 @@ function UserProfile() {
                     {showJob && (
                         <Jobs user={user} />
                     )}
-                    {projects && (
-                        <ToDo />
+                    {tasks && (
+                        <ToDo user={user} />
                     )}
                     {photos && (
                         <Photos />

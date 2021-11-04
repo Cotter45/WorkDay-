@@ -33,7 +33,8 @@ const {
   Review,
   Role,
   Save_for_Later,
-  Team
+  Team,
+  Task
  } = require("../../db/models");
 
 
@@ -188,6 +189,9 @@ router.get('/profile/:user_id', asyncHandler( async (req, res) => {
       {
         model: Post,
         include: { all: true }
+      },
+      {
+        model: Task,
       }
     ]
   })
