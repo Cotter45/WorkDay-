@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     priority: DataTypes.INTEGER,
     description: DataTypes.TEXT,
-    userId: DataTypes.INTEGER
+    userId: DataTypes.INTEGER,
+    position: DataTypes.INTEGER,
   }, {});
   Task.associate = function(models) {
     // associations can be defined here
