@@ -30,15 +30,15 @@
     /* min-height: 100vh; */
     min-height: 50vh;
     display: flex;
-    flex-direction: column;
-    display: grid;
-    grid-template-columns: 49% 49%;
-    grid-template-rows: repeat(1fr);
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
+    align-content: center;
     height: fit-content;
     gap: 1vh;
     border: 1px solid gray;
-    padding: 1vh;
+    /* padding: 1vh; */
     box-shadow: 0px 5px 5px lightgray;
     border-radius: 5px;
 }
@@ -46,16 +46,16 @@
 .completed {
     width: 95%;
     min-height: 50vh;
-    /* display: flex; */
-    /* flex-direction: column; */
-    display: grid;
-    grid-template-columns: 49% 49%;
-    grid-template-rows: repeat(1fr);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
     align-items: center;
+    align-content: center;
     height: fit-content;
     gap: 1vh;
     border: 1px solid gray;
-    padding: 1vh;
+    /* padding: 1vh; */
     box-shadow: 0px 5px 5px lightgray;
     border-radius: 5px;
 }
@@ -64,7 +64,7 @@
     border: 1px solid lightgray;
     border-radius: 5px;
     box-shadow: 0px 5px 5px lightgray;
-    padding: 1vw;
+    padding: 10px;
     position: relative;
     z-index: 5;
     text-align: center;
@@ -138,4 +138,149 @@
 .task-container:hover .filledbar {
     width: 100%;
     transition: 0.4s ease-out;
+}
+
+@media screen and (max-width: 750px) {
+    .todo-container {
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        max-width: 1400px;
+    }
+
+    .dragndrop {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr;
+
+        align-items: center;
+        justify-content: center;
+        /* justify-content: space-evenly; */
+        width: 95%;
+        gap: 1vw;
+    }
+
+    .dragheaders {
+        text-align: center;
+        text-decoration: underline;
+    }
+
+    .todo {
+        width: 90%;
+        /* min-height: 100vh; */
+        min-height: 20vh;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        height: fit-content;
+        gap: 1vh;
+        border: 1px solid gray;
+        padding: 1vh;
+        box-shadow: 0px 5px 5px lightgray;
+        border-radius: 5px;
+    }
+
+    .completed {
+        width: 90%;
+        min-height: 20vh;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        height: fit-content;
+        gap: 1vh;
+        border: 1px solid gray;
+        padding: 1vh;
+        box-shadow: 0px 5px 5px lightgray;
+        border-radius: 5px;
+    }
+
+    .task-container {
+        border: 1px solid lightgray;
+        border-radius: 5px;
+        box-shadow: 0px 5px 5px lightgray;
+        padding: 10px;
+        position: relative;
+        z-index: 5;
+        text-align: center;
+        height: fit-content;
+        width: 35%;
+    }
+
+    .task-container>* {
+        font-size: 2vw;
+        padding: 0;
+        margin: 0;
+    }
+
+    .task-date {
+        font-size: 1vw;
+    }
+
+    .task-description {
+        font-size: 1.5vw;
+    }
+
+    .task-container:hover {
+        cursor: pointer;
+    }
+
+    #high {
+        background-color: rgb(255, 0, 0);
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+    }
+
+    #medium {
+        background-color: rgb(175, 175, 0);
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+    }
+
+    #low {
+        background-color: rgb(0, 143, 0);
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+    }
+
+    .bar {
+        /* position: absolute;
+    top: 100px;
+    left: 20px; */
+        height: 5px;
+        width: 150px;
+    }
+
+    .emptybar {
+        background-color: #2e3033;
+        width: 100%;
+        height: 100%;
+    }
+
+    .filledbar {
+        /* position: absolute;
+    top: 0px; */
+        z-index: 3;
+        width: 0px;
+        height: 10px;
+        background: rgb(0, 154, 217);
+        background: linear-gradient(90deg, rgba(0, 154, 217, 1) 0%, rgba(217, 147, 0, 1) 65%, rgba(255, 186, 0, 1) 100%);
+        transition: 0.6s ease-out;
+    }
+
+    .task-container:hover .filledbar {
+        width: 100%;
+        transition: 0.4s ease-out;
+    }
 }
