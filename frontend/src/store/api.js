@@ -21,17 +21,17 @@ const SAVE_JOB = 'api/save_job_for_later';
 const DELETE_SAVE = 'api/delete_save_job';
 const LIKE_COMMENT = 'api/like_comment';
 const GET_RECENT_JOBS = 'api/get_recent_jobs';
-const GET_PROJECTS = 'api/get_projects';
+const GET_TASKS = 'api/get_tasks';
 
-const get_projects_action = (data) => ({
-    type: GET_PROJECTS,
+const get_tasks_action = (data) => ({
+    type: GET_TASKS,
     payload: data
 })
 
-export const get_projects = (userId) => async dispatch => {
-    const fetch = await csrfFetch(`/api/users/get_projects/${userId}`)
+export const get_tasks = (userId) => async dispatch => {
+    const fetch = await csrfFetch(`/api/users/get_tasks/${userId}`)
     const response = await fetch.json();
-    dispatch(get_projects_action(response))
+    dispatch(get_tasks_action(response))
     return response;
 }
 
@@ -505,7 +505,7 @@ const initialState = {
     team: null,
     users: [], 
     recent_jobs: [],
-    projects: [],
+    tasks: [],
 }
 
 function data_reducer(state = initialState, action) {
@@ -647,8 +647,8 @@ function data_reducer(state = initialState, action) {
         case GET_RECENT_JOBS:
             newState.recent_jobs = action.payload.jobs;
             return newState;
-        case GET_PROJECTS:
-            newState.projects = action.payload.projects;
+        case GET_TASKS:
+            newState.tasks = action.payload.tasks;
             return newState;
         default: 
             return state;

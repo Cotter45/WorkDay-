@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     description: DataTypes.TEXT,
     userId: DataTypes.INTEGER,
     position: DataTypes.INTEGER,
+    completed: DataTypes.BOOLEAN,
   }, {});
   Task.associate = function(models) {
     // associations can be defined here

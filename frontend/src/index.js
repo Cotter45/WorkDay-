@@ -1,4 +1,7 @@
 import React from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { TouchBackend } from 'react-dnd-touch-backend';
 
 import './index.css';
 
@@ -24,12 +27,24 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 function Root() {
+
+  const isTouch = () => {
+        if ('ontouchstart' in window) {
+            return true;
+        }
+        return false;
+    }
+
+    const backendForDND = isTouch() ? TouchBackend : HTML5Backend;
+
   return (
     <ModalProvider>
       <Provider store={store}>
         <SocketProvider>
           <BrowserRouter>
-            <App />
+            <DndProvider backend={backendForDND}>
+              <App />
+            </DndProvider>
           </BrowserRouter>
         </SocketProvider>
       </Provider>

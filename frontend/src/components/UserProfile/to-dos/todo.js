@@ -1,72 +1,107 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { DndProvider, DropTarget } from 'react-dnd';
+import { DndProvider, DropTarget, useDrop } from 'react-dnd';
 import { findDOMNode } from 'react-dom';
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import { TouchBackend } from 'react-dnd-touch-backend';
 import update from 'immutability-helper';
+import { useDispatch } from 'react-redux';
 
 import Loading from '../../../util/loading';
 import Task from "./task";
 import './to-do.css';
+import { useSelector } from 'react-redux';
+import { get_tasks } from '../../../store/api';
 
 
-function ToDo({ tasks }) {
-    const userId = useParams().userId;
+function ToDo() {
+    const userId = useParams().id;
+    const dispatch = useDispatch();
+
+    const tasks = useSelector(state => state.data.tasks);
 
     const [taskCards, setTasks] = useState([]);
-    const [priority1, setPriority1] = useState(tasks?.filter(task => task.priority === 1));
-    const [priority2, setPriority2] = useState(tasks?.filter(task => task.priority === 2));
-    const [priority3, setPriority3] = useState(tasks?.filter(task => task.priority === 3));
+    const [completedTasks, setCompletedTasks] = useState([]);
+    const [loaded, setLoaded] = useState(false);
+
+    const isTouch = () => {
+        if ('ontouchstart' in window) {
+            return true;
+        }
+        return false;
+    }
+
+    const backendForDND = isTouch() ? TouchBackend : HTML5Backend;
 
     useEffect(() => {
-        setPriority1(tasks?.filter(task => task.priority === 1));
-        setPriority2(tasks?.filter(task => task.priority === 2));
-        setPriority3(tasks?.filter(task => task.priority === 3));
+        if (loaded) return;
+        dispatch(get_tasks(userId));
+        setLoaded(true);
+    }, [dispatch, loaded, userId]);
+
+    useEffect(() => {
+        
+        setTasks(tasks.filter(task => !task.completed));
+        setCompletedTasks(tasks.filter(task => task.completed));
         setTasks(tasks);
     }, [tasks]);
 
 
-    const moveTask = (dragIndex, hoverIndex) => {
+    const moveTask = (dragIndex, hoverIndex, item) => {
+        const dragCard = tasks.find(task => task.id === item.id);
+        if (!dragCard.completed) {
+            setTasks(update(taskCards, {
+                $splice: [
+                    [dragIndex, 1],
+                    [hoverIndex, 0, dragCard],
+                ],
+            }));
+        } else {
+            setCompletedTasks(update(completedTasks, {
+                $splice: [
+                    [dragIndex, 1],
+                    [hoverIndex, 0, dragCard],
+                ],
+            }));
+        }
+    };
+    
+    const [{ isOverCompleted, canDropCompleted }, dropCompleted] = useDrop({
+        accept: 'task',
+        collect: monitor => ({
+            isOverCompleted: monitor.isOver(),
+            canDropCompleted: monitor.canDrop(),
+        }),
+        drop: (item, monitor) => {
+            const dragIndex = item.index;
+            const hoverIndex = completedTasks.findIndex(task => task.id === item.id);
+            moveTaskToCompleted(dragIndex, hoverIndex, item);
+        },
+    });
+    
+    
+    const moveTaskToCompleted = (dragIndex, hoverIndex, item) => {
         const dragCard = taskCards[dragIndex];
-        setTasks(update(taskCards, {
-            $splice: [
-                [dragIndex, 1],
-                [hoverIndex, 0, dragCard],
-            ],
-        }));
+        const task = taskCards.find(task => task.id === item.id);
+        if (task) {
+            task.completed = true;
+            setTasks(taskCards.filter((task) => task.id !== dragCard.id));
+            setCompletedTasks([...completedTasks, dragCard]);
+        }
     };
+    
 
-    const moveTask2 = (dragIndex, hoverIndex) => {
-        const dragCard = priority2[dragIndex];
-        setPriority2(
-            update(priority2, {
-                $splice: [
-                    [dragIndex, 1],
-                    [hoverIndex, 0, dragCard],
-                ],
-            }),
-        );
-    };
-
-    const moveTask3 = (dragIndex, hoverIndex) => {
-        const dragCard = priority3[dragIndex];
-        setPriority3(
-            update(priority3, {
-                $splice: [
-                    [dragIndex, 1],
-                    [hoverIndex, 0, dragCard],
-                ],
-            }),
-        );
-    };
     
 
     return (
         <>
         {!tasks && <Loading />}
         {tasks && (
-            <DndProvider backend={HTML5Backend}>
-                <div className='todo-container'>
+            <div className='todo-container'>
+                <h2>Drag and drop tasks to mark complete</h2>
+                <div className='dragndrop'>
+                    <h2 className='dragheaders'>To Do</h2>
+                    <h2 className='dragheaders'>Completed</h2>
                     <div className="todo">
                         {taskCards && taskCards.map((task, index) => (
                             <Task 
@@ -74,47 +109,23 @@ function ToDo({ tasks }) {
                                 index={index}
                                 task={task}
                                 moveTask={moveTask}
-                                moveTask2={moveTask2}
-                                moveTask3={moveTask3}
+                                moveTaskToCompleted={moveTaskToCompleted}
                             />
                         ))}
-                        {/* <h1>TO DO APP HERE</h1> */}
-                        {/* <p>High Priority</p>
-                        <div className='priority-1 priority-container'>
-                            {priority1 && priority1.map((task, index) => <Task
+                    </div>
+                    <div ref={dropCompleted} className="completed">
+                        {completedTasks && completedTasks.map((task, index) => (
+                            <Task
+                                key={task.id}
+                                index={index}
+                                task={task}
                                 moveTask={moveTask}
-                                // moveTask2={moveTask2}
-                                // moveTask3={moveTask3}
-                                key={task.id} 
-                                task={task} 
-                                index={index}
-                             />)}
-                        </div>
-                        <p>Medium Priority</p>
-                        <div className='priority-2 priority-container'>
-                            {priority2 && priority2.map((task, index) => <Task
-                                // moveTask={moveTask}
-                                moveTask2={moveTask2}
-                                // moveTask3={moveTask3}
-                                key={task.id} 
-                                task={task} 
-                                index={index}
-                             />)}
-                        </div>
-                        <p>Low Priority</p>
-                        <div className='priority-3 priority-container'>
-                            {priority3 && priority3.map((task, index) => <Task
-                                // moveTask={moveTask}
-                                // moveTask2={moveTask2}
-                                moveTask3={moveTask3}
-                                key={task.id} 
-                                task={task} 
-                                index={index}
-                             />)}
-                        </div> */}
+                                moveTaskToCompleted={moveTaskToCompleted}
+                            />
+                        ))}
                     </div>
                 </div>
-            </DndProvider>
+            </div>
         )}
         </>
     )
