@@ -10,8 +10,11 @@
 
 .todo {
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    /* display: flex; */
+    /* flex-direction: column; */
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
     align-items: center;
     height: fit-content;
     gap: 2vh;
@@ -43,8 +46,53 @@
     border-radius: 5px;
     box-shadow: 0px 5px 5px lightgray;
     padding: 2vw;
+    position: relative;
+    z-index: 5;
+    text-align: center;
 }
 
 .task-container:hover {
     cursor: pointer;
+}
+
+#high {
+    color: rgb(255, 0, 0);
+}
+
+#medium {
+    color: rgb(175, 175, 0);
+}
+
+#low {
+    color: rgb(0, 143, 0);
+}
+
+.bar {
+    /* position: absolute;
+    top: 100px;
+    left: 20px; */
+    height: 5px;
+    width: 150px;
+}
+
+.emptybar {
+    background-color: #2e3033;
+    width: 100%;
+    height: 100%;
+}
+
+.filledbar {
+    /* position: absolute;
+    top: 0px; */
+    z-index: 3;
+    width: 0px;
+    height: 10px;
+    background: rgb(0, 154, 217);
+    background: linear-gradient(90deg, rgba(0, 154, 217, 1) 0%, rgba(217, 147, 0, 1) 65%, rgba(255, 186, 0, 1) 100%);
+    transition: 0.6s ease-out;
+}
+
+.task-container:hover .filledbar {
+    width: 100%;
+    transition: 0.4s ease-out;
 }
