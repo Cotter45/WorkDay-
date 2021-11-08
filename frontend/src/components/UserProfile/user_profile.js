@@ -10,6 +10,7 @@ import Jobs from '../Jobs/jobs';
 import EditProfileModal from '../EditProfileModal';
 import ToDo from './to-dos/todo';
 import Photos from './userPhotos/photos';
+import { restoreUser } from '../../store/session';
 
 function UserProfile() {
     const dispatch = useDispatch();
@@ -37,10 +38,16 @@ function UserProfile() {
     //     setUser(stateUsers.find(user => user.id === +userId));
     // }, [user, userId])
 
-    // useEffect(() => {
-    //     if (user) return;
-    //     history.push('')
-    // })
+    useEffect(() => {
+        const timeout =  () => setTimeout(() => {
+            const temp = restoreUser();
+            if (!temp) history.push('')
+        }, 3000)
+
+        timeout();
+        return () => clearTimeout(timeout);
+
+    }, [user, history])
 
     useEffect(() => {
         if (!userId) return;
@@ -65,7 +72,7 @@ function UserProfile() {
         (async function sendIt() {
             await dispatch(get_user_data(userId));
         })()
-    }, [dispatch, user, userId])
+    }, [dispatch, history, user, userId])
 
 
     // useEffect(() => {

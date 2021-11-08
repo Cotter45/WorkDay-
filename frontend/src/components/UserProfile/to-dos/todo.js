@@ -1,9 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { DndProvider, DropTarget, useDrop } from 'react-dnd';
-import { findDOMNode } from 'react-dom';
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { TouchBackend } from 'react-dnd-touch-backend';
+import { useDrop } from 'react-dnd';
 import update from 'immutability-helper';
 import { useDispatch } from 'react-redux';
 
@@ -30,8 +27,6 @@ function ToDo() {
         }
         return false;
     }
-
-    const backendForDND = isTouch() ? TouchBackend : HTML5Backend;
 
     useEffect(() => {
         if (loaded) return;
@@ -66,11 +61,10 @@ function ToDo() {
         }
     };
     
-    const [{ isOverCompleted, canDropCompleted }, dropCompleted] = useDrop({
+    const [{ isOverCompleted }, dropCompleted] = useDrop({
         accept: 'task',
         collect: monitor => ({
             isOverCompleted: monitor.isOver(),
-            canDropCompleted: monitor.canDrop(),
         }),
         drop: (item, monitor) => {
             const dragIndex = item.index;
@@ -113,7 +107,7 @@ function ToDo() {
                             />
                         ))}
                     </div>
-                    <div ref={dropCompleted} className="completed">
+                    <div ref={dropCompleted} className={isOverCompleted ? "hover-completed" : "completed"}>
                         {completedTasks && completedTasks.map((task, index) => (
                             <Task
                                 key={task.id}

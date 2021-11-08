@@ -2,6 +2,7 @@ import { useSpring, animated } from 'react-spring';
 // import { useDrag } from '@use-gesture/react';
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import TaskModal from './task-modal';
 
 
 function Task({ task, moveTask, index }) {
@@ -17,7 +18,7 @@ function Task({ task, moveTask, index }) {
         }),
     });
 
-    const [, drop] = useDrop({
+    const [{ isOver }, drop] = useDrop({
         accept: 'task',
         hover(item, monitor) {
             if (!ref.current) {
@@ -47,14 +48,20 @@ function Task({ task, moveTask, index }) {
 
 
     return (
-        <animated.div ref={ref} style={{x, y, opacity: isDragging ? 0 : 1 }} className="task-container">
-            <h3><div id={task.priority === 1 ? 'high' : task.priority === 2 ? 'medium' : 'low'} ></div>{task.title}</h3>
-            <div className='bar'></div>
-            <div className='emptybar'></div>
-            <div className='filledbar'></div>
-            <p className='task-date'>{new Date(task.createdAt).toLocaleTimeString()} {new Date(task.createdAt).toLocaleDateString()}</p>
+        <animated.div ref={ref} style={{x, y, opacity: isDragging ? 0 : 1 }} className={isOver ? "switch-task" : "task-container"}>
+            <div className="task-content">
+                <h3><div id={task.priority === 1 ? 'high' : task.priority === 2 ? 'medium' : 'low'} ></div>{task.title}</h3>
+                <div className='bar'></div>
+                <div className='emptybar'></div>
+                <div className='filledbar'></div>
+            </div>
+            <div className="task-buttons">
+                <TaskModal task={task} />
+                <button><i className="fas fa-trash-alt"></i></button>
+            </div>
+            {/* <p className='task-date'>{new Date(task.createdAt).toLocaleTimeString()} {new Date(task.createdAt).toLocaleDateString()}</p>
             <p>---</p>
-            <p className='task-description'>{task.description}</p>
+            <p className='task-description'>{task.description}</p> */}
         </animated.div>
     )
 }
