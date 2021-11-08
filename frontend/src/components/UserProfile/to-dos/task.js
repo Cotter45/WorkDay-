@@ -48,7 +48,7 @@ function Task({ task, moveTask, index }) {
 
 
     return (
-        <animated.div ref={ref} style={{x, y, opacity: isDragging ? 0 : 1 }} className={isOver ? "switch-task" : "task-container"}>
+        <div ref={ref} style={{opacity: isDragging ? .1 : 1 }} className={isOver ? "switch-task" : "task-container"}>
             <div className="task-content">
                 <h3><div id={task.priority === 1 ? 'high' : task.priority === 2 ? 'medium' : 'low'} ></div>{task.title}</h3>
                 <div className='bar'></div>
@@ -62,7 +62,7 @@ function Task({ task, moveTask, index }) {
             {/* <p className='task-date'>{new Date(task.createdAt).toLocaleTimeString()} {new Date(task.createdAt).toLocaleDateString()}</p>
             <p>---</p>
             <p className='task-description'>{task.description}</p> */}
-        </animated.div>
+        </div>
     )
 }
 
