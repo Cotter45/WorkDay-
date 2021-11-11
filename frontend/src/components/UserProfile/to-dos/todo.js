@@ -21,13 +21,6 @@ function ToDo() {
     const [completedTasks, setCompletedTasks] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
-    const isTouch = () => {
-        if ('ontouchstart' in window) {
-            return true;
-        }
-        return false;
-    }
-
     useEffect(() => {
         if (loaded) return;
         dispatch(get_tasks(userId));
