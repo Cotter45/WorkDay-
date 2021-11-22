@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => {
     comment_id: DataTypes.INTEGER,
     project_id: DataTypes.INTEGER,
     team_id: DataTypes.INTEGER,
-    company_id: DataTypes.INTEGER
+    company_id: DataTypes.INTEGER,
+    task_id: DataTypes.INTEGER,
   }, {});
   Image.associate = function(models) {
     // associations can be defined here
@@ -17,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     Image.belongsTo(models.Project, { foreignKey: 'project_id' });
     Image.belongsTo(models.Team, { foreignKey: 'team_id' });
     Image.belongsTo(models.Company, { foreignKey: 'company_id' });
+    Image.belongsTo(models.Task, { foreignKey: 'task_id' });
   };
   return Image;
 };

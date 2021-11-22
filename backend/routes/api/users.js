@@ -66,8 +66,16 @@ router.get('/get_tasks/:user_id', asyncHandler( async (req, res) => {
   const {user_id } = req.params;
   const tasks = await Task.findAll({
     where: {
-      userId: +user_id
+      userId: +user_id,
     },
+    include: [
+      {
+        model: Image
+      }, 
+      {
+        model: Requirement
+      }
+    ]
   });
   return res.json({ tasks })
 }))
