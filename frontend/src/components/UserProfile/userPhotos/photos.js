@@ -3,7 +3,7 @@ function Photos() {
 
     return (
         <div className="user-photos">
-            <h1>Photo gallery here</h1>
+            <h1>Drag and drop photo gallery coming soon!</h1>
         </div>
     )
 }

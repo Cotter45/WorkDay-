@@ -107,8 +107,10 @@ function ToDo() {
         {!tasks && <Loading />}
         {tasks && (
             <div className='todo-container'>
-                <button className='add-task-button' onClick={() => console.log('new task')}>+</button>
-                <h2>Drag and drop tasks to mark complete</h2>
+                <div className='todo-heading'>
+                    <h2>Drag and drop tasks to mark complete</h2>
+                    <button className='add-task-button' onClick={() => console.log('new task')}>+</button>
+                </div>
                 <div className='dragndrop'>
                     <h2 className='dragheaders'>To Do</h2>
                     <h2 className='dragheaders'>Completed</h2>

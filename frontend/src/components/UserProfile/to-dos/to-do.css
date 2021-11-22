@@ -6,6 +6,15 @@
     align-items: center;
     justify-content: center;
     max-width: 1400px;
+    gap: 10px;
+}
+
+.todo-heading {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .add-task-button {
