@@ -35,7 +35,7 @@ function Root() {
         return false;
     }
 
-    const backendForDND = isTouch() ? TouchBackend : HTML5Backend;
+  const backendForDND = isTouch() ? TouchBackend : HTML5Backend;
 
   return (
     <ModalProvider>

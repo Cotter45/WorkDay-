@@ -8,7 +8,8 @@ import Loading from '../../../util/loading';
 import Task from "./task";
 import './to-do.css';
 import { useSelector } from 'react-redux';
-import { get_tasks } from '../../../store/api';
+import { complete_task, get_tasks } from '../../../store/api';
+import { compose } from 'redux';
 
 
 function ToDo() {
@@ -29,9 +30,9 @@ function ToDo() {
 
     useEffect(() => {
         
-        setTasks(tasks.filter(task => !task.completed));
-        setCompletedTasks(tasks.filter(task => task.completed));
-        setTasks(tasks);
+        setTasks(tasks.filter(task => task.completed === false));
+        setCompletedTasks(tasks.filter(task => task.completed === true));
+        // setTasks(tasks);
     }, [tasks]);
 
 
@@ -84,16 +85,18 @@ function ToDo() {
         const task = taskCards.find(task => task.id === item.id);
         if (task) {
             task.completed = true;
+            dispatch(complete_task(task.id));
             setTasks(taskCards.filter((task) => task.id !== dragCard.id));
             setCompletedTasks([...completedTasks, dragCard]);
         }
     };
-
+    
     const moveTaskToToDo = (dragIndex, hoverIndex, item) => {
         const dragCard = completedTasks[dragIndex];
         const task = completedTasks.find(task => task.id === item.id);
         if (task) {
             task.completed = false;
+            dispatch(complete_task(task.id));
             setCompletedTasks(completedTasks.filter((task) => task.id !== dragCard.id));
             setTasks([...taskCards, dragCard]);
         }
@@ -104,8 +107,8 @@ function ToDo() {
 
     return (
         <>
-        {!tasks && <Loading />}
-        {tasks && (
+        {!loaded && <Loading />}
+        {loaded && (
             <div className='todo-container'>
                 <div className='todo-heading'>
                     <h2>Drag and drop tasks to mark complete</h2>

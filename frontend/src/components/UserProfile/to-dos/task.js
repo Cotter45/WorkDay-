@@ -59,9 +59,6 @@ function Task({ task, moveTask, index }) {
                 <TaskModal task={task} />
                 <button><i className="fas fa-trash-alt"></i></button>
             </div>
-            {/* <p className='task-date'>{new Date(task.createdAt).toLocaleTimeString()} {new Date(task.createdAt).toLocaleDateString()}</p>
-            <p>---</p>
-            <p className='task-description'>{task.description}</p> */}
         </div>
     )
 }

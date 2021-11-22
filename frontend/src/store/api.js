@@ -22,6 +22,25 @@ const DELETE_SAVE = 'api/delete_save_job';
 const LIKE_COMMENT = 'api/like_comment';
 const GET_RECENT_JOBS = 'api/get_recent_jobs';
 const GET_TASKS = 'api/get_tasks';
+const COMPLETE_TASK = 'api/complete_task';
+
+const complete_task_action = (data) => ({
+    type: COMPLETE_TASK,
+    payload: data
+})
+
+export const complete_task = (task_id) => async dispatch => {
+    const fetch = await csrfFetch(`/api/users/complete_task/${task_id}`, {
+        method: 'POST'
+    })
+    const response = await fetch.json();
+    if (!response.error) {
+        dispatch(complete_task_action(response));
+    } else {
+        alert(response.error);
+    }
+    return response;
+}
 
 const get_tasks_action = (data) => ({
     type: GET_TASKS,
@@ -462,7 +481,11 @@ const store_user_data = (data) => ({
 export const get_user_data = (userId) => async dispatch => {
     const response = await csrfFetch(`/api/users/profile/${userId}`);
     const data = await response.json();
-    dispatch(store_user_data(data));
+    if (data.user) {
+        dispatch(store_user_data(data));
+    } else {
+        window.location = window.location.origin + '//';
+    }
     return response;
 }
 

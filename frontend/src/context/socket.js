@@ -32,7 +32,6 @@ function SocketProvider(props) {
         }
         
         socket.current = websocket;
-        console.log(socket.current)
         
         // return function cleanup() {
         //     console.log('cleanup')
