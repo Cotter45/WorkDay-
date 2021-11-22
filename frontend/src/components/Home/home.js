@@ -85,6 +85,7 @@ function HomePage() {
                         <button className='link-button'><a href='#about'>About</a></button>
                         {/* <button><a href='#companies'>For Companies</a></button> */}
                         <button className='link-button'><a href='#companies'>Explore</a></button>
+                        <button className='link-button'><a href='#new_features'>New</a></button>
                         {/* <button className='link-button'><a href='#home-info'>Extra Info</a></button> */}
                     </div>
                 </div>
@@ -142,6 +143,11 @@ function HomePage() {
             {/* <div id='job-seekers'>
 
             </div> */}
+            <div id='new_features'>
+                <div className='new_features-header'>
+                    <h1>New Features</h1>
+                </div>
+            </div>
             <div id='home-info'>
                 <button className='link-button'><a href='#home-main'>Top</a></button>
                 <div className='blurb'>

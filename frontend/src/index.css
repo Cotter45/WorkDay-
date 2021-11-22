@@ -70,3 +70,8 @@ button {
     /* Non-prefixed version, currently
                                 supported by Chrome, Edge, Opera and Firefox */
 }
+
+:target {
+    scroll-margin-top: 150px;
+    scroll-behavior: smooth;
+}
