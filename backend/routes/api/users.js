@@ -61,6 +61,31 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
+// Route to mark a task as completed
+router.post('/complete_task/:task_id', asyncHandler( async (req, res) => {
+  const { task_id } = req.params;
+
+  const task = await Task.findByPk(task_id);
+
+  if (!task) {
+    return res.status(404).json({
+      error: "Task not found."
+    });
+  } else if (!task.completed) {
+    task.completed = true;
+    await task.update( { completed: true } );
+    return res.status(200).json({
+      message: "Task completed."
+    });
+  } else {
+    task.completed = false;
+    await task.update( { completed: false } );
+    return res.status(200).json({
+      message: "Task marked as incomplete."
+    });
+  }
+}))
+
 // Route to fetch a users tasks
 router.get('/get_tasks/:user_id', asyncHandler( async (req, res) => {
   const {user_id } = req.params;
