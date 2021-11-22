@@ -11,6 +11,7 @@ import Feed from './components/Feed/feed';
 import UserProfile from './components/UserProfile/user_profile';
 import MyJobs from './components/MyJobsPage/myjobs';
 import NotFound from './components/not-found';
+import ScrollTop from './util/scrolltotop';
 // import { Modal } from './context/Modal';
 
 
@@ -48,26 +49,28 @@ function App() {
       {isLoaded && (
         <>
           <Navigation isLoaded={isLoaded} />
-          <Switch>
-            <Route exact only path='/'>
-              <HomePage />
-            </Route>
-            <Route exact only path='/feed'>
-              <Feed />
-            </Route>
-            <Route exact only path='/jobs'>
-              <MyJobs isLoaded={isLoaded} setIsLoaded={setIsLoaded} user_id={user_id} />
-            </Route>
-            <Route path='/profile/:id'>
-              <UserProfile />
-            </Route>
-            <Route path='/signup'>
-              <SignupFormPage />
-            </Route>
-            <Route path=''>
-              <NotFound />
-            </Route>
-          </Switch>
+          <ScrollTop>
+            <Switch>
+              <Route exact only path='/'>
+                <HomePage />
+              </Route>
+              <Route exact only path='/feed'>
+                <Feed />
+              </Route>
+              <Route exact only path='/jobs'>
+                <MyJobs isLoaded={isLoaded} setIsLoaded={setIsLoaded} user_id={user_id} />
+              </Route>
+              <Route path='/profile/:id'>
+                <UserProfile />
+              </Route>
+              <Route path='/signup'>
+                <SignupFormPage />
+              </Route>
+              <Route path=''>
+                <NotFound />
+              </Route>
+            </Switch>
+          </ScrollTop>
         </>
       )}
     </>
