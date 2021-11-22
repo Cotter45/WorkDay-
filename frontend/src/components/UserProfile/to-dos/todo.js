@@ -65,6 +65,18 @@ function ToDo() {
             moveTaskToCompleted(dragIndex, hoverIndex, item);
         },
     });
+
+    const [{ isOverToDo }, dropToDo] = useDrop({
+        accept: 'task',
+        collect: monitor => ({
+            isOverToDo: monitor.isOver(),
+        }),
+        drop: (item, monitor) => {
+            const dragIndex = item.index;
+            const hoverIndex = taskCards.findIndex(task => task.id === item.id);
+            moveTaskToToDo(dragIndex, hoverIndex, item);
+        },
+    });
     
     
     const moveTaskToCompleted = (dragIndex, hoverIndex, item) => {
@@ -76,6 +88,16 @@ function ToDo() {
             setCompletedTasks([...completedTasks, dragCard]);
         }
     };
+
+    const moveTaskToToDo = (dragIndex, hoverIndex, item) => {
+        const dragCard = completedTasks[dragIndex];
+        const task = completedTasks.find(task => task.id === item.id);
+        if (task) {
+            task.completed = false;
+            setCompletedTasks(completedTasks.filter((task) => task.id !== dragCard.id));
+            setTasks([...taskCards, dragCard]);
+        }
+    };
     
 
     
@@ -85,11 +107,12 @@ function ToDo() {
         {!tasks && <Loading />}
         {tasks && (
             <div className='todo-container'>
+                <button className='add-task-button' onClick={() => console.log('new task')}>+</button>
                 <h2>Drag and drop tasks to mark complete</h2>
                 <div className='dragndrop'>
                     <h2 className='dragheaders'>To Do</h2>
                     <h2 className='dragheaders'>Completed</h2>
-                    <div className="todo">
+                    <div ref={dropToDo} className={ isOverToDo ? "hover-todo" : "todo"}>
                         {taskCards && taskCards.map((task, index) => (
                             <Task 
                                 key={task.id}

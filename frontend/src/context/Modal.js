@@ -1,5 +1,7 @@
 import React, { useContext, useRef, useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import { useTransition, animated } from '@react-spring/web';
+
 import './Modal.css';
 
 const ModalContext = React.createContext();
@@ -22,12 +24,28 @@ export function ModalProvider({ children }) {
 
 export function Modal({ onClose, children }) {
   const modalNode = useContext(ModalContext);
+  const [showModal, setShowModal] = useState(true);
+
+  const transitions = useTransition(showModal, {
+    from: { opacity: 0, transform: 'translate3d(0, 40px, 0)' },
+    enter: { opacity: 1, transform: 'translate3d(0, 0px, 0)' },
+    leave: { opacity: 0, transform: 'translate3d(0, 40px, 0)' },
+  });
+
   if (!modalNode) return null;
+
 
   return ReactDOM.createPortal(
     <div id='modal'>
       <div id='modal-background' onClick={onClose} />
-      <div id='modal-content'>{children}</div>
+      {transitions((style, index) => (
+        <animated.div 
+          key={index}
+          style={style}
+          id='modal-content'>
+            {children}
+        </animated.div>
+      ))}
     </div>,
     modalNode
   );

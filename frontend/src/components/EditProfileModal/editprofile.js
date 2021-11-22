@@ -149,7 +149,9 @@ function EditProfile({ setShowModal, showModal, user, setUpdate, update, setEdit
             <div className='edit-buttons'>
                 <button className='edit-button' onClick={handleSubmit}><i className="fas fa-check fa-2x"></i></button>
                 <button className='edit-button' onClick={() => {
-                    setEditProfile(false);
+                    if (setEditProfile) {
+                        setEditProfile(false);
+                    }
                     setShowModal(!showModal);
                 }}><i className="fas fa-times fa-2x"></i></button>
             </div>
