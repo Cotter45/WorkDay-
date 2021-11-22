@@ -88,12 +88,10 @@ router.post('/save/:job_id', asyncHandler( async (req, res) => {
             },
             include: [
                 {
-                model: User,
-                include: { all: true } 
-                }, 
-                {
                 model: Job,
-                include: { all: true }
+                include: {
+                    model: User
+                }
                 }
             ]
         })
@@ -131,12 +129,10 @@ router.post('/apply/:job_id', asyncHandler( async (req, res) => {
             },
             include: [
                 {
-                    model: User,
-                    include: { all: true } 
-                }, 
-                {
                     model: Job,
-                    include: { all: true }
+                    include: {
+                        model: User
+                    }
                 }
             ]
         })
