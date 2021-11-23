@@ -23,6 +23,22 @@ const LIKE_COMMENT = 'api/like_comment';
 const GET_RECENT_JOBS = 'api/get_recent_jobs';
 const GET_TASKS = 'api/get_tasks';
 const COMPLETE_TASK = 'api/complete_task';
+const CREATE_TASK = 'api/create_task';
+
+const create_task_action = (data) => ({
+    type: CREATE_TASK,
+    payload: data
+})
+
+export const create_task = (task) => async dispatch => {
+    const fetch = await csrfFetch('/api/create_task', {
+        method: 'POST',
+        body: JSON.stringify(task)
+    });
+    const response = await fetch.json();
+    dispatch(create_task_action(response));
+    return response;
+}
 
 const complete_task_action = (data) => ({
     type: COMPLETE_TASK,
@@ -672,6 +688,9 @@ function data_reducer(state = initialState, action) {
             return newState;
         case GET_TASKS:
             newState.tasks = action.payload.tasks;
+            return newState;
+        case CREATE_TASK:
+            newState.tasks.push(action.payload.newTask);
             return newState;
         default: 
             return state;

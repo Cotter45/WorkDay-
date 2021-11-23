@@ -9,7 +9,7 @@ import Task from "./task";
 import './to-do.css';
 import { useSelector } from 'react-redux';
 import { complete_task, get_tasks } from '../../../store/api';
-import { compose } from 'redux';
+import CreateTaskModal from './create_task_modal';
 
 
 function ToDo() {
@@ -30,7 +30,7 @@ function ToDo() {
 
     useEffect(() => {
         
-        setTasks(tasks.filter(task => task.completed === false));
+        setTasks(tasks.filter(task => task.completed === false).sort((a, b) => b.position - a.position));
         setCompletedTasks(tasks.filter(task => task.completed === true));
         // setTasks(tasks);
     }, [tasks]);
@@ -102,7 +102,9 @@ function ToDo() {
         }
     };
     
+    const createTask = () => {
 
+    }
     
 
     return (
@@ -113,7 +115,7 @@ function ToDo() {
                 <h2>Preview, not yet finished</h2>
                 <div className='todo-heading'>
                     <h2>Drag and drop tasks to mark complete</h2>
-                    <button className='add-task-button' onClick={() => console.log('new task')}>+</button>
+                    <CreateTaskModal tasks={taskCards} />
                 </div>
                 <div className='dragndrop'>
                     <h2 className='dragheaders'>To Do</h2>
