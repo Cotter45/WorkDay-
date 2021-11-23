@@ -24,6 +24,26 @@ const GET_RECENT_JOBS = 'api/get_recent_jobs';
 const GET_TASKS = 'api/get_tasks';
 const COMPLETE_TASK = 'api/complete_task';
 const CREATE_TASK = 'api/create_task';
+const MOVE_TASK_POSITION = 'api/move_task_position';
+
+const move_task_action = (data) => ({
+    type: MOVE_TASK_POSITION,
+    payload: data
+})
+
+export const move_task = (tasks) => async dispatch => {
+    const fetch = await csrfFetch(`/api/users/move_tasks`, {
+        method: 'PUT',
+        body: JSON.stringify({ tasks })
+    })
+    const response = await fetch.json();
+    if (!response.error) {
+    dispatch(move_task_action(response));
+    } else {
+        alert(response.error);
+    }
+    return response;
+}
 
 const create_task_action = (data) => ({
     type: CREATE_TASK,
@@ -31,7 +51,7 @@ const create_task_action = (data) => ({
 })
 
 export const create_task = (task) => async dispatch => {
-    const fetch = await csrfFetch('/api/create_task', {
+    const fetch = await csrfFetch('/api/users/create_task', {
         method: 'POST',
         body: JSON.stringify(task)
     });

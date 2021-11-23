@@ -36,6 +36,7 @@ const {
   Team,
   Task
  } = require("../../db/models");
+const task = require("../../db/models/task");
 
 
 
@@ -60,6 +61,36 @@ const validateSignup = [
     .withMessage('Password must be 6 characters or more.'),
   handleValidationErrors,
 ];
+
+
+// Route to move a tasks position 
+router.put('/move_tasks', asyncHandler( async (req, res) => {
+  const { tasks } = req.body;
+  let counter = 0;
+
+  for (let i = 0; i < tasks.length; i++) {
+    const task = await Task.findByPk(tasks[i].id);
+    let position = tasks[i].position;
+    try {
+      await task.update({  position });
+      counter++;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (counter === tasks.length) {
+    res.status(200).json({ message: "Tasks successfully moved." });
+  } else {
+    res.status(500).json({ error: "Something went wrong." });
+  }
+
+}))
+
+// Route to create a task
+router.post('/create_task', asyncHandler( async (req, res) => {
+
+}))
 
 // Route to mark a task as completed
 router.post('/complete_task/:task_id', asyncHandler( async (req, res) => {

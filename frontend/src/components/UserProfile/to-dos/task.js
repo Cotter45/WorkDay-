@@ -1,18 +1,19 @@
-import { useSpring, animated } from 'react-spring';
-// import { useDrag } from '@use-gesture/react';
 import { useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
+import { useDispatch } from 'react-redux';
+import { move_task } from '../../../store/api';
+
 import TaskModal from './task-modal';
 
 
-function Task({ task, moveTask, index }) {
+function Task({ task, moveTask, index, tasks }) {
+    const dispatch = useDispatch();
 
-    const [{ x, y }, api] = useSpring(() => ({ x: 0, y: 0 }));
     const ref = useRef();
 
     const [{ isDragging }, drag] = useDrag({
         type: 'task',
-        item: { id: task.id, index, priority: task.priority, completed: task.completed },
+        item: { id: task.id, index, priority: task.priority, completed: task.completed, prevIndex: index },
         collect: (monitor) => ({
             isDragging: monitor.isDragging(),
         }),
@@ -41,6 +42,16 @@ function Task({ task, moveTask, index }) {
                 moveTask(dragIndex, hoverIndex, item);
                 item.index = hoverIndex;
             }
+
+        },
+        drop(item) {
+            const dragIndex = item.index;
+            
+            tasks[dragIndex].position = dragIndex;
+            for (let i = dragIndex + 1; i < tasks.length; i++) {
+                tasks[i].position = i;
+            }
+            dispatch(move_task(tasks));
         }
     });
 

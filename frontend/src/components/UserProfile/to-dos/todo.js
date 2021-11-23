@@ -30,8 +30,8 @@ function ToDo() {
 
     useEffect(() => {
         
-        setTasks(tasks.filter(task => task.completed === false).sort((a, b) => b.position - a.position));
-        setCompletedTasks(tasks.filter(task => task.completed === true));
+        setTasks(tasks.filter(task => task.completed === false).sort((a, b) => a.position - b.position));
+        setCompletedTasks(tasks.filter(task => task.completed === true).sort((a, b) => a.position - b.position));
         // setTasks(tasks);
     }, [tasks]);
 
@@ -39,6 +39,7 @@ function ToDo() {
     const moveTask = (dragIndex, hoverIndex, item) => {
         const dragCard = tasks.find(task => task.id === item.id);
         if (!dragCard.completed) {
+            console.log(hoverIndex)
             setTasks(update(taskCards, {
                 $splice: [
                     [dragIndex, 1],
@@ -46,6 +47,7 @@ function ToDo() {
                 ],
             }));
         } else {
+            console.log(hoverIndex)
             setCompletedTasks(update(completedTasks, {
                 $splice: [
                     [dragIndex, 1],
@@ -128,6 +130,7 @@ function ToDo() {
                                 task={task}
                                 moveTask={moveTask}
                                 moveTaskToCompleted={moveTaskToCompleted}
+                                tasks={taskCards}
                             />
                         ))}
                     </div>
@@ -139,6 +142,7 @@ function ToDo() {
                                 task={task}
                                 moveTask={moveTask}
                                 moveTaskToCompleted={moveTaskToCompleted}
+                                tasks={completedTasks}
                             />
                         ))}
                     </div>
