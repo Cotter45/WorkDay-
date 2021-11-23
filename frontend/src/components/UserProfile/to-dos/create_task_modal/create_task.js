@@ -19,7 +19,7 @@ function CreateTask({ tasks }) {
     })
 
     const handleURL = (e) => {
-        const url = e.target.value;
+        setUrl(e.target.value);
     }
 
     const handleSubmit = (e) => {
@@ -37,14 +37,22 @@ function CreateTask({ tasks }) {
                     <label>Priority</label>
                     <input type='text' value={priority} onChange={(e) => setPriority(e.target.value)} />
                     <label>Description</label>
-                    <input type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
-                    <label>Requrements</label>
-                    <input type='text' value={requirements} onChange={(e) => setRequirements(e.target.value)} />
-                    <div className='edit-buttons'>
+                    <textarea type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
+                    <label>Requirements</label>
+                    <div className='task_requirements'>
+                        <input type='text' value={requirements} onChange={(e) => setRequirements(e.target.value)} />
+                        <button>+</button>
+                        {}
+                    </div>
+                </div>
+                <div className='create_task_right'>
+                    <div className='task_images'>
+                        <label>Images</label>
+                        <div className='edit-buttons'>
                         <label>URL</label>
                         <input
                             value={url}
-                            onChange={(e) => setUrl(e.target.value)}
+                            onChange={(e) => handleURL}
                             className='post-image-input'
                         ></input>
                         <label>OR</label>
@@ -52,30 +60,23 @@ function CreateTask({ tasks }) {
                             <input
                                 type='file'
                                 className='upload-button'
-                                onChange={(e) => setImages([...images, e.target.files[0]])}
+                                onChange={(e) => e.target.files[0] ? setImages([...images, e.target.files[0]]) : null} 
                                 ></input>
                             Choose File
                         </label>
                     </div>
-                </div>
-                <div className='create_task_right'>
-                    <div className='task_images'>
-                        <h2>Images</h2>
-                        {images.map((image, index) => {
-                            return (
-                                <div key={index}>
+                    <div className='task_images_preview'>
+                        {images.map((image, index) => (
+                                <div className='task_image' key={index}>
+                                    <button onClick={() => setImages(images.filter((_image, _index) => _index !== index))}>X</button>
                                     <img src={URL.createObjectURL(image)} alt='task_image' />
-                                    <button onClick={() => setImages(images.filter((_image, _index) => _index !== index))}>Remove</button>
                                 </div>
-                            )
-                        })}
+                        ))}
                     </div>
-                    <div className='task_requirements'>
-                        <h2>Requirements</h2>
-                    </div>
+                    </div>      
                 </div>
             </form>
-            <button className='submit' onCLick={handleSubmit}>Create</button>
+            <button className='submit' onClick={handleSubmit}>Create</button>
         </div>
     )
 }
