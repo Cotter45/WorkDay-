@@ -72,6 +72,11 @@ function HomePage() {
         }
     }
 
+    const scrollTo = (id) => {
+        const element = document.getElementById(id);
+        element.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+
 
     return (
         <div id='home-main'>
@@ -82,10 +87,10 @@ function HomePage() {
                         <h1>Not every work day looks like this...</h1>
                     </div>
                     <div className='welcome-links'>
-                        <button className='link-button'><a href='#about'>About</a></button>
+                        <button onClick={() => scrollTo('about')} className='link-button'>About</button>
                         {/* <button><a href='#companies'>For Companies</a></button> */}
-                        <button className='link-button'><a href='#companies'>Explore</a></button>
-                        <button className='link-button'><a href='#new_features'>New</a></button>
+                        <button onClick={() => scrollTo('companies')} className='link-button'>Explore</button>
+                        <button onClick={() => scrollTo('new_features')} className='link-button'>New</button>
                         {/* <button className='link-button'><a href='#home-info'>Extra Info</a></button> */}
                     </div>
                 </div>

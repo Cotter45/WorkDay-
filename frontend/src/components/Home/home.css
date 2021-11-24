@@ -63,6 +63,8 @@
     padding: 15px;
     margin-right: 50px;
     text-align: center;
+    color: rgb(226, 76, 43);
+    font-weight: bold;
 }
 
 .link-button:hover {
@@ -266,6 +268,8 @@
     padding: 15px;
     margin-right: 50px;
     text-align: center;
+    color: rgb(226, 76, 43);
+    font-weight: bold;
 }
 
 .link-button:hover {
