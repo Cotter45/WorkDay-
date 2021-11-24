@@ -3,16 +3,38 @@ import { useState, useEffect } from 'react';
 import './create_task.css';
 
 
-function CreateTask({ tasks }) {
+function CreateTask({ tasks, setShowModal }) {
 
     const [title, setTitle] = useState('');
     const [priority, setPriority] = useState(1);
     const[description, setDescription] = useState('');
     const [position, setPosition] = useState(tasks.length + 1);
-    const [requirements, setRequirements] = useState('');
+    const [requirement, setRequirement] = useState('');
+    const [requirements, setRequirements] = useState([]);
     const [url, setUrl] = useState('');
     const [images, setImages] = useState([]);
     const [errors, setErrors] = useState([]);
+
+    useEffect(() => {
+        const root = document.getElementById('root');
+        const html = document.querySelector('html');
+        const body = document.querySelector('body');
+        root.style.overflow = 'hidden';
+        root.style.height = '80%';
+        html.style.overflow = 'hidden';
+        html.style.height = '80%';
+        body.style.overflow = 'hidden';
+        body.style.height = '80%';
+
+        return () => {
+            root.style.overflow = null;
+            root.style.height = 'fit-content';
+            html.style.overflow = null;
+            html.style.height = 'fit-content';
+            body.style.overflow = null;
+            body.style.height = 'fit-content';
+        }
+    })
 
     useEffect(() => {
         let errs  = [];
@@ -54,9 +76,25 @@ function CreateTask({ tasks }) {
                     <textarea type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
                     <label>Requirements</label>
                     <div className='task_requirements'>
-                        <input type='text' value={requirements} onChange={(e) => setRequirements(e.target.value)} />
-                        <button>+</button>
-                        {}
+                        <input type='text' value={requirement} onChange={(e) => setRequirement(e.target.value)} />
+                        <button onClick={() => {
+                            setRequirements([...requirements, requirement])
+                            setRequirement('');
+                        }} className='post-button'><i className='fas fa-plus'></i></button>
+                    </div>
+                    <div className='job-requirements'>
+                        {requirements?.map((requirement, index) => (
+                            <div className='edit-requirements' key={index}>
+                                <li>{requirement}</li>
+                                <button 
+                                    onClick={(e) => {
+                                        e.preventDefault()
+                                        setRequirements(requirements.filter(req => req !== requirement))
+                                    }}
+                                    className='post-button'>
+                                    <i className="far fa-trash-alt" /></button>
+                            </div>
+                        ))}
                     </div>
                 </div>
                 <div className='create_task_right'>
@@ -99,7 +137,10 @@ function CreateTask({ tasks }) {
                     </div>      
                 </div>
             </form>
-            <button className='submit' onClick={handleSubmit}>Create</button>
+            <div className='edit-post-buttons'>
+                <button className='submit' onClick={handleSubmit}>Create</button>
+                <button className='delete' onClick={() => setShowModal(false)}>Cancel</button>
+            </div>
         </div>
     )
 }
