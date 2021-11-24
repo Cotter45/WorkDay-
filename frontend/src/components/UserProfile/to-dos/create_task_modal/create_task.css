@@ -61,10 +61,18 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: fit-content;
+    height: 60%;
     overflow-y: scroll;
     gap: 10px;
     padding-bottom: 25px;
+}
+
+.task_images > .edit-buttons {
+    height: fit-content;
+}
+
+.edit-buttons > .submit {
+    margin: 0;
 }
 
 .task_requirements {
