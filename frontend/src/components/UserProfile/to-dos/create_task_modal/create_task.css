@@ -133,3 +133,95 @@
     color: rgb(128, 37, 37);
     text-decoration: underline;
 }
+
+/* input[type='range'] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background: transparent;
+    outline: none;
+    border: 1px solid lightgray;
+} */
+
+.priority-low {
+    color: green;
+}
+
+.low {
+     -webkit-appearance: none;
+     margin-right: 15px;
+     width: 200px;
+     height: 7px;
+     background: transparent;
+     border-radius: 5px;
+     background-image: linear-gradient(#2bff00, #04460d);
+     background-size: 100% 100%;
+     background-repeat: no-repeat;
+}
+
+.low::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: white;
+    cursor: ew-resize;
+    box-shadow: 0 0 2px 0 #555;
+    transition: background .3s ease-in-out;
+
+}
+
+.priority-medium {
+    color: orange;
+}
+
+.medium {
+    -webkit-appearance: none;
+    margin-right: 15px;
+    width: 200px;
+    height: 7px;
+    background: transparent;
+    border-radius: 5px;
+    background-image: linear-gradient(rgb(252, 206, 122), orange);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.medium::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: white;
+    cursor: ew-resize;
+    box-shadow: 0 0 2px 0 #555;
+    transition: background .3s ease-in-out;
+}
+
+.priority-high {
+    color: red;
+}
+
+.high {
+    -webkit-appearance: none;
+    margin-right: 15px;
+    width: 200px;
+    height: 7px;
+    background: transparent;
+    border-radius: 5px;
+    background-image: linear-gradient(rgb(252, 122, 122), rgb(255, 0, 0));
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+
+.high::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: white;
+    cursor: ew-resize;
+    box-shadow: 0 0 2px 0 #555;
+    transition: background .3s ease-in-out;
+}

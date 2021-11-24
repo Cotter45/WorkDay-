@@ -6,7 +6,7 @@ import './create_task.css';
 function CreateTask({ tasks }) {
 
     const [title, setTitle] = useState('');
-    const [priority, setPriority] = useState('');
+    const [priority, setPriority] = useState(1);
     const[description, setDescription] = useState('');
     const [position, setPosition] = useState(tasks.length + 1);
     const [requirements, setRequirements] = useState('');
@@ -15,8 +15,16 @@ function CreateTask({ tasks }) {
     const [errors, setErrors] = useState([]);
 
     useEffect(() => {
+        let errs  = [];
 
-    })
+        if (!errors.find(err => err.title)) {
+            if (title && title.length > 254) errs.push({ title: 'Title must be less than 255 characters'} )
+        }
+
+        setErrors([...errors, ...errs])
+        errs = [];
+
+    }, [title])
 
     const handleURL = (e) => {
         if (!url.includes('http') || !url.includes('https')) {
@@ -37,10 +45,11 @@ function CreateTask({ tasks }) {
             <h1>New Task</h1>
             <form className='create_task_form' onSubmit={handleSubmit}>
                 <div className='create_task_left'>
-                    <label>Title</label>
+                    <label>Title {title && <label className='error'> - {255 - title.length}</label>}</label>
                     <input type='text' value={title} onChange={(e) => setTitle(e.target.value)} />
-                    <label>Priority</label>
-                    <input type='text' value={priority} onChange={(e) => setPriority(e.target.value)} />
+                    {errors.map((errs, index) => errs.title && <label key={index} className='error'>{errs.title}</label>)}
+                    <label>Priority <label className={priority >= 1 && priority < 2 ? 'priority-low' : priority >= 2 && priority < 3 ? 'priority-medium' : 'priority-high'}>{priority >= 1 && priority < 2 ? ' - low' : priority >= 2 && priority < 3 ? ' - medium' : ' - high'}</label></label>
+                    <input className={priority >= 1 && priority < 2 ? 'low' : priority >= 2 && priority < 3 ? 'medium' : 'high'} type='range' value={priority} min={1} max={3} step={.1} onChange={(e) => setPriority(+e.target.value)} />
                     <label>Description</label>
                     <textarea type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
                     <label>Requirements</label>
