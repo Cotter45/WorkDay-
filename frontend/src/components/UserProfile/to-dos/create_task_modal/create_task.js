@@ -82,7 +82,9 @@ function CreateTask({ tasks, setShowModal }) {
                             setRequirement('');
                         }} className='post-button'><i className='fas fa-plus'></i></button>
                     </div>
-                    <div className='job-requirements'>
+                </div>
+                <div className='create_task_right'>
+                    <ol className='requirements_list'>
                         {requirements?.map((requirement, index) => (
                             <div className='edit-requirements' key={index}>
                                 <li>{requirement}</li>
@@ -95,9 +97,7 @@ function CreateTask({ tasks, setShowModal }) {
                                     <i className="far fa-trash-alt" /></button>
                             </div>
                         ))}
-                    </div>
-                </div>
-                <div className='create_task_right'>
+                    </ol>
                     <div className='task_images'>
                         <label>Images</label>
                         <div className='edit-buttons'>
