@@ -39,6 +39,7 @@
 
 .search {
     width: 40vw;
+    max-width: 500px;
     border: none;
     border-radius: 15px;
     padding: 8px;
@@ -191,6 +192,7 @@
 
     .search {
         width: 90vw;
+        max-width: none;
         border: 2px solid gray;
         border-radius: 5px;
         padding: 8px;
