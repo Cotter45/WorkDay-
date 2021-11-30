@@ -1,19 +1,24 @@
 import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { create_task } from '../../../../store/api';
 
 import './create_task.css';
 
 
-function CreateTask({ tasks, setShowModal }) {
+function CreateTask({ tasks, setShowModal, setTasks, taskCards }) {
+    const dispatch = useDispatch();
 
     const [title, setTitle] = useState('');
     const [priority, setPriority] = useState(1);
-    const[description, setDescription] = useState('');
+    const [description, setDescription] = useState('');
     const [position, setPosition] = useState(tasks.length + 1);
     const [requirement, setRequirement] = useState('');
     const [requirements, setRequirements] = useState([]);
     const [url, setUrl] = useState('');
     const [images, setImages] = useState([]);
     const [errors, setErrors] = useState([]);
+
+    const user = useSelector(state => state.session.user);
 
     useEffect(() => {
         const root = document.getElementById('root');
@@ -57,9 +62,27 @@ function CreateTask({ tasks, setShowModal }) {
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const imagesToUpload = images.filter(image => image.name);
+        const imageLinks = images.filter(image => !image.name);
+
+        const task = {
+            title,
+            priority: priority >= 1 && priority < 2 ? 1 : priority >= 2 && priority < 3 ? 2 : 3,
+            description,
+            position,
+            requirements,
+            imagesToUpload,
+            imageLinks,
+            userId: user.id
+        }
+
+        const newTask = await dispatch(create_task(task));
+        console.log(newTask);
+        setTasks([...taskCards, newTask.task]);
+        setShowModal(false);
     }
 
     return (
@@ -74,21 +97,26 @@ function CreateTask({ tasks, setShowModal }) {
                     <input className={priority >= 1 && priority < 2 ? 'low' : priority >= 2 && priority < 3 ? 'medium' : 'high'} type='range' value={priority} min={1} max={3} step={.1} onChange={(e) => setPriority(+e.target.value)} />
                     <label>Description</label>
                     <textarea type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
-                    <label>Requirements</label>
+                    <label>Add Requirements</label>
                     <div className='task_requirements'>
                         <input type='text' value={requirement} onChange={(e) => setRequirement(e.target.value)} />
-                        <button onClick={() => {
-                            setRequirements([...requirements, requirement])
-                            setRequirement('');
+                        <button type='button' onClick={(e) => {
+                            e.preventDefault();
+                            if (requirement) {
+                                setRequirements([...requirements, requirement])
+                                setRequirement('');
+                            }
                         }} className='post-button'><i className='fas fa-plus'></i></button>
                     </div>
                 </div>
                 <div className='create_task_right'>
+                    <label>Requirements</label>
                     <ol className='requirements_list'>
                         {requirements?.map((requirement, index) => (
                             <div className='edit-requirements' key={index}>
                                 <li>{requirement}</li>
                                 <button 
+                                    type='button'
                                     onClick={(e) => {
                                         e.preventDefault()
                                         setRequirements(requirements.filter(req => req !== requirement))

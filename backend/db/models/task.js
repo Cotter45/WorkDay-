@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
   Task.associate = function(models) {
     // associations can be defined here
     Task.belongsTo(models.User, { foreignKey: 'userId' });
-    Task.hasMany(models.Image, { foreignKey: 'task_id' });
-    Task.hasMany(models.Requirement, { foreignKey: 'task_id' });
+    Task.hasMany(models.Image, { foreignKey: 'task_id', onDelete: 'CASCADE', hooks: true });
+    Task.hasMany(models.Requirement, { foreignKey: 'task_id', onDelete: 'CASCADE', hooks: true });
   };
   return Task;
 };

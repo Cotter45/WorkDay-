@@ -51,9 +51,24 @@ const create_task_action = (data) => ({
 })
 
 export const create_task = (task) => async dispatch => {
+    const formData = new FormData();
+    const { imagesToUpload } = task;
+
+    imagesToUpload.forEach(image => {
+        formData.append('imagesToUpload', image);
+    })
+
+    delete task.imagesToUpload;
+    for (let key in task) {
+        formData.append(key, task[key]);
+    }
+
     const fetch = await csrfFetch('/api/users/create_task', {
         method: 'POST',
-        body: JSON.stringify(task)
+        headers: {
+                "Content-Type": "multipart/form-data"
+            },
+        body: formData
     });
     const response = await fetch.json();
     dispatch(create_task_action(response));
@@ -710,7 +725,7 @@ function data_reducer(state = initialState, action) {
             newState.tasks = action.payload.tasks;
             return newState;
         case CREATE_TASK:
-            newState.tasks.push(action.payload.newTask);
+            newState.tasks.push(action.payload.task);
             return newState;
         default: 
             return state;

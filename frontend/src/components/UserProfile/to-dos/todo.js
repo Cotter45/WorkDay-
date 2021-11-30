@@ -117,7 +117,7 @@ function ToDo() {
                 <h2>Preview, not yet finished</h2>
                 <div className='todo-heading'>
                     <h2>Drag and drop tasks to mark complete</h2>
-                    <CreateTaskModal tasks={taskCards} />
+                    <CreateTaskModal setTasks={setTasks} taskCards={taskCards} tasks={taskCards} />
                 </div>
                 <div className='dragndrop'>
                     <h2 className='dragheaders'>To Do</h2>

@@ -6,7 +6,7 @@ const asyncHandler = require("express-async-handler");
 
 const { handleValidationErrors } = require("../../utils/validation");
 const { setTokenCookie, requireAuth } = require("../../utils/auth");
-const { singleMulterUpload, singlePublicFileUpload } = require("../../awsS3");
+const { singleMulterUpload, singlePublicFileUpload, multipleMulterUpload, multiplePublicFileUpload } = require("../../awsS3");
 
 
 const { 
@@ -36,7 +36,6 @@ const {
   Team,
   Task
  } = require("../../db/models");
-const task = require("../../db/models/task");
 
 
 
@@ -88,8 +87,67 @@ router.put('/move_tasks', asyncHandler( async (req, res) => {
 }))
 
 // Route to create a task
-router.post('/create_task', asyncHandler( async (req, res) => {
+router.post('/create_task', multipleMulterUpload('imagesToUpload'), asyncHandler( async (req, res) => {
+  const { title, priority, description, userId, position, requirements, imageLinks } = req.body;
 
+  const uploadedImages = await multiplePublicFileUpload(req.files);
+  console.log(uploadedImages);
+
+  const newTask = await Task.create({
+    title,
+    priority,
+    description,
+    userId,
+    position,
+    completed: false,
+  });
+
+  const newTaskId = newTask.id;
+
+  let reqs;
+  if (requirements.includes(',')) {
+    reqs = requirements.split(',');
+  } else {
+    reqs = [requirements];
+  }
+
+  await reqs.forEach(async (requirement) => {
+    await Requirement.create({
+      task_id: newTask.id,
+      requirement,
+    });
+  });
+
+  if (uploadedImages.length > 0) {
+    await uploadedImages.forEach(async (image) => {
+      return await Image.create({
+        imageUrl: image,
+        user_id: userId,
+        task_id: newTaskId,
+      });
+    });
+  } else if (imageLinks.length > 0) {
+    await imageLinks.forEach(async (image) => {
+      return await Image.create({
+        imageUrl: image,
+        user_id: userId,
+        task_id: newTaskId,
+      });
+    });
+  }
+
+  const task = await Task.findOne({
+    where: {
+      id: newTaskId,
+    },
+    include: [Requirement, Image],
+  })
+
+
+  
+
+  return res.status(200).json({ task });
+    
 }))
 
 // Route to mark a task as completed

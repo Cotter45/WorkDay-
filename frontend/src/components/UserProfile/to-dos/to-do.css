@@ -65,7 +65,7 @@
     height: fit-content;
     gap: 1vh;
     border: 1px solid gray;
-    /* padding: 1vh; */
+    padding: 1vh;
     box-shadow: 0px 5px 5px lightgray;
     border-radius: 5px;
 }
@@ -99,7 +99,7 @@
     height: fit-content;
     gap: 1vh;
     border: 1px solid gray;
-    /* padding: 1vh; */
+    padding: 1vh;
     box-shadow: 0px 5px 5px lightgray;
     border-radius: 5px;
 }

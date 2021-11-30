@@ -50,7 +50,7 @@ const socket = new WebSocket.Server({ server });
 
 // Set up socket listeners
 socket.on('connection', (ws) => {
-  console.log('Socket Connect', socket);
+  console.log('Socket Connect');
 
   ws.on('message', (json) => {
     const received = JSON.parse(json);

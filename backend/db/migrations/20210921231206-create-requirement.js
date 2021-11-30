@@ -14,7 +14,7 @@ module.exports = {
       },
       job_id: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
         references: { model: 'Jobs' }
       },
       createdAt: {
