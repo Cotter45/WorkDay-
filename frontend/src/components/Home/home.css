@@ -117,8 +117,8 @@
 }
 
 .carousel {
-    height: 50%;
-    width: 50%;
+    height: fit-content;
+    width: fit-content;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -374,8 +374,8 @@
 }
 
 .carousel {
-    height: 40%;
-    width: 40%;
+    height: fit-content;
+    width: fit-content;
     display: flex;
     flex-direction: column;
     justify-content: center;
