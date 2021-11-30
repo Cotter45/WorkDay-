@@ -152,6 +152,23 @@ function HomePage() {
                 <div className='new_features-header'>
                     <h1>New Features</h1>
                 </div>
+                <div className='description'>
+                    <p>
+                        I am currently working on a new drag and drop task manager applet for each user. This will allow
+                        users to create tasks with several levels of priority, drag and drop them to organize or mark them as completed.
+                    </p>
+                </div>
+                <div className='feature'>
+                    <div className='feature-list'>
+                        <li>Saves order of tasks on drag and drop within each container</li>
+                        <li>Marks tasks as completed when dropped in completed section</li>
+                        <li>Marks tasks as incomplete on drag back into to do</li>
+                        <li>Tasks will have a priority level, multiple requirements allowed, and multiple pictures as well</li>
+                    </div>
+                    <div className='feature-image'>
+                        <img loading='lazy' height='400' width='450' src='/images/task_manager.gif' alt='task manager'></img>
+                    </div>
+                </div>
             </div>
             <div id='home-info'>
                 <button className='link-button'><a href='#home-main'>Top</a></button>
