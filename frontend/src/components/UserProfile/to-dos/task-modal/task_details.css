@@ -1,3 +1,13 @@
 .task-details {
-    
+    padding: 2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-header {
+    display: flex;
+    gap: 1vw;
+    align-items: center;
 }
