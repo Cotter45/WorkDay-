@@ -1,4 +1,6 @@
+import { useSpring } from 'react-spring';
 
+import './task_details.css';
 
 function TaskDetails({ task, setShowModal }) {
 

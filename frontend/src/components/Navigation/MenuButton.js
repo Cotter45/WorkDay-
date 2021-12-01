@@ -54,6 +54,7 @@ function MenuButton({ user }) {
               <li>{user.email}</li>
             </div>
           </div>
+          <button className='logout-button' onClick={() => history.push(`/profile/${user.id}`)}>View Profile</button>
           <MenuEditProfile editProfile={editProfile} setEditProfile={setEditProfile} user={user} />
           <button className='logout-button' onClick={logout}>Log Out</button>
         </div>
