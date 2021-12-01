@@ -4,6 +4,8 @@ import './task_details.css';
 
 function TaskDetails({ task, setShowModal }) {
 
+    console.log(task)
+
     return (
         <div className="task-details">
             <h1>details</h1>

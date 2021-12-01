@@ -725,7 +725,7 @@ function data_reducer(state = initialState, action) {
             newState.tasks = action.payload.tasks;
             return newState;
         case CREATE_TASK:
-            newState.tasks.push(action.payload.task);
+            newState.tasks.push(action.payload.newTask);
             return newState;
         default: 
             return state;

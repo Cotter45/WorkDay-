@@ -80,8 +80,8 @@ function CreateTask({ tasks, setShowModal, setTasks, taskCards }) {
         }
 
         const newTask = await dispatch(create_task(task));
-        console.log(newTask);
-        setTasks([...taskCards, newTask.task]);
+        console.log(newTask, 'new task');
+        setTasks([...taskCards, newTask.newTask]);
         setShowModal(false);
     }
 

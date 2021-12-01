@@ -91,7 +91,6 @@ router.post('/create_task', multipleMulterUpload('imagesToUpload'), asyncHandler
   const { title, priority, description, userId, position, requirements, imageLinks } = req.body;
 
   const uploadedImages = await multiplePublicFileUpload(req.files);
-  console.log(uploadedImages);
 
   const newTask = await Task.create({
     title,
@@ -105,48 +104,50 @@ router.post('/create_task', multipleMulterUpload('imagesToUpload'), asyncHandler
   const newTaskId = newTask.id;
 
   let reqs;
+
   if (requirements.includes(',')) {
     reqs = requirements.split(',');
   } else {
     reqs = [requirements];
   }
 
-  await reqs.forEach(async (requirement) => {
-    await Requirement.create({
-      task_id: newTask.id,
-      requirement,
-    });
-  });
-
-  if (uploadedImages.length > 0) {
-    await uploadedImages.forEach(async (image) => {
-      return await Image.create({
-        imageUrl: image,
-        user_id: userId,
-        task_id: newTaskId,
+  let newReqs = [];
+  if (reqs.length > 0) {
+    for (let requirement of reqs) {
+      let req = await Requirement.create({
+        task_id: +newTask.id,
+        requirement,
       });
-    });
-  } else if (imageLinks.length > 0) {
-    await imageLinks.forEach(async (image) => {
-      return await Image.create({
-        imageUrl: image,
-        user_id: userId,
-        task_id: newTaskId,
-      });
-    });
+      newReqs.push(req);
+    };
   }
 
-  const task = await Task.findOne({
-    where: {
-      id: newTaskId,
-    },
-    include: [Requirement, Image],
-  })
+  let newImages = [];
+  if (uploadedImages.length > 0) {
+    for (let image of uploadedImages) {
+      let newImage = await Image.create({
+        imageUrl: image,
+        user_id: userId,
+        task_id: +newTaskId,
+      });
+      newImages.push(newImage);
+    }
+  } 
+  if (imageLinks.length > 0) {
+    for (let image of imageLinks) {
+      let newImage = await Image.create({
+        imageUrl: image,
+        user_id: userId,
+        task_id: +newTaskId,
+      });
+      newImages.push(newImage);
+    };
+  }
 
+  newTask.dataValues.Requirements = newReqs;
+  newTask.dataValues.Images = newImages;
 
-  
-
-  return res.status(200).json({ task });
+  return res.json({ newTask });
     
 }))
 
