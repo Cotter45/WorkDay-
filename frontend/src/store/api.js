@@ -25,6 +25,25 @@ const GET_TASKS = 'api/get_tasks';
 const COMPLETE_TASK = 'api/complete_task';
 const CREATE_TASK = 'api/create_task';
 const MOVE_TASK_POSITION = 'api/move_task_position';
+const DELETE_TASK = 'api/delete_task';
+
+const delete_task_action = (data) => ({
+    type: DELETE_TASK,
+    payload: data
+})
+
+export const delete_task = (task_id) => async dispatch => {
+    const fetch = await csrfFetch(`/api/users/delete_task/${task_id}`, {
+        method: 'DELETE'
+    })
+    const response = await fetch.json();
+    if (response.message === 'Task deleted successfully') {
+        dispatch(delete_task_action(response));
+        return response;
+    } else {
+        alert('Something went wrong');
+    }
+}
 
 const move_task_action = (data) => ({
     type: MOVE_TASK_POSITION,
@@ -726,6 +745,10 @@ function data_reducer(state = initialState, action) {
             return newState;
         case CREATE_TASK:
             newState.tasks.push(action.payload.newTask);
+            return newState;
+        case DELETE_TASK:
+            const delete_task = newState.tasks.find(task => task.id === +action.payload.id);
+            newState.tasks.splice(newState.tasks.indexOf(delete_task), 1);
             return newState;
         default: 
             return state;

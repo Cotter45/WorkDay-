@@ -104,10 +104,6 @@ function ToDo() {
         }
     };
     
-    const createTask = () => {
-
-    }
-    
 
     return (
         <>
@@ -131,6 +127,8 @@ function ToDo() {
                                 moveTask={moveTask}
                                 moveTaskToCompleted={moveTaskToCompleted}
                                 tasks={taskCards}
+                                setTasks={setTasks}
+                                setCompletedTasks={setCompletedTasks}
                             />
                         ))}
                     </div>
@@ -143,6 +141,8 @@ function ToDo() {
                                 moveTask={moveTask}
                                 moveTaskToCompleted={moveTaskToCompleted}
                                 tasks={completedTasks}
+                                setTasks={setTasks}
+                                setCompletedTasks={setCompletedTasks}
                             />
                         ))}
                     </div>

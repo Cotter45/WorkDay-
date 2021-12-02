@@ -1,15 +1,17 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import { useDispatch } from 'react-redux';
-import { move_task } from '../../../store/api';
+import { delete_task, move_task } from '../../../store/api';
 
 import TaskModal from './task-modal';
 
 
-function Task({ task, moveTask, index, tasks }) {
+function Task({ task, moveTask, index, tasks, moveTaskToCompleted, setTasks, setCompletedTasks  }) {
     const dispatch = useDispatch();
 
     const ref = useRef();
+
+    const [deleted, setDeleted] = useState(false);
 
     const [{ isDragging }, drag] = useDrag({
         type: 'task',
@@ -58,6 +60,22 @@ function Task({ task, moveTask, index, tasks }) {
     drag(drop(ref));
 
 
+    const deleteTask = (task) => {
+        dispatch(delete_task(task.id));
+        setDeleted(true);
+    }
+
+    if (deleted) {
+        setTimeout(() => {
+            if (task.completed) {
+                setCompletedTasks(tasks.filter(t => t.id !== task.id));
+            } else {
+                setTasks(tasks.filter(t => t.id !== task.id));
+            }
+        }, 2000);
+        return <p>Great job!</p>;
+    }
+
     return (
         <div ref={ref} style={{opacity: isDragging ? .1 : 1 }} className={isOver ? "switch-task" : "task-container"}>
             <div className="task-content">
@@ -67,8 +85,10 @@ function Task({ task, moveTask, index, tasks }) {
                 <div className='filledbar'></div>
             </div>
             <div className="task-buttons">
-                <TaskModal task={task} />
-                <button><i className="fas fa-trash-alt"></i></button>
+                <TaskModal moveTaskToCompleted={moveTaskToCompleted} task={task} />
+                <button onClick={() => deleteTask(task)}>
+                    <i className="fas fa-trash-alt"></i>
+                </button>
             </div>
         </div>
     )

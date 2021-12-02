@@ -61,6 +61,14 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
+// Route to delete a task
+router.delete('/delete_task/:task_id', asyncHandler( async (req, res) => {
+  const { task_id } = req.params;
+  const task = await Task.findByPk(task_id);
+  await task.destroy();
+  res.json({message: 'Task deleted successfully'});
+}))
+
 
 // Route to move a tasks position 
 router.put('/move_tasks', asyncHandler( async (req, res) => {
@@ -112,7 +120,7 @@ router.post('/create_task', multipleMulterUpload('imagesToUpload'), asyncHandler
   }
 
   let newReqs = [];
-  if (reqs.length > 0) {
+  if (requirements && reqs.length > 0) {
     for (let requirement of reqs) {
       let req = await Requirement.create({
         task_id: +newTask.id,
