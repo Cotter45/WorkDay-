@@ -20,26 +20,26 @@ function CreateTask({ tasks, setShowModal, setTasks, taskCards }) {
 
     const user = useSelector(state => state.session.user);
 
-    useEffect(() => {
-        const root = document.getElementById('root');
-        const html = document.querySelector('html');
-        const body = document.querySelector('body');
-        root.style.overflow = 'hidden';
-        root.style.height = '80%';
-        html.style.overflow = 'hidden';
-        html.style.height = '80%';
-        body.style.overflow = 'hidden';
-        body.style.height = '80%';
+    // useEffect(() => {
+    //     const root = document.getElementById('root');
+    //     const html = document.querySelector('html');
+    //     const body = document.querySelector('body');
+    //     root.style.overflow = 'hidden';
+    //     root.style.height = '80%';
+    //     html.style.overflow = 'hidden';
+    //     html.style.height = '80%';
+    //     body.style.overflow = 'hidden';
+    //     body.style.height = '80%';
 
-        return () => {
-            root.style.overflow = null;
-            root.style.height = 'fit-content';
-            html.style.overflow = null;
-            html.style.height = 'fit-content';
-            body.style.overflow = null;
-            body.style.height = 'fit-content';
-        }
-    })
+    //     return () => {
+    //         root.style.overflow = null;
+    //         root.style.height = 'fit-content';
+    //         html.style.overflow = null;
+    //         html.style.height = 'fit-content';
+    //         body.style.overflow = null;
+    //         body.style.height = 'fit-content';
+    //     }
+    // })
 
     useEffect(() => {
         let errs  = [];

@@ -2,8 +2,10 @@
     padding: 2vw;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
+    width: 60vw;
+    height: 60vh;
 }
 
 .task-header {
@@ -11,12 +13,22 @@
     gap: 1vw;
     align-items: center;
     justify-content: center;
+    margin-top: 2vh;
 }
 
-.task-buttons {
+
+.task-details > .task-buttons {
     position: absolute;
     right: 1vw;
     top: 0;
+    height: fit-content;
+    width: fit-content;
+    padding: 2vw;
+    gap: 2vw;
+}
+
+.task-description {
+    margin: 0;
 }
 
 .task-header > input {
@@ -28,4 +40,15 @@
     border-radius: 5px;
     border: 1px solid lightgray;
     box-shadow: 0px 5px 5px lightgray;
+}
+
+.description-area {
+    width: 80%;
+    height: 20%;
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    box-shadow: 0px 5px 5px lightgray;
+    resize: none;
+    overflow-y: scroll;
 }
