@@ -10,4 +10,22 @@
     display: flex;
     gap: 1vw;
     align-items: center;
+    justify-content: center;
+}
+
+.task-buttons {
+    position: absolute;
+    right: 1vw;
+    top: 0;
+}
+
+.task-header > input {
+    width: 40%;
+    padding: 0.5vw;
+    margin-top: 0.5vh;
+    margin-bottom: 0.5vh;
+    text-align: center;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+    box-shadow: 0px 5px 5px lightgray;
 }
