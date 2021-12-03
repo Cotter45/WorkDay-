@@ -12,7 +12,7 @@ function TaskDetails({ task, setShowModal }) {
     const [requirements, setRequirements] = useState(task.Requirements);
     const [images, setImages] = useState(task.Images);
 
-    console.log(task)
+    console.log(priority)
 
     return <>
     {!update && (
@@ -57,7 +57,7 @@ function TaskDetails({ task, setShowModal }) {
             </div>
             <p className='task-date'><strong>Created at:</strong> {new Date(task.createdAt).toLocaleTimeString()} {new Date(task.createdAt).toLocaleDateString()}</p>
             <p><strong>Description: </strong></p>
-            <textarea className='description-area' type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
+            <textarea className='description_edit' type='text' value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
             <p><strong>Requirements:</strong></p>
             <ol>
                 {requirements.length > 0 ? requirements.map((requirement) => (
@@ -65,9 +65,9 @@ function TaskDetails({ task, setShowModal }) {
                 )) : <li>No requirements</li>}
             </ol>
             <p><strong>Images:</strong></p>
-            <ol>
+            <ol className='task-images'>
                 {images.length > 0 ? images.map((image) => (
-                    <img key={image.id} src={image.imageUrl} alt={'task related upload'} />
+                    <img className='task-image' key={image.id} src={image.imageUrl} alt={'task related upload'} />
                 )) : <li>No images uploaded</li>}
             </ol>
         </div>

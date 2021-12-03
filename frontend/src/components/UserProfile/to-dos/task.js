@@ -80,7 +80,7 @@ function Task({ task, moveTask, index, tasks, moveTaskToCompleted, setTasks, set
         <div ref={ref} style={{opacity: isDragging ? .1 : 1 }} className={isOver ? "switch-task" : "task-container"}>
             <div className="task-content">
                 <div className='task-block-header'>
-                    <div id={task.priority === 1 ? 'high' : task.priority === 2 ? 'medium' : 'low'} />
+                    <div id={task.priority >= 1 && task.priority < 2 ? 'low' : task.priority >= 2 && task.priority < 3 ? 'medium' : 'high'} />
                     <div className='task-title'>{task.title}</div>
                 </div>
                 <div className='bar'></div>
