@@ -73,13 +73,16 @@ function Task({ task, moveTask, index, tasks, moveTaskToCompleted, setTasks, set
                 setTasks(tasks.filter(t => t.id !== task.id));
             }
         }, 2000);
-        return <p>Great job!</p>;
+        return <p>Woo! Task removed, hopefully completed.</p>;
     }
 
     return (
         <div ref={ref} style={{opacity: isDragging ? .1 : 1 }} className={isOver ? "switch-task" : "task-container"}>
             <div className="task-content">
-                <h3><div id={task.priority === 1 ? 'high' : task.priority === 2 ? 'medium' : 'low'} ></div>{task.title}</h3>
+                <div className='task-block-header'>
+                    <div id={task.priority === 1 ? 'high' : task.priority === 2 ? 'medium' : 'low'} />
+                    <div className='task-title'>{task.title}</div>
+                </div>
                 <div className='bar'></div>
                 <div className='emptybar'></div>
                 <div className='filledbar'></div>

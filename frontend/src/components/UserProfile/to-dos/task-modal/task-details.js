@@ -26,18 +26,18 @@ function TaskDetails({ task, setShowModal }) {
                 <h3>{title}</h3>
             </div>
             <p className='task-date'><strong>Created at:</strong> {new Date(task.createdAt).toLocaleTimeString()} {new Date(task.createdAt).toLocaleDateString()}</p>
-            <p className='task-description'><strong>Description: </strong></p>
-            <p>{description}</p>
+            <p><strong>Description: </strong></p>
+            <p className='task-description'>{description}</p>
             <p><strong>Requirements:</strong></p>
             <ol>
                 {requirements.length > 0 ? requirements.map((requirement) => (
-                    <li key={requirement.id}>{requirement}</li>
+                    <li key={requirement.id}>{requirement.requirement}</li>
                 )) : <li>No requirements</li>}
             </ol>
             <p><strong>Images:</strong></p>
-            <ol>
+            <ol className='task-images'>
                 {images.length > 0 ? images.map((image) => (
-                    <img key={image.id} src={image.imageUrl} alt={'task related upload'}>{image}</img>
+                    <img className='task-image' key={image.id} src={image.imageUrl} alt={'task related upload'} />
                 )) : <li>No images uploaded</li>}
             </ol>
         </div>
@@ -56,18 +56,18 @@ function TaskDetails({ task, setShowModal }) {
                 />
             </div>
             <p className='task-date'><strong>Created at:</strong> {new Date(task.createdAt).toLocaleTimeString()} {new Date(task.createdAt).toLocaleDateString()}</p>
-            <p className='task-description'><strong>Description: </strong></p>
+            <p><strong>Description: </strong></p>
             <textarea className='description-area' type='text' value={description} onChange={(e) => setDescription(e.target.value)} />
             <p><strong>Requirements:</strong></p>
             <ol>
                 {requirements.length > 0 ? requirements.map((requirement) => (
-                    <li key={requirement.id}>{requirement}</li>
+                    <li key={requirement.id}>{requirement.requirement}</li>
                 )) : <li>No requirements</li>}
             </ol>
             <p><strong>Images:</strong></p>
             <ol>
                 {images.length > 0 ? images.map((image) => (
-                    <img key={image.id} src={image.imageUrl} alt={'task related upload'}>{image}</img>
+                    <img key={image.id} src={image.imageUrl} alt={'task related upload'} />
                 )) : <li>No images uploaded</li>}
             </ol>
         </div>
