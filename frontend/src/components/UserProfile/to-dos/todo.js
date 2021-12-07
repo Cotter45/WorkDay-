@@ -63,9 +63,7 @@ function ToDo() {
             isOverCompleted: monitor.isOver(),
         }),
         drop: (item, monitor) => {
-            const dragIndex = item.index;
-            const hoverIndex = completedTasks.findIndex(task => task.id === item.id);
-            moveTaskToCompleted(dragIndex, hoverIndex, item);
+            moveTaskToCompleted(item);
         },
     });
 
@@ -75,32 +73,28 @@ function ToDo() {
             isOverToDo: monitor.isOver(),
         }),
         drop: (item, monitor) => {
-            const dragIndex = item.index;
-            const hoverIndex = taskCards.findIndex(task => task.id === item.id);
-            moveTaskToToDo(dragIndex, hoverIndex, item);
+            moveTaskToToDo(item);
         },
     });
     
     
-    const moveTaskToCompleted = (dragIndex, hoverIndex, item) => {
-        const dragCard = taskCards[dragIndex];
+    const moveTaskToCompleted = (item) => {
         const task = taskCards.find(task => task.id === item.id);
         if (task) {
             task.completed = true;
             dispatch(complete_task(task.id));
-            setTasks(taskCards.filter((task) => task.id !== dragCard.id));
-            setCompletedTasks([...completedTasks, dragCard]);
+            setTasks(taskCards.filter((t) => t.id !== task.id));
+            setCompletedTasks([...completedTasks, task]);
         }
     };
     
-    const moveTaskToToDo = (dragIndex, hoverIndex, item) => {
-        const dragCard = completedTasks[dragIndex];
+    const moveTaskToToDo = (item) => {
         const task = completedTasks.find(task => task.id === item.id);
         if (task) {
             task.completed = false;
             dispatch(complete_task(task.id));
-            setCompletedTasks(completedTasks.filter((task) => task.id !== dragCard.id));
-            setTasks([...taskCards, dragCard]);
+            setCompletedTasks(completedTasks.filter((t) => t.id !== task.id));
+            setTasks([...taskCards, task]);
         }
     };
     

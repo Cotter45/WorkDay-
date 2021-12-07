@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Modal } from '../../../../context/Modal';
 import TaskDetails from './task-details';
 
-function TaskModal({ task, moveTaskToCompleted }) {
+function TaskModal({ task, moveTaskToCompleted, setTasks, tasks }) {
   const [showModal, setShowModal] = useState(false);
 
   return (
@@ -10,7 +10,7 @@ function TaskModal({ task, moveTaskToCompleted }) {
       <button onClick={() => setShowModal(!showModal)} ><i className="fas fa-info-circle"></i></button>
       {showModal && (
         <Modal onClose={() => setShowModal(false)}>
-            <TaskDetails moveTaskToCompleted={moveTaskToCompleted} task={task} setShowModal={setShowModal} />
+            <TaskDetails moveTaskToCompleted={moveTaskToCompleted} setTasks={setTasks} tasks={tasks} task={task} setShowModal={setShowModal} />
         </Modal>
       )}
     </>

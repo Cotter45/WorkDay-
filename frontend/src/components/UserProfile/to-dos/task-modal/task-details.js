@@ -1,9 +1,11 @@
-import { useSpring } from 'react-spring';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { delete_image } from '../../../../store/api';
 
 import './task_details.css';
 
-function TaskDetails({ task, setShowModal }) {
+function TaskDetails({ task, setShowModal, setTasks, tasks }) {
+    const dispatch = useDispatch();
 
     const [update, setUpdate] = useState(false);
     const [title, setTitle] = useState(task.title);
@@ -12,13 +14,31 @@ function TaskDetails({ task, setShowModal }) {
     const [requirements, setRequirements] = useState(task.Requirements);
     const [images, setImages] = useState(task.Images);
 
-    console.log(priority)
 
+    const sendUpdate = (e) => {
+        setUpdate(!update);
+    }
+
+    const deleteRequirement = (id) => {
+    
+    }
+
+    const deleteImage = (id) => {
+        dispatch(delete_image(id));
+        setImages(images.filter(image => image.id !== id));
+        const newTask = task;
+        newTask.Images = images.filter(image => image.id !== id);
+        setTasks(tasks.filter(task => task.id === newTask.id ? newTask : task));
+    }
+
+    console.log(task)
     return <>
     {!update && (
         <div className="task-details">
             <div className='task-buttons'>
-                <button onClick={() => setUpdate(!update)}><i className='fas fa-edit'></i></button>
+                {!task.completed && (
+                    <button onClick={() => setUpdate(!update)}><i className='fas fa-edit'></i></button>
+                )}
                 <button onClick={() => setShowModal(false)}><i className='fas fa-times'></i></button>
             </div>
             <div className='task-header'>
@@ -45,7 +65,7 @@ function TaskDetails({ task, setShowModal }) {
     {update && (
         <div className="task-details">
             <div className='task-buttons'>
-                <button onClick={() => setUpdate(!update)}><i className='fas fa-check'></i></button>
+                <button onClick={sendUpdate}><i className='fas fa-check'></i></button>
                 <button onClick={() => setShowModal(false)}><i className='fas fa-times'></i></button>
             </div>
             <div className='task-header'>
@@ -67,7 +87,10 @@ function TaskDetails({ task, setShowModal }) {
             <p><strong>Images:</strong></p>
             <ol className='task-images'>
                 {images.length > 0 ? images.map((image) => (
-                    <img className='task-image' key={image.id} src={image.imageUrl} alt={'task related upload'} />
+                    <div key={image.id} className='image_container'>
+                        <button className='remove_image' onClick={() => deleteImage(image.id)}><i className='fas fa-trash'></i></button>
+                        <img className='task-image' src={image.imageUrl} alt={'task related upload'}></img>
+                    </div>
                 )) : <li>No images uploaded</li>}
             </ol>
         </div>

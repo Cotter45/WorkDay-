@@ -88,7 +88,7 @@ function Task({ task, moveTask, index, tasks, moveTaskToCompleted, setTasks, set
                 <div className='filledbar'></div>
             </div>
             <div className="task-buttons">
-                <TaskModal moveTaskToCompleted={moveTaskToCompleted} task={task} />
+                <TaskModal tasks={tasks} moveTaskToCompleted={moveTaskToCompleted} setTasks={setTasks} task={task} />
                 <button onClick={() => deleteTask(task)}>
                     <i className="fas fa-trash-alt"></i>
                 </button>

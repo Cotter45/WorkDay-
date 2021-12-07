@@ -61,6 +61,21 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
+// Route to delete an image
+router.delete('/delete_image/:id', asyncHandler( async (req, res) => {
+  const { id } = req.params;
+
+  const image = await Image.findByPk(id);
+
+  if (image) {
+    await image.destroy();
+    res.status(200).json({ message: "Image deleted successfully." });
+  } else {
+    res.status(404).json({ message: "Image not found." });
+  }
+
+}))
+
 // Route to delete a task
 router.delete('/delete_task/:task_id', asyncHandler( async (req, res) => {
   const { task_id } = req.params;

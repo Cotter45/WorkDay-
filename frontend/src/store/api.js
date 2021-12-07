@@ -26,6 +26,23 @@ const COMPLETE_TASK = 'api/complete_task';
 const CREATE_TASK = 'api/create_task';
 const MOVE_TASK_POSITION = 'api/move_task_position';
 const DELETE_TASK = 'api/delete_task';
+const DELETE_IMAGE = 'api/delete_image';
+
+const delete_image_action = (data) => ({
+    type: DELETE_IMAGE,
+    payload: data
+})
+
+export const delete_image = (id) => async dispatch => {
+    const fetch = await csrfFetch(`/api/users/delete_image/${id}`, {
+        method: 'DELETE',
+    })
+    const response = await fetch.json();
+    if (response.message !== "Image deleted successfully." ) {
+        alert(response.message);
+    }
+    return response;
+}
 
 const delete_task_action = (data) => ({
     type: DELETE_TASK,

@@ -149,12 +149,12 @@ function UserProfile() {
                                     setShowPhotos(false)
                                 }} className='post-button'>To-Do</button>
                             )}
-                            <button onClick={() => {
+                            {/* <button onClick={() => {
                                 setShowPost(false)
                                 setShowJob(false)
                                 setShowTasks(false)
                                 setShowPhotos(!photos)
-                            }} className='post-button'>Photos</button>
+                            }} className='post-button'>Photos</button> */}
                             {/* <Link to={`/profile/${userId}/posts`}>Posts</Link> */}
                             {/* <Link to={`/profile/${userId}/job_posts`}>Job Posts</Link> */}
                         </div>
@@ -168,9 +168,9 @@ function UserProfile() {
                     {tasks && (
                         <ToDo tasks={user.Tasks} />
                     )}
-                    {photos && (
+                    {/* {photos && (
                         <Photos />
-                    )}
+                    )} */}
                     </div>
                 </div>
             )}
