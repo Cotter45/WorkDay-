@@ -61,6 +61,20 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
+// Route to delete a requirement
+router.delete('/delete_requirement/:id', asyncHandler( async (req, res) => {
+  const { id } = req.params;
+
+  const requirement = await Requirement.findByPk(parseInt(id, 10));
+
+  if (requirement) {
+    await requirement.destroy();
+    return res.json({ message: "Requirement deleted successfully." });
+  } else {
+    return res.json({ message: "Requirement not found." });
+  }
+}))
+
 // Route to delete an image
 router.delete('/delete_image/:id', asyncHandler( async (req, res) => {
   const { id } = req.params;

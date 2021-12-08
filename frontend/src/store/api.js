@@ -27,6 +27,24 @@ const CREATE_TASK = 'api/create_task';
 const MOVE_TASK_POSITION = 'api/move_task_position';
 const DELETE_TASK = 'api/delete_task';
 const DELETE_IMAGE = 'api/delete_image';
+const DELETE_REQUIREMENT = 'api/delete_requirement';
+
+const delete_requirement_action = (data) => ({
+    type: DELETE_REQUIREMENT,
+    payload: data
+})
+
+export const delete_requirement = (id) => async dispatch => {
+    const fetch = await csrfFetch(`/api/users/delete_requirement/${id}`, {
+        method: 'DELETE'
+    });
+    const response = await fetch.json();
+    console.log(response, 'response')
+    if (response.message !== 'Requirement deleted successfully.') {
+        alert(response.message);
+    }
+    return response;
+}
 
 const delete_image_action = (data) => ({
     type: DELETE_IMAGE,

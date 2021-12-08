@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { delete_image } from '../../../../store/api';
+import { delete_image, delete_requirement } from '../../../../store/api';
 
 import './task_details.css';
 
@@ -20,7 +20,11 @@ function TaskDetails({ task, setShowModal, setTasks, tasks }) {
     }
 
     const deleteRequirement = (id) => {
-    
+        dispatch(delete_requirement(id));
+        setRequirements(requirements.filter(requirement => requirement.id !== id));
+        const newTask = task;
+        newTask.Requirements = requirements.filter(requirement => requirement.id !== id);
+        setTasks(tasks.map(task => task.id === newTask.id ? newTask : task));
     }
 
     const deleteImage = (id) => {
@@ -81,7 +85,7 @@ function TaskDetails({ task, setShowModal, setTasks, tasks }) {
             <p><strong>Requirements:</strong></p>
             <ol>
                 {requirements.length > 0 ? requirements.map((requirement) => (
-                    <li key={requirement.id}>{requirement.requirement}</li>
+                    <li key={requirement.id}>{requirement.requirement}<button className='delete_req' onClick={() => deleteRequirement(requirement.id)}><i className='fas fa-trash'></i></button></li>
                 )) : <li>No requirements</li>}
             </ol>
             <p><strong>Images:</strong></p>
