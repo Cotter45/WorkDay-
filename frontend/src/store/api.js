@@ -28,6 +28,39 @@ const MOVE_TASK_POSITION = 'api/move_task_position';
 const DELETE_TASK = 'api/delete_task';
 const DELETE_IMAGE = 'api/delete_image';
 const DELETE_REQUIREMENT = 'api/delete_requirement';
+const UPDATE_TASK = 'api/update_task';
+const ADD_REQUIREMENT = 'api/add_requirement';
+
+const update_task_requirement_action = (data) => ({
+    type: UPDATE_TASK,
+    payload: data
+})
+
+export const update_task_requirement = (task_id, requirement) => async dispatch => {
+    console.log(requirement)
+    const fetch = await csrfFetch(`/api/users/add_requirement/${task_id}`, {
+        method: 'POST',
+        body: JSON.stringify({requirement: requirement}),
+    })
+    const response = await fetch.json();
+    dispatch(update_task_requirement_action(response));
+    return response;
+}
+
+const update_task_action = (data) => ({
+    type: UPDATE_TASK,
+    payload: data
+})
+
+export const update_task = (task) => async dispatch => {
+    const fetch = await csrfFetch(`/api/users/update_task/${task.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(task)
+    });
+    const response = await fetch.json();
+    dispatch(update_task_action(response));
+    return response;
+}
 
 const delete_requirement_action = (data) => ({
     type: DELETE_REQUIREMENT,
@@ -39,7 +72,6 @@ export const delete_requirement = (id) => async dispatch => {
         method: 'DELETE'
     });
     const response = await fetch.json();
-    console.log(response, 'response')
     if (response.message !== 'Requirement deleted successfully.') {
         alert(response.message);
     }
@@ -784,6 +816,18 @@ function data_reducer(state = initialState, action) {
         case DELETE_TASK:
             const delete_task = newState.tasks.find(task => task.id === +action.payload.id);
             newState.tasks.splice(newState.tasks.indexOf(delete_task), 1);
+            return newState;
+        case UPDATE_TASK:
+            const update_task = newState.tasks.find(task => task.id === action.payload.id);
+            if (update_task) {
+                newState.tasks.splice(newState.tasks.indexOf(update_task), 1, action.payload);
+            }
+            return newState;
+        case ADD_REQUIREMENT:
+            const replace_task = newState.tasks.find(task => task.id === action.payload.task.id);
+            if (replace_task) {
+                newState.tasks.splice(newState.tasks.indexOf(replace_task), 1, action.payload.task);
+            }
             return newState;
         default: 
             return state;

@@ -61,6 +61,59 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
+// Route to add a requirmement to a task
+router.post("/add_requirement/:task_id", asyncHandler( async (req, res) => {
+  const { task_id } = req.params;
+  const { requirement } = req.body;
+
+  const newRequirement = await Requirement.create({
+    requirement,
+    task_id
+  });
+
+  const task = await Task.findOne({ 
+    where: { id: +task_id },
+    include: [
+      {
+        model: Requirement,
+      },
+      {
+        model: Image 
+      }
+    ]
+  })
+
+  return res.json({ task });
+}))
+
+// Route to update a task 
+router.put("/update_task/:id", asyncHandler( async (req, res) => {
+  const task = await Task.findByPk(+req.params.id);
+  const { title, priority, description } = req.body;
+
+  const update = await task.update({
+    title,
+    priority,
+    description
+  });
+
+  const updatedTask = await Task.findOne({
+    where: {
+      id: +req.params.id
+    }, 
+    include: [
+      {
+        model: Image
+      }, 
+      {
+        model: Requirement
+      }
+    ]
+  });
+
+  res.json(updatedTask);
+}));
+
 // Route to delete a requirement
 router.delete('/delete_requirement/:id', asyncHandler( async (req, res) => {
   const { id } = req.params;

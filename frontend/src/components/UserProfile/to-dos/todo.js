@@ -39,7 +39,6 @@ function ToDo() {
     const moveTask = (dragIndex, hoverIndex, item) => {
         const dragCard = tasks.find(task => task.id === item.id);
         if (!dragCard.completed) {
-            console.log(hoverIndex)
             setTasks(update(taskCards, {
                 $splice: [
                     [dragIndex, 1],
@@ -47,7 +46,6 @@ function ToDo() {
                 ],
             }));
         } else {
-            console.log(hoverIndex)
             setCompletedTasks(update(completedTasks, {
                 $splice: [
                     [dragIndex, 1],
