@@ -14,7 +14,7 @@
     margin-top: 100px;
     height: 600px;
     width: 100vw;
-    max-width: 1200px;
+    max-width: 1400px;
     display: flex;
     justify-content: space-between;
     background-image: url('https://blogimage.vantagecircle.com/vcblogimages/2019/03/blog-image--workplace-orientation-01.png');
@@ -90,7 +90,7 @@
 .home-about {
     height: 600px;
     width: 100vw;
-    max-width: 1200px;
+    max-width: 1400px;
     display: flex;
     background-color: rgb(247, 240, 240);
 }
@@ -140,7 +140,7 @@
 #companies {
     height: 600px;
     width: 100vw;
-    max-width: 1200px;
+    max-width: 1400px;
     /* background-color: red; */
     display: flex;
     /* flex-direction: column; */
@@ -167,7 +167,7 @@
 #job-seekers {
     height: 600px;
     width: 100vw;
-    max-width: 1200px;
+    max-width: 1400px;
     background-color: green;
 }
 
@@ -198,7 +198,7 @@
 #new_features {
     height: 600px;
     width: 100vw;
-    max-width: 1200px;
+    max-width: 1400px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -207,7 +207,7 @@
 }
 
 .description {
-    width: 80%;
+    width: 100%;
     height: fit-content;
     text-indent: 15px;
     display: flex;
@@ -260,7 +260,7 @@
     margin-top: 0;
     height: 600px;
     width: 100vw;
-    max-width: 1200px;
+    max-width: 1400px;
     display: flex;
     justify-content: space-between;
     background-image: url('https://blogimage.vantagecircle.com/vcblogimages/2019/03/blog-image--workplace-orientation-01.png');
@@ -342,7 +342,7 @@
 .home-about {
     height: 500px;
     width: 100vw;
-    max-width: 1200px;
+    max-width: 1400px;
     display: flex;
     gap: 25px;
     background-color: rgb(247, 240, 240);
@@ -401,7 +401,7 @@
 #companies {
     height: 500px;
     width: 100vw;
-    max-width: 1200px;
+    max-width: 1400px;
     /* background-color: red; */
     /* display: flex; */
     /* flex-direction: column; */
@@ -433,7 +433,7 @@
 #job-seekers {
     height: 600px;
     width: 100vw;
-    max-width: 1200px;
+    max-width: 1400px;
     background-color: green;
 }
 
