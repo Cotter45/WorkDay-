@@ -30,6 +30,35 @@ const DELETE_IMAGE = 'api/delete_image';
 const DELETE_REQUIREMENT = 'api/delete_requirement';
 const UPDATE_TASK = 'api/update_task';
 const ADD_REQUIREMENT = 'api/add_requirement';
+const ADD_TASK_IMAGE = 'api/add_task_image';
+
+const add_task_image_action = (data) => ({
+    type: ADD_TASK_IMAGE,
+    payload: data
+})
+
+export const add_task_image = (task_id, image, url) => async dispatch => {
+    if (image) {
+        const formData = new FormData();
+        formData.append('image', image);
+        const response = await csrfFetch(`/api/users/add_task_image/${task_id}`, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        const data = await response.json();
+        dispatch(add_task_image_action(data));
+        return data;
+    } else if (url) {
+        const response = await csrfFetch(`/api/users/add_task_image/${task_id}`, {
+            method: 'POST',
+            body: JSON.stringify({url: url})
+        });
+        const data = await response.json();
+        dispatch(add_task_image_action(data));
+        return data;
+    }
+}
 
 const update_task_requirement_action = (data) => ({
     type: UPDATE_TASK,
@@ -37,7 +66,6 @@ const update_task_requirement_action = (data) => ({
 })
 
 export const update_task_requirement = (task_id, requirement) => async dispatch => {
-    console.log(requirement)
     const fetch = await csrfFetch(`/api/users/add_requirement/${task_id}`, {
         method: 'POST',
         body: JSON.stringify({requirement: requirement}),
@@ -827,6 +855,12 @@ function data_reducer(state = initialState, action) {
             const replace_task = newState.tasks.find(task => task.id === action.payload.task.id);
             if (replace_task) {
                 newState.tasks.splice(newState.tasks.indexOf(replace_task), 1, action.payload.task);
+            }
+            return newState;
+        case ADD_TASK_IMAGE:
+            const task_image = newState.tasks.find(task => task.id === action.payload.task.id);
+            if (task_image) {
+                newState.tasks.splice(newState.tasks.indexOf(task_image), 1, action.payload.task);
             }
             return newState;
         default: 

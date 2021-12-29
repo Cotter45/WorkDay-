@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { delete_image, delete_requirement, update_task, update_task_requirement } from '../../../../store/api';
+import { delete_image, delete_requirement, update_task, update_task_requirement, add_task_image } from '../../../../store/api';
 
 import './task_details.css';
 
@@ -14,6 +14,9 @@ function TaskDetails({ task, setShowModal, setTasks, tasks }) {
     const [newReq, setNewReq] = useState(false);
     const [requirement, setRequirement] = useState('');
     const [requirements, setRequirements] = useState(task.Requirements);
+    const [addImage, setAddImage] = useState(false);
+    const [url, setUrl] = useState('');
+    const [image, setImage] = useState('');
     const [images, setImages] = useState(task.Images);
     const [errors, setErrors] = useState([]);
 
@@ -69,6 +72,26 @@ function TaskDetails({ task, setShowModal, setTasks, tasks }) {
         const newTask = task;
         newTask.Images = images.filter(image => image.id !== id);
         setTasks(tasks.filter(task => task.id === newTask.id ? newTask : task));
+    }
+
+    const handleURL = async (e) => {
+        if (!url.includes('http') || !url.includes('https')) {
+            setErrors([...errors, { image: 'URL is not valid' } ])
+        } else {
+            const update = await dispatch(add_task_image(task.id, null, url));
+            const newTask = update.task;
+            setTasks(tasks.map(task => task.id === newTask.id ? newTask : task));
+            setImages(newTask.Images);
+            setUrl('');
+        }
+    }
+
+    const handleImage = async (image) => {
+        const update = await dispatch(add_task_image(task.id, image, null));
+        const newTask = update.task;
+        setTasks(tasks.map(task => task.id === newTask.id ? newTask : task));
+        setImages(newTask.Images);
+        setImage('');
     }
 
     return <>
@@ -131,7 +154,35 @@ function TaskDetails({ task, setShowModal, setTasks, tasks }) {
                     <li key={requirement.id}>{requirement.requirement} <button className='post-button' onClick={() => deleteRequirement(requirement.id)}><i className='fas fa-trash'></i></button></li>
                 )) : <p>No requirements</p>}
             </ol>
-            <p><strong>Images:</strong></p>
+            <p><strong>Images:</strong> <button onClick={() => setAddImage(!addImage)} className='post-button'>Add New</button></p>
+            {errors.map((err, index) => err.image && <p key={index} className='error'>{err.image}</p>)}
+            {addImage && (
+                <div className='edit-buttons'>
+                    <label>URL</label>
+                    <input
+                        value={url}
+                        onChange={(e) => setUrl(e.target.value)}
+                        onFocus={() => setErrors([])}
+                        className='post-image-input'
+                    ></input>
+                    {!url && (
+                        <>
+                        <label>OR</label>
+                        <label className='upload'>
+                            <input
+                                type='file'
+                                className='upload-button'
+                                onChange={(e) => e.target.files[0] ? handleImage(e.target.files[0]) : null} 
+                                ></input>
+                            Choose File
+                        </label>
+                        </>
+                    )}
+                    {url && (
+                        <button className='submit' onClick={handleURL}>Add</button>
+                    )}
+                </div>
+            )}
             <ol className='task-images'>
                 {images.length > 0 ? images.map((image) => (
                     <div key={image.id} className='image_container'>

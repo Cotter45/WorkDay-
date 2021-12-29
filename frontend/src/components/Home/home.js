@@ -154,7 +154,7 @@ function HomePage() {
                 </div>
                 <div className='description'>
                     <p>
-                        I am currently working on a new drag and drop task manager applet for each user. This will allow
+                        I have recently added a new drag and drop task manager applet for each user. This allows
                         users to create tasks with several levels of priority, drag and drop them to organize or mark them as completed.
                     </p>
                 </div>
@@ -164,6 +164,7 @@ function HomePage() {
                         <li>Marks tasks as completed when dropped in completed section</li>
                         <li>Marks tasks as incomplete on drag back into to do</li>
                         <li>Tasks will have a priority level, multiple requirements allowed, and multiple pictures as well</li>
+                        <li>Every task can be updated at any time. This includes the title, priority, description, images and requirements.</li>
                     </div>
                     <div className='feature-image'>
                         <img loading='lazy' height='400' width='450' src='/images/task_manager.gif' alt='task manager'></img>

@@ -61,6 +61,38 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
+// Route to add an image to a task
+router.post("/add_task_image/:task_id", singleMulterUpload('image'), asyncHandler( async (req, res) => {
+  const { task_id } = req.params;
+  let image_link;
+
+  if (req.file) {
+    image_link = await singlePublicFileUpload(req.file);
+  } else {
+    image_link = req.body.url;
+  }
+
+
+  const image = await Image.create({
+    imageUrl: image_link,
+    task_id,
+  });
+
+  const task = await Task.findOne({
+    where: { id: +task_id },
+    include: [
+      {
+        model: Image,
+      },
+      {
+        model: Requirement
+      }
+    ]
+  })
+
+  res.json({ task })
+}))
+
 // Route to add a requirmement to a task
 router.post("/add_requirement/:task_id", asyncHandler( async (req, res) => {
   const { task_id } = req.params;

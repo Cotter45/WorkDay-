@@ -102,7 +102,6 @@ function ToDo() {
         {!loaded && <Loading />}
         {loaded && (
             <div className='todo-container'>
-                <h2>Preview, not yet finished</h2>
                 <div className='todo-heading'>
                     <h2>Drag and drop tasks to mark complete</h2>
                     <CreateTaskModal setTasks={setTasks} taskCards={taskCards} tasks={taskCards} />
