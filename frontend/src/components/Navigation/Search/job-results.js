@@ -1,5 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import LoginSignup from '../../LoginOrSignup';
 import { get_data, job_application, save_job } from '../../../store/api';
 
@@ -47,7 +49,12 @@ function JobResults({ result, additionalInfo, jobId, setJobId, setAdditionalInfo
                         <p>Location: {result.location}</p>
                         <p>Pays: ${result.pay}</p>
                         <p>Posted: {new Date(result.createdAt).toDateString()}</p>
-                        <p>Posted by: {result.User.first_name + ' ' + result.User.last_name}</p>
+                        <div>
+                            <p>Posted by: </p>
+                            <Link to={`/profile/${result.User.id}`}>
+                                {result.User.first_name + ' ' + result.User.last_name}
+                            </Link>
+                        </div>
                         <p>Description: <br></br> {result.description}</p>
                         {result.Requirements && (
                             <div className='job-requirements'>

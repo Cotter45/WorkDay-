@@ -26,12 +26,12 @@ function Comments({ post, update, setUpdate }) {
     const [editComment, setEditComment] = useState('');
     const [newComment, setNewComment] = useState('');
 
-    // useEffect(() => {
-    //     const topOfComments = document.querySelector('.comments-container');
-    //     if (topOfComments) {
-    //         topOfComments.scrollIntoView({top: -100, behavior: 'smooth', block: 'start' });
-    //     }
-    // }, [comments])
+    useEffect(() => {
+        const topOfComments = document.querySelector('.comments-container');
+        if (topOfComments) {
+            topOfComments.scrollIntoView({top: '-10vh', behavior: 'smooth', block: 'start' });
+        }
+    }, [comments])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -116,7 +116,8 @@ function Comments({ post, update, setUpdate }) {
                 addPhoto={addPhoto}
                 user={user}
                 setPhoto={setPhoto}
-                photo={photo} />
+                photo={photo} 
+            />
             {/* {!edit && photo && (
             <img className='post-comment-image' alt='post' src={photo.name ? URL.createObjectURL(photo) : photo}></img>
             )} */}

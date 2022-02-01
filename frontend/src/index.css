@@ -35,6 +35,11 @@ select:focus {
 .loading {
     position: absolute;
     /* left: 40vw; */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0 auto;
     top: 40vh;
     height: 300px;
     width: 300px;

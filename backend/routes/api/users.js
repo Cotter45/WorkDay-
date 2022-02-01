@@ -62,7 +62,7 @@ const validateSignup = [
 ];
 
 // Route to add an image to a task
-router.post("/add_task_image/:task_id", singleMulterUpload('image'), asyncHandler( async (req, res) => {
+router.post("/add_task_image/:task_id", requireAuth, singleMulterUpload('image'), asyncHandler( async (req, res) => {
   const { task_id } = req.params;
   let image_link;
 
@@ -94,7 +94,7 @@ router.post("/add_task_image/:task_id", singleMulterUpload('image'), asyncHandle
 }))
 
 // Route to add a requirmement to a task
-router.post("/add_requirement/:task_id", asyncHandler( async (req, res) => {
+router.post("/add_requirement/:task_id", requireAuth, asyncHandler( async (req, res) => {
   const { task_id } = req.params;
   const { requirement } = req.body;
 
@@ -119,7 +119,7 @@ router.post("/add_requirement/:task_id", asyncHandler( async (req, res) => {
 }))
 
 // Route to update a task 
-router.put("/update_task/:id", asyncHandler( async (req, res) => {
+router.put("/update_task/:id", requireAuth, asyncHandler( async (req, res) => {
   const task = await Task.findByPk(+req.params.id);
   const { title, priority, description } = req.body;
 
@@ -255,8 +255,10 @@ router.post('/create_task', multipleMulterUpload('imagesToUpload'), asyncHandler
       newImages.push(newImage);
     }
   } 
-  if (imageLinks.length > 0) {
-    for (let image of imageLinks) {
+
+  let image_links = imageLinks.split(',');
+  if (image_links.length > 0) {
+    for (let image of image_links) {
       let newImage = await Image.create({
         imageUrl: image,
         user_id: userId,
