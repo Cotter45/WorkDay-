@@ -183,12 +183,14 @@ router.post('/', requireAuth,  asyncHandler( async (req, res) => {
         poster_id
     })
 
-    await requirements.forEach( async req => {
-        await Requirement.create({
-            requirement: req,
-            job_id: +job.id
-        })
-    })
+    if (requirements.length > 0) {
+        for (let req of requirements) {
+            await Requirement.create({
+                requirement: req,
+                job_id: +job.id
+            })
+        }
+    }
 
     const newJob = await Job.findOne({
         where: {
@@ -222,36 +224,36 @@ router.put('/:job_id', requireAuth,  asyncHandler( async (req, res) => {
     const job = await Job.findOne({
         where: {
             id: +job_id
-        }
+        },
+        include: [
+            {
+                model: Requirement
+            }
+        ]
     })
 
-    const oldRequirements = await Requirement.findAll({
-        where: {
-            job_id: +job_id 
-        }
-    })
+    const oldRequirements = job.Requirements;
 
     if (oldRequirements.length) {
-        oldRequirements.forEach( async req => {
-            await req.destroy()
-        })
+        for (let req of oldRequirements) {
+            await req.destroy();
+        }
         if (requirements.length) {
-            requirements.forEach( async req => {
+            for (let req of requirements) {
                 await Requirement.create({
                     requirement: req,
                     job_id: +job_id
                 })
-            })
+            }
         }
     } else if (requirements.length) {
-        requirements.forEach( async req => {
+        for (let req of requirements) {
             await Requirement.create({
                 requirement: req,
                 job_id: +job_id
             })
-        })
+        }
     }
-
 
     await job.update({
         title,
@@ -284,24 +286,24 @@ router.put('/:job_id', requireAuth,  asyncHandler( async (req, res) => {
     })
 
     const user = await User.findOne({
-    where: {
-      id: +poster_id
-    },
-    include: [
-      { 
-        model: Job,
-        include: { all: true }
-      },
-      {
-        model: Company,
-        include: { all: true }
-      },
-      {
-        model: Post,
-        include: { all: true }
-      }
-    ]
-  })
+        where: {
+            id: +poster_id
+            },
+            include: [
+            { 
+                model: Job,
+                include: { all: true }
+            },
+            {
+                model: Company,
+                include: { all: true }
+            },
+            {
+                model: Post,
+                include: { all: true }
+            }
+        ]
+    })
 
     return res.json({ updated_job, user })
 }))
