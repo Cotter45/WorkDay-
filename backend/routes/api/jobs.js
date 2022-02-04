@@ -38,6 +38,7 @@ const job = require("../../db/models/job");
 
 const router = express.Router();
 
+// ADD routte for getting next 10 jobs in order
 
 // Route for getting recently posted jobs
 router.get("/recent", requireAuth, asyncHandler(async (req, res) => {
@@ -65,6 +66,7 @@ router.get("/recent", requireAuth, asyncHandler(async (req, res) => {
     return res.json({ jobs });
 }));
 
+// FIX - split these routes to adhere to SRP (Single Responsibility Principle)
 // Route for saving a job posting 
 router.post('/save/:job_id', requireAuth, asyncHandler( async (req, res) => {
     const { user_id, job_id } = req.body;
@@ -106,6 +108,7 @@ router.post('/save/:job_id', requireAuth, asyncHandler( async (req, res) => {
     }
 }))
 
+// FIX - split these routes to adhere to SRP (Single Responsibility Principle)
 // Route for applying to a job posting 
 router.post('/apply/:job_id', requireAuth, asyncHandler( async (req, res) => {
     const { user_id, job_id } = req.body;
@@ -170,6 +173,7 @@ router.delete('/:job_id', requireAuth,  asyncHandler( async (req, res) => {
 
 }))
 
+// FIX - split these routes to adhere to SRP (Single Responsibility Principle)
 // route to create a new job posting
 router.post('/', requireAuth,  asyncHandler( async (req, res) => {
     const { title, description, pay, company_id, location, poster_id, requirements } = req.body;
@@ -216,6 +220,8 @@ router.post('/', requireAuth,  asyncHandler( async (req, res) => {
     return res.json({ newJob })
 }))
 
+// FIX - refactor redux store to update a users jobs without having to fetch user model here
+// FIX - split these routes to adhere to SRP (Single Responsibility Principle) and DRY (Dont Repeat Yourself)
 // route to update job postings
 router.put('/:job_id', requireAuth,  asyncHandler( async (req, res) => {
     const { job_id } = req.params;
@@ -307,11 +313,5 @@ router.put('/:job_id', requireAuth,  asyncHandler( async (req, res) => {
 
     return res.json({ updated_job, user })
 }))
-
-
-
-
-
-
 
 module.exports = router;
