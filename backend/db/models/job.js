@@ -12,9 +12,9 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Job.belongsTo(models.Company, { foreignKey: 'company_id' });
     Job.belongsTo(models.User, { foreignKey: 'poster_id' });
-    Job.hasMany(models.Save_for_Later, { foreignKey: 'job_id' });
-    Job.hasMany(models.Requirement, { foreignKey: 'job_id' });
-    Job.hasMany(models.Application, { foreignKey: 'job_id' });
+    Job.hasMany(models.Save_for_Later, { foreignKey: 'job_id', onDelete: 'CASCADE', hooks: true });
+    Job.hasMany(models.Requirement, { foreignKey: 'job_id', onDelete: 'CASCADE', hooks: true });
+    Job.hasMany(models.Application, { foreignKey: 'job_id', onDelete: 'CASCADE', hooks: true });
   };
   return Job;
 };
