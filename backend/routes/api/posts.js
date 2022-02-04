@@ -5,7 +5,7 @@ const { Op } = require('sequelize');
 const asyncHandler = require("express-async-handler");
 
 const { handleValidationErrors } = require("../../utils/validation");
-const { setTokenCookie, requireAuth } = require("../../utils/auth");
+const { requireAuth } = require("../../utils/auth");
 const { singleMulterUpload, singlePublicFileUpload } = require("../../awsS3");
 
 
@@ -41,7 +41,8 @@ const e = require("express");
 
 const router = express.Router();
 
-
+// FIX - refactor store to find the like and remove it instead of returning entire post,
+// if new like, then return like model and append to post
 // router for liking a comment
 router.post('/comments/:comment_id', asyncHandler( async (req, res) => {
     const { comment_id } = req.params;
@@ -91,18 +92,6 @@ router.delete('/comments/:comment_id', asyncHandler( async (req, res) => {
     const { comment_id } = req.params;
     let post_id;
 
-    const likes = await Like.findAll({
-        where: {
-            comment_id: +comment_id 
-        }
-    })
-
-    if (likes) {
-        likes.forEach( async like => {
-            await like.destroy()
-        })
-    }
-
     const comment = await Comment.findOne({
         where: {
             id: +comment_id
@@ -115,7 +104,7 @@ router.delete('/comments/:comment_id', asyncHandler( async (req, res) => {
     return res.json({ comment_id, post_id })
 }))
 
-
+// FIX - refactor store to find the comment and make appropriate edits instead of returning entire post
 // router for editing a posts comment
 router.put('/comments/:comment_id', singleMulterUpload('image'), asyncHandler( async (req, res) => {
     const { comment_id } = req.params;
@@ -173,10 +162,8 @@ router.post('/:postId/comment', singleMulterUpload('image'), asyncHandler( async
     const { postId } = req.params;
     const { comment, image_url, user_id } = req.body;
 
-    let newComment;
-
     if (!req.file) {
-        newComment = await Comment.create({
+        await Comment.create({
             comment,
             image_url,
             post_id: +postId,
@@ -184,7 +171,7 @@ router.post('/:postId/comment', singleMulterUpload('image'), asyncHandler( async
         })
     } else {
         const newImage = await singlePublicFileUpload(req.file);
-        newComment = await Comment.create({
+        await Comment.create({
             comment,
             image_url: newImage,
             post_id: +postId,
