@@ -1,11 +1,25 @@
 
 .main-container {
     position: relative;
-    top: 10vh;
+    top: 15vh;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    border-radius: 20px;
+    background: #fff;
+    padding: 25px;
+    width: 75vw;
+    margin: 0 auto;
+}
+
+.main-container::before {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #358117, #ffd70e, #09914d);
+    z-index: -1;
 }
 
 .take_me_home {
@@ -13,6 +27,7 @@
     width:auto;
     object-fit: cover;
     border-radius: 5px;
+    max-width: 80%;
 }
 
 .lost-container {
