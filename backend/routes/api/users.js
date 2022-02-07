@@ -149,7 +149,7 @@ router.put("/update_task/:id", requireAuth, asyncHandler( async (req, res) => {
 }));
 
 // Route to delete a requirement
-router.delete('/delete_requirement/:id', asyncHandler( async (req, res) => {
+router.delete('/delete_requirement/:id', requireAuth, asyncHandler( async (req, res) => {
   const { id } = req.params;
 
   const requirement = await Requirement.findByPk(parseInt(id, 10));
@@ -163,7 +163,7 @@ router.delete('/delete_requirement/:id', asyncHandler( async (req, res) => {
 }))
 
 // Route to delete an image
-router.delete('/delete_image/:id', asyncHandler( async (req, res) => {
+router.delete('/delete_image/:id', requireAuth, asyncHandler( async (req, res) => {
   const { id } = req.params;
 
   const image = await Image.findByPk(id);
@@ -178,7 +178,7 @@ router.delete('/delete_image/:id', asyncHandler( async (req, res) => {
 }))
 
 // Route to delete a task
-router.delete('/delete_task/:task_id', asyncHandler( async (req, res) => {
+router.delete('/delete_task/:task_id', requireAuth, asyncHandler( async (req, res) => {
   const { task_id } = req.params;
   const task = await Task.findByPk(task_id);
   await task.destroy();
@@ -186,7 +186,7 @@ router.delete('/delete_task/:task_id', asyncHandler( async (req, res) => {
 }))
 
 // Route to move a tasks position 
-router.put('/move_tasks', asyncHandler( async (req, res) => {
+router.put('/move_tasks', requireAuth, asyncHandler( async (req, res) => {
   const { tasks } = req.body;
   let counter = 0;
 
@@ -210,7 +210,7 @@ router.put('/move_tasks', asyncHandler( async (req, res) => {
 }))
 
 // Route to create a task
-router.post('/create_task', multipleMulterUpload('imagesToUpload'), asyncHandler( async (req, res) => {
+router.post('/create_task', requireAuth, multipleMulterUpload('imagesToUpload'), asyncHandler( async (req, res) => {
   const { title, priority, description, userId, position, requirements, imageLinks } = req.body;
 
   const uploadedImages = await multiplePublicFileUpload(req.files);
@@ -277,7 +277,7 @@ router.post('/create_task', multipleMulterUpload('imagesToUpload'), asyncHandler
 
 // FIX - splite the responsibility into seperate routes
 // Route to mark a task as completed
-router.post('/complete_task/:task_id', asyncHandler( async (req, res) => {
+router.post('/complete_task/:task_id', requireAuth, asyncHandler( async (req, res) => {
   const { task_id } = req.params;
 
   const task = await Task.findByPk(task_id);
@@ -302,7 +302,7 @@ router.post('/complete_task/:task_id', asyncHandler( async (req, res) => {
 }))
 
 // Route to fetch a users tasks
-router.get('/get_tasks/:user_id', asyncHandler( async (req, res) => {
+router.get('/get_tasks/:user_id', requireAuth, asyncHandler( async (req, res) => {
   const {user_id } = req.params;
   const tasks = await Task.findAll({
     where: {
@@ -321,7 +321,7 @@ router.get('/get_tasks/:user_id', asyncHandler( async (req, res) => {
 }))
 
 //Route to update users profile information
-router.put('/update_profile/:user_id', asyncHandler( async (req, res) => {
+router.put('/update_profile/:user_id', requireAuth, asyncHandler( async (req, res) => {
   const { user_id } = req.params;
   const { background_image, profile_picture, first_name, last_name, email, location, current_job, description } = req.body;
 
@@ -366,7 +366,7 @@ router.put('/update_profile/:user_id', asyncHandler( async (req, res) => {
 }))
 
 // Route to update users profile picture
-router.put('/profile_picture/:user_id', singleMulterUpload('image'), asyncHandler( async (req, res) => {
+router.put('/profile_picture/:user_id', requireAuth, singleMulterUpload('image'), asyncHandler( async (req, res) => {
   const { user_id } = req.params;
 
   const profile_picture = await singlePublicFileUpload(req.file);
@@ -380,7 +380,7 @@ router.put('/profile_picture/:user_id', singleMulterUpload('image'), asyncHandle
 }))
 
 // Route to update users background image 
-router.put('/background_image/:user_id', singleMulterUpload('image'), asyncHandler( async (req, res) => {
+router.put('/background_image/:user_id', requireAuth, singleMulterUpload('image'), asyncHandler( async (req, res) => {
   const { user_id } = req.params;
 
   const user = await User.findOne({
@@ -395,7 +395,7 @@ router.put('/background_image/:user_id', singleMulterUpload('image'), asyncHandl
 }))
 
 // Sign up
-router.post('', validateSignup, asyncHandler(async (req, res) => {
+router.post('', validateSignup, requireAuth, asyncHandler(async (req, res) => {
     const { email, password, first_name, last_name } = req.body;
     const user = await User.signup({ email, first_name, last_name, password });
 
@@ -408,7 +408,7 @@ router.post('', validateSignup, asyncHandler(async (req, res) => {
 );
 
 // Route to get other user information
-router.get('/profile/:user_id', asyncHandler( async (req, res) => {
+router.get('/profile/:user_id', requireAuth, asyncHandler( async (req, res) => {
   const { user_id } = req.params;
 
   const user = await User.findOne({
@@ -435,7 +435,7 @@ router.get('/profile/:user_id', asyncHandler( async (req, res) => {
 }))
 
 // Initial data haul or route for every refresh
-router.get('/:user_id', asyncHandler( async (req, res) => {
+router.get('/:user_id', requireAuth, asyncHandler( async (req, res) => {
     const { user_id } = req.params;
 
     const user = await User.findOne({
@@ -482,7 +482,7 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
 }))
 
 // route for all job information
-router.get('/jobs/:user_id', asyncHandler( async (req, res) => {
+router.get('/jobs/:user_id', requireAuth, asyncHandler( async (req, res) => {
   const { user_id } = req.params;
 
   const user = await User.findOne({
@@ -551,7 +551,7 @@ router.get('/jobs/:user_id', asyncHandler( async (req, res) => {
 
 
 // Route to search for jobs or users 
-router.get('/search/:params', asyncHandler( async (req, res) => {
+router.get('/search/:params', requireAuth, asyncHandler( async (req, res) => {
   const params = req.params.params.toLowerCase().split(' ').concat(req.params.params.toUpperCase().split(' '));
 
   const jobResults = await Job.findAll({

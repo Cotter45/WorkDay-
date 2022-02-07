@@ -44,7 +44,7 @@ const router = express.Router();
 // FIX - refactor store to find the like and remove it instead of returning entire post,
 // if new like, then return like model and append to post
 // router for liking a comment
-router.post('/comments/:comment_id', asyncHandler( async (req, res) => {
+router.post('/comments/:comment_id', requireAuth, asyncHandler( async (req, res) => {
     const { comment_id } = req.params;
     const { post_id, user_id } = req.body;
 
@@ -88,7 +88,7 @@ router.post('/comments/:comment_id', asyncHandler( async (req, res) => {
 }))
 
 // router for deleting a comment
-router.delete('/comments/:comment_id', asyncHandler( async (req, res) => {
+router.delete('/comments/:comment_id', requireAuth, asyncHandler( async (req, res) => {
     const { comment_id } = req.params;
     let post_id;
 
@@ -106,7 +106,7 @@ router.delete('/comments/:comment_id', asyncHandler( async (req, res) => {
 
 // FIX - refactor store to find the comment and make appropriate edits instead of returning entire post
 // router for editing a posts comment
-router.put('/comments/:comment_id', singleMulterUpload('image'), asyncHandler( async (req, res) => {
+router.put('/comments/:comment_id', requireAuth, singleMulterUpload('image'), asyncHandler( async (req, res) => {
     const { comment_id } = req.params;
     const { comment, image_url, user_id, post_id } = req.body;
 
@@ -158,7 +158,7 @@ router.put('/comments/:comment_id', singleMulterUpload('image'), asyncHandler( a
 
 // FIX - update redux store to append comment to post instead of returning whole post
 // route for commenting on a post
-router.post('/:postId/comment', singleMulterUpload('image'), asyncHandler( async (req, res) => {
+router.post('/:postId/comment', requireAuth, singleMulterUpload('image'), asyncHandler( async (req, res) => {
     const { postId } = req.params;
     const { comment, image_url, user_id } = req.body;
 
@@ -202,7 +202,7 @@ router.post('/:postId/comment', singleMulterUpload('image'), asyncHandler( async
 
 // FIX - update store to add or remove the like to the post 
 // route to like or unlike a post
-router.post('/like/:postId', asyncHandler( async (req, res) => {
+router.post('/like/:postId', requireAuth, asyncHandler( async (req, res) => {
     const { postId } = req.params;
     const { userId } = req.body;
 
@@ -248,7 +248,7 @@ router.post('/like/:postId', asyncHandler( async (req, res) => {
 
 
 // route to delete a post
-router.delete('/:postId', asyncHandler( async (req, res) => {
+router.delete('/:postId', requireAuth, asyncHandler( async (req, res) => {
     const { postId } = req.params;
 
     
@@ -264,7 +264,7 @@ router.delete('/:postId', asyncHandler( async (req, res) => {
 }))
 
 // route for creating a new post
-router.post('/', singleMulterUpload('image'), asyncHandler( async (req, res) => {
+router.post('/', requireAuth, singleMulterUpload('image'), asyncHandler( async (req, res) => {
     const { description, image_url, poster_id, company_id } = req.body;
 
     let post;
@@ -304,7 +304,7 @@ router.post('/', singleMulterUpload('image'), asyncHandler( async (req, res) => 
 }))
 
 // route for updating an existing post
-router.put('/:post_id', singleMulterUpload('image'), asyncHandler( async (req, res) => {
+router.put('/:post_id', requireAuth, singleMulterUpload('image'), asyncHandler( async (req, res) => {
     const { post_id } = req.params;
     const { description, imageUrl } = req.body;
 
