@@ -156,7 +156,7 @@ router.put('/comments/:comment_id', singleMulterUpload('image'), asyncHandler( a
     return res.json({ newPost })
 }))
 
-
+// FIX - update redux store to append comment to post instead of returning whole post
 // route for commenting on a post
 router.post('/:postId/comment', singleMulterUpload('image'), asyncHandler( async (req, res) => {
     const { postId } = req.params;
@@ -200,6 +200,7 @@ router.post('/:postId/comment', singleMulterUpload('image'), asyncHandler( async
     return res.json({ newPost })
 }))
 
+// FIX - update store to add or remove the like to the post 
 // route to like or unlike a post
 router.post('/like/:postId', asyncHandler( async (req, res) => {
     const { postId } = req.params;
@@ -257,30 +258,6 @@ router.delete('/:postId', asyncHandler( async (req, res) => {
         }
     })
     
-    const comments = await Comment.findAll({
-        where: {
-            post_id: post.id
-        }
-    })
-    
-    const likes = await Like.findAll({
-        where: {
-            post_id: post.id
-        }
-    })
-    
-    if (likes.length) {
-        likes.forEach( async like => {
-            await like.destroy()
-        })
-    }
-
-    if (comments.length) {
-        comments.forEach( async comment => {
-            await comment.destroy()
-        })
-    }
-
     await post.destroy();
 
     return res.json({ postId })
