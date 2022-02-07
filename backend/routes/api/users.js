@@ -61,6 +61,7 @@ const validateSignup = [
   handleValidationErrors,
 ];
 
+// FIX - refactor store to find post and append image to it
 // Route to add an image to a task
 router.post("/add_task_image/:task_id", requireAuth, singleMulterUpload('image'), asyncHandler( async (req, res) => {
   const { task_id } = req.params;
@@ -73,7 +74,7 @@ router.post("/add_task_image/:task_id", requireAuth, singleMulterUpload('image')
   }
 
 
-  const image = await Image.create({
+  await Image.create({
     imageUrl: image_link,
     task_id,
   });
@@ -93,12 +94,13 @@ router.post("/add_task_image/:task_id", requireAuth, singleMulterUpload('image')
   res.json({ task })
 }))
 
+// FIX - refactor store to append requirement to the task
 // Route to add a requirmement to a task
 router.post("/add_requirement/:task_id", requireAuth, asyncHandler( async (req, res) => {
   const { task_id } = req.params;
   const { requirement } = req.body;
 
-  const newRequirement = await Requirement.create({
+  await Requirement.create({
     requirement,
     task_id
   });
@@ -123,7 +125,7 @@ router.put("/update_task/:id", requireAuth, asyncHandler( async (req, res) => {
   const task = await Task.findByPk(+req.params.id);
   const { title, priority, description } = req.body;
 
-  const update = await task.update({
+  await task.update({
     title,
     priority,
     description
@@ -182,7 +184,6 @@ router.delete('/delete_task/:task_id', asyncHandler( async (req, res) => {
   await task.destroy();
   res.json({message: 'Task deleted successfully'});
 }))
-
 
 // Route to move a tasks position 
 router.put('/move_tasks', asyncHandler( async (req, res) => {
@@ -272,9 +273,9 @@ router.post('/create_task', multipleMulterUpload('imagesToUpload'), asyncHandler
   newTask.dataValues.Images = newImages;
 
   return res.json({ newTask });
-    
 }))
 
+// FIX - splite the responsibility into seperate routes
 // Route to mark a task as completed
 router.post('/complete_task/:task_id', asyncHandler( async (req, res) => {
   const { task_id } = req.params;
@@ -330,7 +331,7 @@ router.put('/update_profile/:user_id', asyncHandler( async (req, res) => {
     }
   })
 
-  const update = await user.update({
+  await user.update({
     background_image,
     profile_picture,
     first_name,
@@ -363,7 +364,6 @@ router.put('/update_profile/:user_id', asyncHandler( async (req, res) => {
 
   return res.json({ newUser })
 }))
-
 
 // Route to update users profile picture
 router.put('/profile_picture/:user_id', singleMulterUpload('image'), asyncHandler( async (req, res) => {
@@ -427,9 +427,6 @@ router.get('/profile/:user_id', asyncHandler( async (req, res) => {
       {
         model: Post,
         include: { all: true }
-      },
-      {
-        model: Task,
       }
     ]
   })
@@ -446,9 +443,9 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
         id: +user_id
       },
       include: [
-        { model: Follow,
-          include: { all: true }
-        },
+        // { model: Follow,
+        //   include: { all: true }
+        // },
         { model: Company,
         include: { all: true }
         },
@@ -457,10 +454,10 @@ router.get('/:user_id', asyncHandler( async (req, res) => {
         },
         { model: Image },
         { model: Component },
-        { 
-          model: Team,
-          include: { all: true }
-        }
+        // { 
+        //   model: Team,
+        //   include: { all: true }
+        // }
       ]
     })
 
