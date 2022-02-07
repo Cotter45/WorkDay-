@@ -103,18 +103,18 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Company, { foreignKey: 'current_company'});
       User.hasOne(models.Employee_Approval, { foreignKey: 'user_id' });
       User.hasOne(models.Role, { foreignKey: 'user_id' });
-      User.hasMany(models.Review, { foreignKey: 'reviewer_id' });
-      User.hasMany(models.Review, { foreignKey: 'user_id' });
-      User.hasMany(models.Job, { foreignKey: 'poster_id' });
-      User.hasMany(models.Save_for_Later, { foreignKey: 'user_id' });
-      User.hasMany(models.Application, { foreignKey: 'user_id' });
-      User.hasMany(models.Message, { foreignKey: 'sender_id' });
-      User.hasMany(models.Post, { foreignKey: 'poster_id' });
-      User.hasMany(models.Comment, { foreignKey: 'user_id' });
-      User.hasMany(models.Component, { foreignKey: 'user_id' });
-      User.hasMany(models.Image, { foreignKey: 'user_id' });
-      User.hasMany(models.Like, { foreignKey: 'user_id' });
-      User.hasMany(models.Task, { foreignKey: 'userId' });
+      User.hasMany(models.Review, { foreignKey: 'reviewer_id', onDelete: 'CASCADE', hooks: true });
+      User.hasMany(models.Review, { foreignKey: 'user_id', onDelete: 'CASCADE', hooks: true });
+      User.hasMany(models.Job, { foreignKey: 'poster_id', onDelete: 'CASCADE', hooks: true });
+      User.hasMany(models.Save_for_Later, { foreignKey: 'user_id', onDelete: 'CASCADE', hooks: true });
+      User.hasMany(models.Application, { foreignKey: 'user_id', onDelete: 'CASCADE', hooks: true });
+      User.hasMany(models.Message, { foreignKey: 'sender_id', onDelete: 'CASCADE', hooks: true });
+      User.hasMany(models.Post, { foreignKey: 'poster_id', onDelete: 'CASCADE', hooks: true });
+      User.hasMany(models.Comment, { foreignKey: 'user_id', onDelete: 'CASCADE', hooks: true });
+      User.hasMany(models.Component, { foreignKey: 'user_id', onDelete: 'CASCADE', hooks: true });
+      User.hasMany(models.Image, { foreignKey: 'user_id', onDelete: 'CASCADE', hooks: true });
+      User.hasMany(models.Like, { foreignKey: 'user_id', onDelete: 'CASCADE', hooks: true });
+      User.hasMany(models.Task, { foreignKey: 'userId', onDelete: 'CASCADE', hooks: true });
     }
   };
   User.init(

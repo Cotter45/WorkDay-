@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   Component.associate = function(models) {
     // associations can be defined here
     Component.belongsTo(models.Component, { foreignKey: 'parent_id' });
-    Component.hasMany(models.Component, { foreignKey: 'parent_id' });
+    Component.hasMany(models.Component, { foreignKey: 'parent_id', onDelete: 'CASCADE', hooks: true });
     Component.belongsTo(models.User, { foreignKey: 'user_id' });
     Component.belongsTo(models.Project, { foreignKey: 'project_id' });
     Component.belongsTo(models.Team, { foreignKey: 'team_id' });

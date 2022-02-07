@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
 
     // Conversation.hasMany(models.Conversation_User, { foreignKey: 'conversation_id' });
     Conversation.belongsToMany(models.User, conversationUser);
-    Conversation.hasMany(models.Message, { foreignKey: 'conversation_id' });
+    Conversation.hasMany(models.Message, { foreignKey: 'conversation_id', onDelete: 'CASCADE', hooks: true });
   };
   return Conversation;
 };

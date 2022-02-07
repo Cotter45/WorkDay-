@@ -13,8 +13,8 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Project.belongsTo(models.Team, { foreignKey: 'team_id' });
     Project.belongsTo(models.Company, { foreignKey: 'company_id' });
-    Project.hasMany(models.Component, { foreignKey: 'project_id' });
-    Project.hasMany(models.Image, { foreignKey: 'project_id' });
+    Project.hasMany(models.Component, { foreignKey: 'project_id', onDelete: 'CASCADE', hooks: true });
+    Project.hasMany(models.Image, { foreignKey: 'project_id', onDelete: 'CASCADE', hooks: true });
   };
   return Project;
 };
