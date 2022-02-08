@@ -395,7 +395,7 @@ router.put('/background_image/:user_id', requireAuth, singleMulterUpload('image'
 }))
 
 // Sign up
-router.post('', validateSignup, requireAuth, asyncHandler(async (req, res) => {
+router.post('', validateSignup, asyncHandler(async (req, res) => {
     const { email, password, first_name, last_name } = req.body;
     const user = await User.signup({ email, first_name, last_name, password });
 
