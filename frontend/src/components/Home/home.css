@@ -102,7 +102,8 @@
     width: 50%;
     height: 100%;
     font-size: 1.5rem;
-    text-align: center;
+    text-align: left;
+    white-space: justify;
     padding-left: 50px;
     overflow-y: scroll;
 }
@@ -183,6 +184,7 @@
 
 .blurb > p {
     text-align: left;
+    white-space: justify;
     text-indent: 15px;
 }
 
@@ -355,7 +357,8 @@
     width: 50%;
     height: 100%;
     font-size: 1.5rem;
-    text-align: center;
+    text-align: left;
+    white-space: justify;
     padding-left: 5px;
     overflow-y: scroll;
 }
@@ -381,15 +384,19 @@
     justify-content: center;
     align-items: center;
     gap: 15px;
+    max-width: 40%;
 }
 
 .description {
     text-align: center;
+    white-space: justify;
+    max-width: 90%;
+    height: fit-content;
 }
 
 .carousel > img {
     height: 200px;
-    width: 150px;
+    width: 200px;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -439,7 +446,7 @@
 
 #home-info {
     height: 300px;
-    width: 80vw;
+    width: 90vw;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
@@ -450,6 +457,7 @@
 
 .blurb > p {
     text-align: left;
+    white-space: justify;
     text-indent: 15px;
 }
 
